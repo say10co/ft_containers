@@ -21,9 +21,10 @@ class ft_vector
 
 		typedef typename allocator_type::size_type size_type;	// Usually size_t
 
-		type		*m_data;
+		type		*_m_data;
 		size_type	_size;
-		size_type 	_capcity;
+		size_type 	_capacity;
+		allocator_type allocator;
 
 
 	public:
@@ -45,6 +46,8 @@ class ft_vector
 		void 		resize (size_type n, value_type val = value_type());
 		
 		class 		ft_vector_iterator;
+
+		// Getters 
 
 	protected:
 
