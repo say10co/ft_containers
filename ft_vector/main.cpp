@@ -1,7 +1,7 @@
 #include  <iostream>
 #include <vector>
 
-#include "src/ft_vector.tpp"
+#include "src/v_constructors.tpp"
 
 class Test
 {
@@ -21,13 +21,21 @@ class Test
 		Test(const Test &test)
 		{
 			(void) test;
+			this->key = test.get_key();
 			std::cout << "Test Copy Constructor Called" << std::endl;
 		}
 		char get_key() const
 		{
 			return (this->key);
 		}
+		Test &operator=(const Test &r)
+		{
+			(void) r;
+			std::cout << "Assignment operator called" << std::endl;
+			return (*this);
+		}	
 };
+
 std::ostream &operator<<(std::ostream &os, const Test &t)
 {
 	os << t.get_key() ;
@@ -38,31 +46,26 @@ int main(int ac,  char	**av)
 {
 	(void)ac;
 	(void)av;
-	
-	std::allocator<Test > alloc;
+/*	
+	std::allocator<Test> alloc;
 	Test* v = alloc.allocate(42);
 	Test t('*');
 	alloc.construct(v, t);
-	std::vector<Test> v1(v, v + 42 *  (sizeof(Test)));
-	for (int i=0; i < 42; i++)
-		std::cout << "value : " << v1[i] << std::endl;
-	return 1;	
-	ft_vector<int> my_vec;
+	return (1);
+*/
+	ft_vector<Test> v1(2, '*');
+	ft_vector<Test> v2(3, 'a');
+	v1 = v2;
 
-	ft_vector<Test> range_vec(42, '*');
-	std::cout << "my_vec size "  << my_vec.size()  << " my_vec capacity : " << my_vec.capacity()<<  std::endl;
-	std::cout << "range_vec size "  << range_vec.size()  << " range_vec  capacity : " << range_vec.capacity()<<  std::endl;
+	//std::vector<Test> v3(2, 'R');
+	//std::vector<Test> v4(2, 'I');
+	//v3 = v4;
 
+	std::cout << "Size v1: " << v1.size() << " Capacity v1: " << v1.capacity() << std::endl;
+	std::cout << "Size v2 : " << v2.size() << " Capacity v2 : " << v2.capacity() << std::endl;
 
-	/*
-	std::allocator<int> alloc;
-	alloc.deallocate(alloc.allocate(42), 42);
-	ft_vector<int> vec_int;
-	ft_vector<int> vec_char(13, 42); // calling Range constructor instrad of fill constructo 
-	int int_ptr[] = {1, 2, 3, 4,5 ,6, 7, 8};
-	ft_vector<int> range_vec(int_ptr, int_ptr + (sizeof(int_ptr) / sizeof(*int_ptr)));
-	ft_vector<int> cp_vector(vec_int);
-	*/
+	//std::cout << "Size v1: " << v3.size() << " Capacity v1: " << v3.capacity() << std::endl;
+	//std::cout << "Size v2 : " << v4.size() << " Capacity v2 : " << v4.capacity() << std::endl;
 	return (0);
 }
 

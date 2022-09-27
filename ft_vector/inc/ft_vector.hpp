@@ -21,10 +21,12 @@ class ft_vector
 
 		typedef typename allocator_type::size_type size_type;	// Usually size_t
 
-		type		*_m_data;
+		value_type		*_m_data;
 		size_type	_size;
 		size_type 	_capacity;
-		allocator_type allocator;
+		allocator_type _allocator;
+		void ft_delete(value_type *p, allocator_type alloc);
+		allocator_type get_allocator() const;
 
 
 	public:
@@ -35,6 +37,8 @@ class ft_vector
 		explicit ft_vector (const allocator_type& alloc = allocator_type());
 		explicit ft_vector (size_type n, const value_type &val = value_type(),const allocator_type& alloc = allocator_type());
 		ft_vector (const ft_vector& x);
+		~ft_vector();
+		ft_vector  &operator=(const  ft_vector &obj);
 
 
 		size_type	size()		const;	
