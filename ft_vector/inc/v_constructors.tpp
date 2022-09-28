@@ -1,17 +1,15 @@
-#include "../inc/ft_vector.hpp"
 
 template <class type, class Alloc > 
 ft_vector<type, Alloc>::ft_vector(const allocator_type &alloc)
-	:_size(0), _capacity(0), _allocator(allocator_type())
+	:_size(0), _capacity(0), _allocator(alloc)
 {
-		(void) alloc;
 		this->_m_data = this->_allocator.allocate(0);
 		std::cout << "Empty container constructor :D" << std::endl;
 }
 
 template <class type, class Alloc > 
 ft_vector<type, Alloc>::ft_vector(size_type n,  const value_type &val, const allocator_type &alloc)
-	:_size(n), _capacity(n), _allocator(allocator_type())
+	:_size(n), _capacity(n), _allocator(alloc)
 {
 	(void) alloc;
 	value_type *tmp_ptr;
@@ -105,4 +103,3 @@ typename ft_vector<type,  Alloc>::allocator_type ft_vector<type,  Alloc>::get_al
 	return (this->_allocator);
 }
 
-#include "v_capacity.tpp"

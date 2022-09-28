@@ -1,4 +1,3 @@
-#include "../inc/ft_vector.hpp"
 
 template <class type, class Alloc >
 typename ft_vector<type, Alloc>::size_type ft_vector<type, Alloc>::size() const

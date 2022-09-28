@@ -1,7 +1,7 @@
 #include  <iostream>
 #include <vector>
 
-#include "src/v_constructors.tpp"
+#include "inc/ft_vector.hpp"
 
 class Test
 {
@@ -46,6 +46,15 @@ int main(int ac,  char	**av)
 {
 	(void)ac;
 	(void)av;
+
+	ft_vector<Test> t(1, 'c');
+	ft_vector<Test>::iterator it = t.begin();
+	ft_vector<Test>::iterator it1;
+
+	it1 = it;
+	std::cout << *it1 << std::endl;
+	return (1);
+	
 /*	
 	std::allocator<Test> alloc;
 	Test* v = alloc.allocate(42);
