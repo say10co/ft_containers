@@ -76,12 +76,32 @@ int main(int ac,  char	**av)
 	ft_vector<Test>::iterator it1;
 
 	Test a('x');
-	Test a1('*');
+	Test a1('9');
+	Test a2('L');
 	*it = a;
 	*(it + 2) = a1; 
-	it1 = it--;
-	std::cout << *(2 + ++it ) << std::endl;
 
+	it[0] = a2; 
+	std::cout << it[0] << std::endl;
+	return (1);
+std::cout << (std::addressof(it += 42) == std::addressof(it)) << std::endl;
+	return (1);
+	it1 = it + 1;
+	ft_vector<Test>::iterator tmp = (it += 1);	
+	std::cout <<"(it == it1) " << (it == it1) << std::endl;
+	return (1);
+	std::cout <<"(it == it1) " << (it == it1) << std::endl;
+	std::cout << "(it >= it1) "<< (it >= it1) << std::endl;
+	std::cout << "(it <= it1) "<< (it <= it1) << std::endl;
+	std::cout << "(it < it1) " << (it < it1) << std::endl;
+	std::cout << "(it > it1) " << (it > it1) << std::endl;
+
+	std::cout << (it1 - --it) << std::endl;
+	std::cout << "Crafted result : " << *(2 +  (++it - 1) ) << std::endl;
+	std::cout << "Crafted result : " << *((1 + it) + 2 ) << std::endl;
+	return (1);
+
+	it++;
 	std::cout << "------------" << std::endl;
 	std::cout << "output 1 " << *it++ << std::endl;
 	std::cout << "output 2 " << it1->key << std::endl;
