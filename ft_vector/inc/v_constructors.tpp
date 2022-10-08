@@ -102,4 +102,3 @@ typename ft_vector<type,  Alloc>::allocator_type ft_vector<type,  Alloc>::get_al
 {	
 	return (this->_allocator);
 }
-
