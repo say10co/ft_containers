@@ -2,12 +2,12 @@
 # define FT_VECTOR_HPP 
 
 #include <memory>
+#include "v_iterators1.tpp"
 
 template <class type, class Alloc = std::allocator<type> >
 class ft_vector
 {
-	private:
-
+	public:
 		typedef type							value_type;
 		typedef Alloc							allocator_type;
 		typedef typename allocator_type::reference			reference;
@@ -18,6 +18,7 @@ class ft_vector
 		//typedef (...) const_reverse_iterator
 		//typedef (...) diffrerence_type
 
+	private:
 		typedef typename allocator_type::size_type size_type;	// Usually size_t
 
 		value_type		*_m_data;
@@ -29,9 +30,11 @@ class ft_vector
 
 
 	public:
-		class 	ft_vector_iterator;
-		typedef ft_vector_iterator 				iterator; 
-		typedef const iterator  const_iterator;
+		//class 	ft_vector_iterator;
+		//typedef ft_vector_iterator 				iterator; 
+		//typedef const iterator  const_iterator;
+		typedef v_iterator<ft_vector<value_type> > iterator;  
+		typedef v_iterator<ft_vector<const value_type> > const_iterator;  
 
 
 		template <class  InputIterator>
@@ -69,5 +72,5 @@ class ft_vector
 };
 	#include "v_constructors.tpp"
 	#include "v_capacity.tpp"
-	#include "v_iterators.tpp"
+//	#include "v_iterators.tpp"
 #endif /* FT_VECTOR_HPP */

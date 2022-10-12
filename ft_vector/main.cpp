@@ -71,6 +71,18 @@ int main(int ac,  char	**av)
 	return (1);
 
 */
+	{
+		ft_vector<char> vec(3, '*');
+		ft_vector<char>::iterator it = vec.begin();
+		std::cout << it[0] << std::endl;
+		it[0] = 'x';
+		std::cout << it[0] << std::endl;
+		return (1);
+		ft_vector<char>::const_iterator c_it = vec.begin();
+		std::cout << c_it[0] << std::endl;
+
+		return (1);
+	}
 	ft_vector<Test> t(3, 'c');
 	ft_vector<Test>::iterator it = t.begin();
 	ft_vector<Test>::iterator it1;

@@ -102,3 +102,16 @@ typename ft_vector<type,  Alloc>::allocator_type ft_vector<type,  Alloc>::get_al
 {	
 	return (this->_allocator);
 }
+
+template <class type, class Alloc >
+typename ft_vector<type, Alloc>::iterator ft_vector<type, Alloc>::begin()
+{
+	std::cout << *(this->_m_data) << std::endl;
+	return (iterator(this->_m_data));
+}
+
+template <class type, class Alloc >
+typename ft_vector<type, Alloc>::const_iterator ft_vector<type, Alloc>::begin() const
+{
+	return (iterator(this->_m_data));
+}
