@@ -1,6 +1,6 @@
 NAME = ft_vector 
 
-SRC = main.cpp 
+SRC = main1.cpp 
 
 OBJ = ${SRC:%.cpp=%.o}
 

@@ -7,6 +7,7 @@
 template <class type, class Alloc = std::allocator<type> >
 class ft_vector
 {
+	// Public Typedefs:
 	public:
 		typedef type							value_type;
 		typedef Alloc							allocator_type;
@@ -14,46 +15,41 @@ class ft_vector
 		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::const_reference	const_reference; 
 		typedef typename allocator_type::const_pointer	const_pointer;  
+		typedef v_iterator<ft_vector<value_type> > iterator;  
+		typedef v_iterator<ft_vector<const value_type> > const_iterator;  
+		typedef ptrdiff_t diffrerence_type; 
+		typedef typename allocator_type::size_type size_type;	// Usually size_t
+
 		//typedef (...) reverse_iterator 
 		//typedef (...) const_reverse_iterator
-		//typedef (...) diffrerence_type
 
 	private:
-		typedef typename allocator_type::size_type size_type;	// Usually size_t
 
 		value_type		*_m_data;
 		size_type	_size;
 		size_type 	_capacity;
 		allocator_type _allocator;
 		void ft_delete(value_type *p, allocator_type alloc);
-		allocator_type get_allocator() const;
 
 
 	public:
-		//class 	ft_vector_iterator;
-		//typedef ft_vector_iterator 				iterator; 
-		//typedef const iterator  const_iterator;
-		typedef v_iterator<ft_vector<value_type> > iterator;  
-		typedef v_iterator<ft_vector<const value_type> > const_iterator;  
-
 
 		template <class  InputIterator>
 		ft_vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
 
 		explicit ft_vector (const allocator_type& alloc = allocator_type());
-
 		explicit ft_vector (size_type n, const value_type &val = value_type(),const allocator_type& alloc = allocator_type());
 		ft_vector (const ft_vector& x);
 		~ft_vector();
 		ft_vector  &operator=(const  ft_vector &obj);
-	
 
 		// iterators 
 		iterator begin();
 		iterator end();
 		const_iterator begin() const;
 		const_iterator end() const;	
-		
+		// Allocator 		
+		allocator_type get_allocator() const;	
 		// Capacity
 		size_type	size()		const;	
 		size_type	max_size()	const;

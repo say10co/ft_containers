@@ -106,7 +106,6 @@ typename ft_vector<type,  Alloc>::allocator_type ft_vector<type,  Alloc>::get_al
 template <class type, class Alloc >
 typename ft_vector<type, Alloc>::iterator ft_vector<type, Alloc>::begin()
 {
-	std::cout << *(this->_m_data) << std::endl;
 	return (iterator(this->_m_data));
 }
 
@@ -114,4 +113,20 @@ template <class type, class Alloc >
 typename ft_vector<type, Alloc>::const_iterator ft_vector<type, Alloc>::begin() const
 {
 	return (iterator(this->_m_data));
+}
+
+template <class type, class Alloc >
+typename ft_vector<type, Alloc>::iterator ft_vector<type, Alloc>::end()
+{
+	if (this->_m_data == NULL)
+		return (NULL);
+	return (iterator(this->_m_data + this->_size));
+}
+
+template <class type, class Alloc >
+typename ft_vector<type, Alloc>::const_iterator ft_vector<type, Alloc>::end() const
+{
+	if (this->_m_data == NULL)
+		return (NULL);
+	return (iterator(this->_m_data + this->_size));
 }

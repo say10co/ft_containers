@@ -1,24 +1,18 @@
-//template<typename type>
+#include "iterator_traits.hpp" 
 
-//template<typename type>
 template<typename type>
 class v_iterator
 {
-	//typedef typename pointer type;
-	//friend v_iterator begin(); // May be changed later PS: ft_vetor(pointer *ptr) private;
 	private:
 		typedef typename type::pointer pointer;
 		typedef typename type::const_pointer const_pointer;
 		typedef typename type::reference reference;
 		typedef typename type::const_reference const_reference;
-
 		pointer _ptr;
 
+
 	public:
-		pointer get_ptr() const
-		{
-			return (this->_ptr);
-		}
+		
 		v_iterator();
 		template<typename T>
 		v_iterator(const T &it);
@@ -52,6 +46,10 @@ class v_iterator
 		pointer operator->();
 
 		reference operator[](int n) const;
+		pointer get_ptr() const
+		{
+			return (this->_ptr);
+		}
 };
 
 template<typename type>
