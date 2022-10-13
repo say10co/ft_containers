@@ -4,6 +4,7 @@ template<typename type>
 class v_iterator
 {
 	private:
+		typedef typename type::value_type value_type;
 		typedef typename type::pointer pointer;
 		typedef typename type::const_pointer const_pointer;
 		typedef typename type::reference reference;
@@ -111,14 +112,14 @@ bool v_iterator<type>::operator<=(const v_iterator &it) const
 template<typename type>
 v_iterator<type> &v_iterator<type>::operator+=(int n) 
 {
-	this->_ptr += n * sizeof(type);
+	this->_ptr += n * sizeof(value_type);
 	return(*this);
 }
 
 template<typename type>
 v_iterator<type> &v_iterator<type>::operator-=(int n) 
 {
-	this->_ptr -= n * sizeof(type);
+	this->_ptr -= n * sizeof(value_type);
 	return(*this);
 }
 
@@ -126,35 +127,35 @@ template<typename type>
 v_iterator<type>::v_iterator(pointer p)
 	:_ptr(p)
 {
-	std::cout << "v_iterator Pointer Constuctor called " << std::endl;
+//	std::cout << "v_iterator Pointer Constuctor called " << std::endl;
 }
-
 template<typename type>
 template<typename T>
 v_iterator<type>::v_iterator(const T &it)
 {
-	this->_ptr = it.get_ptr();
-		//*this = it;
-		std::cout << "v_iterator Copy constructor called" << std::endl;
+		this->_ptr = it.get_ptr();
+		// *this = it;
+		//std::cout << "v_iterator Copy constructor called" << std::endl;
 }
+
 template<typename type>
 v_iterator<type>::~v_iterator()
 {
-	std::cout << "v_iterator Distuctor called " << std::endl;
+//	std::cout << "v_iterator Distuctor called " << std::endl;
 }
 
 template<typename type>
 v_iterator<type> v_iterator<type>::operator++(int)
 {
 	v_iterator tmp_r(*this);
-	this->_ptr +=  sizeof(type);
+	this->_ptr +=  sizeof(value_type);
 	return (tmp_r);
 }
 
 template<typename type>
 v_iterator<type> &v_iterator<type>::operator++(void)
 {
-	this->_ptr +=  sizeof(type);
+	this->_ptr +=  sizeof(value_type);
 	return (*this);
 }
 
@@ -162,14 +163,14 @@ template<typename type>
 v_iterator<type> v_iterator<type>::operator--(int)
 {
 	v_iterator tmp_r(*this);
-	this->_ptr -=  sizeof(type);
+	this->_ptr -=  sizeof(value_type);
 	return (tmp_r);
 }
 
 template<typename type>
 v_iterator<type> & v_iterator<type>::operator--(void)
 {
-	this->_ptr -=  sizeof(type);
+	this->_ptr -=  sizeof(value_type);
 	return (*this);
 }
 
@@ -177,7 +178,7 @@ template<typename type>
 v_iterator<type> & v_iterator<type>::operator=(const v_iterator &it)
 {
 		this->_ptr = it._ptr;
-		std::cout << "v_iterator Copy assignment operator called" << std::endl;
+		//std::cout << "v_iterator Copy assignment operator called" << std::endl;
 		return (*this);
 }
 
@@ -198,7 +199,7 @@ v_iterator<type> v_iterator<type>::operator+(int n) const
 {
 	pointer tmp_ptr;
 	tmp_ptr = this->_ptr;
-	tmp_ptr += n * sizeof(type);
+	tmp_ptr += n * sizeof(value_type);
 	v_iterator	ret(tmp_ptr);
 	return (ret);
 }
@@ -209,7 +210,7 @@ v_iterator<type> v_iterator<type>::operator-(int n) const
 	std::cout << "operator - called !!!!!!!!!!!" << std::endl;
 	pointer tmp_ptr;
 	tmp_ptr = this->_ptr;
-	tmp_ptr -= n * sizeof(type);
+	tmp_ptr -= n * sizeof(value_type);
 	v_iterator	ret(tmp_ptr);
 	return (ret);
 }

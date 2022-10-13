@@ -29,7 +29,7 @@ class ft_vector
 		size_type	_size;
 		size_type 	_capacity;
 		allocator_type _allocator;
-		void ft_delete(value_type *p, allocator_type alloc);
+		void ft_delete(value_type *p, allocator_type &alloc, size_type size, size_type cap, size_type offset);
 
 
 	public:
@@ -59,7 +59,7 @@ class ft_vector
 		void 		shrink_to_fit();
 		void 		resize (size_type n, value_type val = value_type());
 		
-
+			
 		// Getters 
 
 	protected:
