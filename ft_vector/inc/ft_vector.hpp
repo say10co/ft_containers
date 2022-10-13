@@ -29,7 +29,7 @@ class ft_vector
 		size_type	_size;
 		size_type 	_capacity;
 		allocator_type _allocator;
-		void ft_delete(value_type *p, allocator_type &alloc, size_type size, size_type cap, size_type offset);
+		void ft_distroy(value_type *p, allocator_type &alloc, size_type size);
 
 
 	public:
@@ -60,7 +60,17 @@ class ft_vector
 		void 		resize (size_type n, value_type val = value_type());
 		
 			
-		// Getters 
+		// accessors 
+		reference operator[] (size_type n);
+		const_reference operator[] (size_type n) const;
+		reference at (size_type n);
+		const_reference at (size_type n) const;
+		reference front();
+		const_reference front() const;
+		reference back();
+		const_reference back() const;
+		value_type* data() throw();
+		const value_type* data() const throw();
 
 	protected:
 
@@ -68,5 +78,6 @@ class ft_vector
 };
 	#include "v_constructors.tpp"
 	#include "v_capacity.tpp"
+	#include "v_accessors.tpp"
 //	#include "v_iterators.tpp"
 #endif /* FT_VECTOR_HPP */

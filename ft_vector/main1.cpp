@@ -1,27 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main1.cpp                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: adriouic <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/12 23:48:58 by adriouic          #+#    #+#             */
-/*   Updated: 2022/10/13 01:59:28 by adriouic         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main1.cpp                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: adriouic <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/12 22:15:14 by adriouic          #+#    #+#             */
-/*   Updated: 2022/10/12 23:35:38 by adriouic         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include  <iostream>
 #include <vector>
 
@@ -36,17 +12,17 @@ class Test
 		Test(char c)
 		{
 			key = c;
-			std::cout << "Test Constructor Called" << std::endl;
+			//std::cout << "Test Constructor Called" << std::endl;
 		}	
 		~Test()
 		{
-			std::cout << "Test distructor called" << std::endl;
+			//std::cout << "Test distructor called" << std::endl;
 		}
 		Test(const Test &test)
 		{
 			(void) test;
 			this->key = test.get_key();
-			std::cout << "Test Copy Constructor Called" << std::endl;
+			//std::cout << "Test Copy Constructor Called" << std::endl;
 		}
 		char get_key() const
 		{
@@ -56,23 +32,11 @@ class Test
 		{
 			(void) r;
 			this->key = r.key;
-			std::cout << "Assignment operator called" << std::endl;
+			//std::cout << "Assignment operator called" << std::endl;
 			return (*this);
 		}	
 };
-/*
-template<class type, class Alloc>
-typename ft_vector<type, Alloc>::iterator operator+(int n, const typename ft_vector<type, Alloc>::iterator &it)
-{
-	typedef typename ft_vector<type, Alloc>::value_type value_type; 
-	typedef typename ft_vector<type, Alloc>::iterator iterator; 
-	
-	value_type *tmp_ptr = it._ptr;
-	tmp_ptr += n * sizeof(value_type);
-	iterator ret(tmp_ptr);
-	return (ret);
-}
-*/
+
 std::ostream &operator<<(std::ostream &os, const Test &t)
 {
 	os << t.get_key() ;
@@ -95,10 +59,26 @@ int main(int ac,  char	**av)
 	return (1);
 
 */
+	
 	ft_vector<Test> t(10, 'c');
-	t.resize(5, 'x');
+	t.front() = 'A'; std::cout << "t.front() " << t.front() <<  std::endl; 
+	t.at(t.size() - 1) = 'P';
+	std::cout << t.back() << std::endl;
+	std::cout << "t.at(1) : " << t.at(1) << std::endl;
+	std::cout << "t.at(0) : " << t.at(0) << std::endl;
+	std::cout << t[0] << std::endl;
+	return (1);
+	t.reserve(20);
+	std::cout << "T capacity : :" <<  t.capacity() << std::endl;
+	std::cout << "T size : "  << t.size() << std::endl;
+	t.shrink_to_fit();
+	std::cout << "T capacity : :" <<  t.capacity() << std::endl;
+	std::cout << t.max_size() << std::endl;
 	for (ft_vector<Test>::const_iterator it  = t.begin(); it != t.end(); it++ )
 		std::cout << *it << std::endl;
+	t.resize(0, 'x');
+	std::cout << std::endl << t.empty() << std::endl;
+
 	return (1);	
 	ft_vector<Test>::iterator it = t.begin();
 	ft_vector<Test>::iterator it1;

@@ -49,24 +49,22 @@ ft_vector<type, Alloc>& ft_vector<type, Alloc>::operator=(const ft_vector & obj)
 	value_type *tmp_ptr_obj;
 	bool		construct(1);
 
-	allocator_type old_allcoator= this->get_allocator();
-
-	if (this->_size != obj._size) // reallocation  needed 
+	allocator_type old_allcoator = this->get_allocator();
+	if (this->_size != obj._size)
 	{
-		ft_delete(this->_m_data,  this->_allocator,  this->_size, this->_capacity);
+		ft_distroy(this->_m_data,  this->_allocator,  this->_size);
+		(this->_allocator).deallocate(this->_m_data, this->_capacity);
 		this->_m_data = old_allcoator.allocate(obj._size);	
 		construct = 0;
 	}
 	tmp_ptr = this->_m_data;
 	tmp_ptr_obj = obj._m_data;
-	
 	this->_allocator = obj._allocator;
 	this->_size = obj._size;
 	this->_capacity = obj._capacity;
-
 	for (size_type i = 0; i < obj._size; i++)
 	{
-		if (!construct)
+		if (construct)
 			*tmp_ptr = *tmp_ptr_obj;	
 		else
 			this->_allocator.construct(tmp_ptr, *tmp_ptr_obj);
@@ -79,11 +77,12 @@ ft_vector<type, Alloc>& ft_vector<type, Alloc>::operator=(const ft_vector & obj)
 template <class type, class Alloc >
 ft_vector<type, Alloc>::~ft_vector()
 {
-		ft_delete(this->_m_data, this->_allocator, this->_size, this->_capacity);	
+		ft_distroy(this->_m_data, this->_allocator, this->_size);
+		(this->_allocator).deallocate(this->_m_data, this->_capacity);	
 }
 
 template <class type, class Alloc >
-void ft_vector<type, Alloc>::ft_delete(value_type *p, allocator_type &alloc, size_type size, size_type cap )
+void ft_vector<type, Alloc>::ft_distroy(value_type *p, allocator_type &alloc, size_type size)
 {
 	value_type *tmp_ptr;
 	
@@ -93,7 +92,7 @@ void ft_vector<type, Alloc>::ft_delete(value_type *p, allocator_type &alloc, siz
 		alloc.destroy(tmp_ptr);
 		tmp_ptr += sizeof(value_type);
 	}
-	(alloc).deallocate(p, cap);
+	//(alloc).deallocate(p, cap);
 }
 
 template <class type, class Alloc >
@@ -130,43 +129,4 @@ typename ft_vector<type, Alloc>::const_iterator ft_vector<type, Alloc>::end() co
 	if (this->_m_data == NULL)
 		return (iterator(NULL));
 	return (iterator(this->_m_data + this->_size));
-}
-
-template <class type, class Alloc >
-void ft_vector<type, Alloc>::resize (size_type n, value_type val)
-{
-		
-	if (this->_capacity < n)
-	{
-		size_type old_size = this->_size;
-		size_type old_cap = this->_capacity;
-		pointer old_ptr = this->_m_data;
-		iterator old_it(this->_m_data);
-		this->_m_data = (this->_allocator).allocate(n);
-
-		for (size_type i = 0; i < n; i++)
-		{
-			if (i < old_size)
-				(this->_allocator).construct(this->_m_data + (i * sizeof(value_type)), *old_it++);
-			else
-				(this->_allocator).construct(this->_m_data + (i * sizeof(value_type)), val);
-		}
-		ft_delete(old_ptr, this->_allocator, old_size, old_cap);
-	}
-	else if (this->_size < n)
-	{
-		pointer start = this->_m_data + this->_size;
-		for (size_type i = n; i < n; i++)
-		{
-			(this->_allocator).construct(start, val);
-			start += sizeof(value_type);
-		}
-	}
-	else if (this->_size > n) 
-	{
-		pointer start = this->_m_data + (n * sizeof(value_type));
-		ft_delete(start, this->_allocator, (this->_size - n), (this->_size - j));
-	}
-	this->_size = n;
-	this->_capacity = n;
 }
