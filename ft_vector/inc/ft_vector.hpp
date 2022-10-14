@@ -30,7 +30,7 @@ class ft_vector
 		size_type 	_capacity;
 		allocator_type _allocator;
 		void ft_distroy(value_type *p, allocator_type &alloc, size_type size);
-		pointer advance_by(pointer ptr, size_type nb_bytes, bool decrease = false)
+		pointer advance_by(pointer ptr, size_type nb_bytes, bool decrease = false) const
 		{
 			unsigned char *tmp_ptr;
 			tmp_ptr = reinterpret_cast<unsigned char *>(ptr);
@@ -89,9 +89,9 @@ class ft_vector
 
 
 };
+	#include "v_modifiers.tpp"
 	#include "v_constructors.tpp"
 	#include "v_capacity.tpp"
 	#include "v_accessors.tpp"	
-	#include "v_modifiers.tpp"
 //	#include "v_iterators.tpp"
 #endif /* FT_VECTOR_HPP */
