@@ -197,20 +197,13 @@ typename v_iterator<type>::pointer v_iterator<type>::operator->()
 template<typename type>
 v_iterator<type> v_iterator<type>::operator+(int n) const
 {
-	pointer tmp_ptr;
-	tmp_ptr = this->_ptr;
-	tmp_ptr += n * sizeof(value_type);
-	v_iterator	ret(tmp_ptr);
+	v_iterator	ret(advance_by(this->_ptr, n * sizeof(value_type)));
 	return (ret);
 }
 
 template<typename type>
 v_iterator<type> v_iterator<type>::operator-(int n) const
 {
-	std::cout << "operator - called !!!!!!!!!!!" << std::endl;
-	pointer tmp_ptr;
-	tmp_ptr = this->_ptr;
-	tmp_ptr -= n * sizeof(value_type);
-	v_iterator	ret(tmp_ptr);
+	v_iterator	ret(advance_by(this->_ptr, n * sizeof(value_type)), true);
 	return (ret);
 }

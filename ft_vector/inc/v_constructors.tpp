@@ -119,14 +119,16 @@ typename ft_vector<type, Alloc>::iterator ft_vector<type, Alloc>::end()
 	iterator tmp_it = this->_m_data;
 
 	if (this->_m_data != NULL)
-		tmp_it = iterator(this->_m_data + this->_size);
+		return (iterator(advance_by(this->_m_data, this->_size * sizeof(value_type))));
 	return (tmp_it);
 }
 
 template <class type, class Alloc >
 typename ft_vector<type, Alloc>::const_iterator ft_vector<type, Alloc>::end() const
 {
+	unsigned char *byte_ptr = reinterpret_cast<unsigned char *>(this->_m_data);
+	byte_ptr += this->_size;
 	if (this->_m_data == NULL)
 		return (iterator(NULL));
-	return (iterator(this->_m_data + this->_size));
+	return (iterator(advance_by(this->_m_data, this->_size * sizeof(value_type))));
 }

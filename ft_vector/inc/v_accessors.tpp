@@ -3,13 +3,13 @@
 template <class type, class Alloc>
 typename ft_vector<type, Alloc>::reference ft_vector<type, Alloc>::operator[](size_type n)
 {	
-	return (*(this->_m_data + n * sizeof(value_type)));
+	return (*(advance_by(this->_m_data, n * sizeof(value_type))));
 }
 
 template <class type, class Alloc>
 typename ft_vector<type, Alloc>::const_reference ft_vector<type, Alloc>::operator[](size_type n) const
 {	
-	return (*(this->_m_data + n * sizeof(value_type)));
+	return (*(advance_by(this->_m_data, n * sizeof(value_type))));
 }
 
 template <class type, class Alloc>
@@ -17,7 +17,7 @@ typename ft_vector<type, Alloc>::reference ft_vector<type, Alloc>::at(size_type 
 {	
 	if (n >= this->_size)
 		throw (std::out_of_range("Index n out of range"));
-	return (*(this->_m_data + n * sizeof(value_type)));
+	return (*(advance_by(this->_m_data, n * sizeof(value_type))));
 }
 
 template <class type, class Alloc>
@@ -25,7 +25,7 @@ typename ft_vector<type, Alloc>::const_reference ft_vector<type, Alloc>::at(size
 {	
 	if (n >= this->_size)
 		throw (std::out_of_range("Index n out of range"));
-	return (*(this->_m_data + n * sizeof(value_type)));
+	return (*(advance_by(this->_m_data, n * sizeof(value_type))));
 }
 
 template <class type, class Alloc>
@@ -43,13 +43,13 @@ typename ft_vector<type, Alloc>::const_reference ft_vector<type, Alloc>::front()
 template <class type, class Alloc>
 typename ft_vector<type, Alloc>::reference ft_vector<type, Alloc>::back()
 {	
-	return (*(this->_m_data + this->_size - 1));
+	return (*(advance_by(this->_m_data, sizeof(value_type)  * (this->_size - 1))));
 }
 
 template <class type, class Alloc>
 typename ft_vector<type, Alloc>::const_reference ft_vector<type, Alloc>::back() const 
 {	
-	return (*(this->_m_data + this->_size - 1));
+	return (*(advance_by(this->_m_data, sizeof(value_type)  * (this->_size - 1))));
 }
 
 template <class type, class Alloc>

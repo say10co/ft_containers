@@ -30,6 +30,16 @@ class ft_vector
 		size_type 	_capacity;
 		allocator_type _allocator;
 		void ft_distroy(value_type *p, allocator_type &alloc, size_type size);
+		pointer advance_by(pointer ptr, size_type nb_bytes, bool decrease = false)
+		{
+			unsigned char *tmp_ptr;
+			tmp_ptr = reinterpret_cast<unsigned char *>(ptr);
+			if(decrease)
+				tmp_ptr -= nb_bytes;
+			else
+				tmp_ptr += nb_bytes;
+			return (reinterpret_cast<pointer>(tmp_ptr));
+		}
 
 
 	public:
@@ -72,12 +82,16 @@ class ft_vector
 		value_type* data() throw();
 		const value_type* data() const throw();
 
+		template <class InputIterator>
+		void assign (InputIterator first, InputIterator last);
+
 	protected:
 
 
 };
 	#include "v_constructors.tpp"
 	#include "v_capacity.tpp"
-	#include "v_accessors.tpp"
+	#include "v_accessors.tpp"	
+	#include "v_modifiers.tpp"
 //	#include "v_iterators.tpp"
 #endif /* FT_VECTOR_HPP */

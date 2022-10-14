@@ -59,8 +59,19 @@ int main(int ac,  char	**av)
 	return (1);
 
 */
-	
+	{
+		int arr[] =  {16, 13, 42, 1337};
+		ft_vector<int> first;
+		first.assign(arr, arr+4);
+		std::cout << *(first.begin()) << " " << first.back() << std::endl;
+		for (ft_vector<int>::iterator it = first.begin(); it != first.end(); it++)
+			std::cout << "it value : " << *it << std::endl;
+		std::cout << "first size : " << first.size() << std::endl;
+		std::cout << "first capacity : " << first.capacity() << std::endl;
+		return (1);
+	}
 	ft_vector<Test> t(10, 'c');
+
 	t.front() = 'A'; std::cout << "t.front() " << t.front() <<  std::endl; 
 	t.at(t.size() - 1) = 'P';
 	std::cout << t.back() << std::endl;
