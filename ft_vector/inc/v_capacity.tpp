@@ -26,9 +26,11 @@ void ft_vector<type, Alloc>::resize (size_type n, value_type val)
 		for (size_type i = 0; i < n; i++)
 		{
 			if (i < old_size)
-				(this->_allocator).construct(this->_m_data + (i * sizeof(value_type)), *old_it++);
+				//(this->_allocator).construct(this->_m_data + (i * sizeof(value_type)), *old_it++);
+				(this->_allocator).construct(this->_m_data + i, *old_it++);
 			else
-				(this->_allocator).construct(this->_m_data + (i * sizeof(value_type)), val);
+				//(this->_allocator).construct(this->_m_data + (i * sizeof(value_type)), val);
+				(this->_allocator).construct(this->_m_data + i, val);
 		}
 		ft_distroy(old_ptr, this->_allocator, old_size);
 		(this->_allocator).deallocate(old_ptr, old_cap);
@@ -44,7 +46,8 @@ void ft_vector<type, Alloc>::resize (size_type n, value_type val)
 	}
 	else if (this->_size > n) 
 	{
-		pointer start = this->_m_data + (n * sizeof(value_type));
+		//pointer start = this->_m_data + (n * sizeof(value_type));
+		pointer start = this->_m_data + n;
 		ft_distroy(start, this->_allocator, (this->_size - n));
 	}
 	this->_size = n;
@@ -74,7 +77,7 @@ void ft_vector<type, Alloc>::reserve(size_type n)
 		size_type old_size = this->_size;
 		pointer new_ptr = (this->_allocator).allocate(n);	
 		for (size_type i = 0; i < old_size; i++)
-			(this->_allocator).construct(new_ptr + (i * sizeof(value_type)), *old_it++);
+			(this->_allocator).construct(advance_by(new_ptr, i * sizeof(value_type)), *old_it++);
 		ft_distroy(this->_m_data, this->_allocator, old_size);
 		(this->_allocator).deallocate(this->_m_data, this->_capacity);
 		this->_capacity = n;
@@ -91,7 +94,7 @@ void ft_vector<type, Alloc>::shrink_to_fit()
 		size_type size = this->_size;
 		pointer new_ptr = (this->_allocator).allocate(size);	
 		for (size_type i = 0; i < size; i++)
-			(this->_allocator).construct(new_ptr + (i * sizeof(value_type)), *old_it++);
+			(this->_allocator).construct(advance_by(new_ptr, i * sizeof(value_type)), *old_it++);
 		ft_distroy(this->_m_data, this->_allocator, size);
 		(this->_allocator).deallocate(this->_m_data, this->_capacity);
 		this->_capacity = size;

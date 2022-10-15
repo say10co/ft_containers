@@ -23,7 +23,10 @@ clean:
 	rm -rf $(OBJ)
 
 fclean: clean
-	rm -rf $(NAME)
+	rm -rf $(NAME) a.out
 
 re: fclean all
+
+test : test.cpp
+	c++  -Wall -Werror -Wextra -fsanitize=address test.cpp -std=c++98
 

@@ -81,9 +81,13 @@ class ft_vector
 		const_reference back() const;
 		value_type* data() throw();
 		const value_type* data() const throw();
-
+			
+		//Modifiers	 
+		void push_back (const value_type& val);
 		template <class InputIterator>
 		void assign (InputIterator first, InputIterator last);
+		void pop_back();
+
 
 	protected:
 
