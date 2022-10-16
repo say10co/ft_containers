@@ -49,11 +49,27 @@ int main(int ac,  char	**av)
 	(void)av;
 
 	{
+		ft_vector<int> int_vec;
+		int_vec.push_back(42);
+		int_vec.push_back(42);
+		int_vec.push_back(42);
+		int_vec.push_back(42);
+		ft_vector<int>::iterator it = int_vec.begin() + 2;
+		std::cout <<  "insert iterator old_value : " << *it << std::endl;
+		ft_vector<int>::iterator tmp_it = int_vec.insert(int_vec.begin(), 1337);
+		std::cout << "Retrun value type : " << *tmp_it << std::endl;
+		for (ft_vector<int>::iterator i = int_vec.begin(); i != int_vec.end(); i++)
+			std::cout << *i  << std::endl;
+		std::cout << "size : " << int_vec.size() << " capacity : "  << int_vec.capacity() << std::endl;
+		return (1);
+	}
+	{
 		ft_vector<Test> test_vec;
 		test_vec.push_back('a');
-		Test &tmp = test_vec[0];
+		test_vec.push_back('x');
 		test_vec.pop_back();
-		std::cout << tmp.get_key() << std::endl;
+		std::cout << test_vec[0] << std::endl;
+		return (1);
 	}
 	{
 		ft_vector<int> myvector;

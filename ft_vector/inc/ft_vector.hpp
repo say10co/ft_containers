@@ -87,6 +87,7 @@ class ft_vector
 		template <class InputIterator>
 		void assign (InputIterator first, InputIterator last);
 		void pop_back();
+		iterator insert (iterator position, const value_type& val);
 
 
 	protected:
