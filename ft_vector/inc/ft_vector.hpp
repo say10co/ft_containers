@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "v_iterators1.tpp"
+#include "v_enable_if.tpp"
 
 template <class type, class Alloc = std::allocator<type> >
 class ft_vector
@@ -89,6 +90,9 @@ class ft_vector
 		void pop_back();
 		iterator insert (iterator position, const value_type& val);
 		void  insert(iterator position, size_type n,  const value_type& val);
+		template <class InputIterator>
+		void insert (iterator position, InputIterator first, InputIterator last, 
+				typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type * = nullptr);
 
 
 	protected:

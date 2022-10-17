@@ -48,46 +48,9 @@ void ft_vector<type, Alloc>::pop_back()
 template<class type, class Alloc>
 typename ft_vector<type, Alloc>::iterator ft_vector<type, Alloc>::insert (iterator position, const value_type& val)
 {
-	iterator ret;
-	iterator it;
-	bool inserted(false);
-
-	if (this->_capacity < this->_size + 1) // realocation 
-	{
-		std::cout << "DEBUG : Reallocation performed at inset mode" << std::endl;
-		it = this->begin();
-		pointer  new_ptr = (this->_allocator).allocate(this->_size + 1);	
-		for (size_type i = 0; i <= this->_size ; i++)
-		{
-			if (it == position && !inserted)
-			{
-				inserted = true;
-				ret = advance_by(new_ptr, i * sizeof(value_type));
-				(this->_allocator).construct(advance_by(new_ptr, i * sizeof(value_type)), val);
-			}
-			else
-				(this->_allocator).construct(advance_by(new_ptr, i * sizeof(value_type)), *it++);
-		}
-		ft_distroy(this->_m_data, this->_allocator, this->_size);
-		(this->_allocator).deallocate(this->_m_data, this->_capacity);
-		this->_m_data = new_ptr;
-		this->_size++;
-		this->_capacity = this->_size;
-		return (ret);
-	}
-	if (position == this->end())
-	{
-		this->push_back(val);
-		return (advance_by(this->_m_data, this->_size * sizeof(value_type)));
-	}
-	it = this->end() - 1;
-	(this->_allocator).construct(advance_by(this->_m_data, this->_size * sizeof(value_type)), *it);
-	iterator tmp_it = it;
-	while (it != position)
-		*it-- = *(--tmp_it);
-	*it = val;
-	this->_size++;
-	return (it);
+	size_type distance = position - this->_m_data;
+	this->insert(position, 1, val);
+	return (iterator(this->_m_data + distance));
 }
 
 template<class type, class Alloc>
@@ -134,4 +97,16 @@ void ft_vector<type, Alloc>::insert (iterator position, size_type n, const value
 	for(size_type j = 0; j < n; j++)
 		*it-- = val;
 	this->_size += n;
+}
+
+template<class type, class Alloc>
+template <class InputIterator>
+void ft_vector<type, Alloc>::insert (iterator position, InputIterator first, InputIterator last,
+		typename  enable_if<!is_integral<InputIterator>::value, InputIterator>::type*)
+{
+	(void) position;
+	(void) first;
+	(void) last;
+	(void) last;
+	std::cout << "At write Place " << std::endl;	
 }
