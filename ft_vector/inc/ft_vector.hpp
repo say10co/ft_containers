@@ -88,6 +88,7 @@ class ft_vector
 		void assign (InputIterator first, InputIterator last);
 		void pop_back();
 		iterator insert (iterator position, const value_type& val);
+		void  insert(iterator position, size_type n,  const value_type& val);
 
 
 	protected:

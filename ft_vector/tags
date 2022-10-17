@@ -1,0 +1,38 @@
+_allocator	inc/v_constructors.tpp	/^	:_size(0), _capacity(0), _allocator(alloc)$/
+_m_data	inc/ft_vector.hpp	/^		value_type		*_m_data;$/
+_ptr	inc/v_iterators.tpp	/^	:_ptr(NULL)$/
+allocator_type	inc/ft_vector.hpp	/^		typedef Alloc							allocator_type;$/
+assign	inc/v_modifiers.tpp	/^void ft_vector<type, Alloc>::assign (InputIterator/
+at	inc/v_accessors.tpp	/^typename ft_vector<type, Alloc>::reference ft_vect/
+back	inc/v_accessors.tpp	/^typename ft_vector<type, Alloc>::reference ft_vect/
+begin	inc/v_constructors.tpp	/^typename ft_vector<type, Alloc>::iterator ft_vecto/
+capacity	inc/v_capacity.tpp	/^typename ft_vector<type, Alloc>::size_type ft_vect/
+const_iterator	inc/ft_vector.hpp	/^		typedef v_iterator<ft_vector<const value_type> >/
+const_pointer	inc/ft_vector.hpp	/^		typedef typename allocator_type::const_pointer	c/
+const_reference	inc/ft_vector.hpp	/^		typedef typename allocator_type::const_reference/
+data	inc/v_accessors.tpp	/^typename ft_vector<type, Alloc>::value_type *ft_ve/
+difference_type	inc/iterator_traits.hpp	/^{$/
+diffrerence_type	inc/ft_vector.hpp	/^		typedef ptrdiff_t diffrerence_type; $/
+empty	inc/v_capacity.tpp	/^bool ft_vector<type, Alloc>::empty() const$/
+end	inc/v_constructors.tpp	/^typename ft_vector<type, Alloc>::iterator ft_vecto/
+front	inc/v_accessors.tpp	/^typename ft_vector<type, Alloc>::reference ft_vect/
+ft_distroy	inc/v_constructors.tpp	/^void ft_vector<type, Alloc>::ft_distroy(value_type/
+ft_vector	inc/v_constructors.tpp	/^ft_vector<type, Alloc>::ft_vector(InputIterator fi/
+ft_vector_iterator	inc/v_iterators.tpp	/^ft_vector<type, Alloc>::ft_vector_iterator::ft_vec/
+get_allocator	inc/v_constructors.tpp	/^typename ft_vector<type,  Alloc>::allocator_type f/
+insert	inc/v_modifiers.tpp	/^typename ft_vector<type, Alloc>::iterator ft_vecto/
+iterator	inc/ft_vector.hpp	/^		typedef v_iterator<ft_vector<value_type> > itera/
+iterator_category	inc/iterator_traits.hpp	/^	typedef typename Iterator::iterator_category iter/
+max_size	inc/v_capacity.tpp	/^typename ft_vector<type, Alloc>::size_type ft_vect/
+operator	inc/v_constructors.tpp	/^ft_vector<type, Alloc>& ft_vector<type, Alloc>::op/
+pointer	inc/ft_vector.hpp	/^		typedef typename allocator_type::pointer			point/
+pop_back	inc/v_modifiers.tpp	/^void ft_vector<type, Alloc>::pop_back()$/
+push_back	inc/v_modifiers.tpp	/^void ft_vector<type, Alloc>::push_back (const valu/
+reference	inc/ft_vector.hpp	/^		typedef typename allocator_type::reference			ref/
+reserve	inc/v_capacity.tpp	/^void ft_vector<type, Alloc>::reserve(size_type n)$/
+resize	inc/v_capacity.tpp	/^void ft_vector<type, Alloc>::resize (size_type n, /
+shrink_to_fit	inc/v_capacity.tpp	/^void ft_vector<type, Alloc>::shrink_to_fit()$/
+size	inc/v_capacity.tpp	/^typename ft_vector<type, Alloc>::size_type ft_vect/
+size_type	inc/ft_vector.hpp	/^		typedef typename allocator_type::size_type size_/
+v_iterator	inc/v_iterators1.tpp	/^v_iterator<type>::v_iterator(const T &it)$/
+value_type	inc/ft_vector.hpp	/^		typedef type							value_type;$/

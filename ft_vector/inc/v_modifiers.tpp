@@ -54,6 +54,7 @@ typename ft_vector<type, Alloc>::iterator ft_vector<type, Alloc>::insert (iterat
 
 	if (this->_capacity < this->_size + 1) // realocation 
 	{
+		std::cout << "DEBUG : Reallocation performed at inset mode" << std::endl;
 		it = this->begin();
 		pointer  new_ptr = (this->_allocator).allocate(this->_size + 1);	
 		for (size_type i = 0; i <= this->_size ; i++)
@@ -79,14 +80,58 @@ typename ft_vector<type, Alloc>::iterator ft_vector<type, Alloc>::insert (iterat
 		this->push_back(val);
 		return (advance_by(this->_m_data, this->_size * sizeof(value_type)));
 	}
-	it = --this->end();
-	(this->_allocator).construct(advance_by(this->_m_data, this->_size), *it);
+	it = this->end() - 1;
+	(this->_allocator).construct(advance_by(this->_m_data, this->_size * sizeof(value_type)), *it);
+	iterator tmp_it = it;
 	while (it != position)
-	{
-		*it = *--it;
-	}
+		*it-- = *(--tmp_it);
 	*it = val;
+	this->_size++;
 	return (it);
-
 }
 
+template<class type, class Alloc>
+void ft_vector<type, Alloc>::insert (iterator position, size_type n, const value_type& val)
+{
+	iterator it;
+	iterator tmp_it;
+	bool inserted(false);
+
+	if (this->_capacity < this->_size + n) // realocation 
+	{
+		size_type index = 0;
+		it = this->begin();
+		pointer  new_ptr = (this->_allocator).allocate(this->_size + n);	
+		for (size_type i = 0; i <= this->_size ; i++)
+		{
+			if (it == position && !inserted)
+			{
+				inserted = true;
+				for(size_type j = 0; j < n; j++)
+					(this->_allocator).construct(advance_by(new_ptr, index++ * sizeof(value_type)), val);
+			}
+			else
+				(this->_allocator).construct(advance_by(new_ptr, index++ * sizeof(value_type)), *it++);
+		}
+		ft_distroy(this->_m_data, this->_allocator, this->_size);
+		(this->_allocator).deallocate(this->_m_data, this->_capacity);
+		this->_m_data = new_ptr;
+		this->_size += n;
+		this->_capacity = this->_size;
+		return ;
+	}
+	if (position == this->end())
+	{
+		for(size_type j = 0; j < n; j++)
+			this->push_back(val);
+		return ;
+	}
+	it = this->end() - 1;
+	(this->_allocator).construct(advance_by(this->_m_data, this->_size * sizeof(value_type)), *it);
+	tmp_it = it;
+	while (it != position)
+		*it-- = *--tmp_it;
+	for(size_type j = 0; j < n; j++)
+		*it-- = val;
+	this->_size += n;
+}

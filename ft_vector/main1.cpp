@@ -50,16 +50,22 @@ int main(int ac,  char	**av)
 
 	{
 		ft_vector<int> int_vec;
-		int_vec.push_back(42);
-		int_vec.push_back(42);
-		int_vec.push_back(42);
-		int_vec.push_back(42);
+		int_vec.push_back(1);
+		int_vec.push_back(2);
+		int_vec.push_back(3);
+		int_vec.push_back(4);
+		int_vec.reserve(10);
+
 		ft_vector<int>::iterator it = int_vec.begin() + 2;
-		std::cout <<  "insert iterator old_value : " << *it << std::endl;
-		ft_vector<int>::iterator tmp_it = int_vec.insert(int_vec.begin(), 1337);
-		std::cout << "Retrun value type : " << *tmp_it << std::endl;
+		std::cout << "insert iterator old_value : " << *it << std::endl;
+		int_vec.insert(int_vec.end(), 4,  1337);
+		int_vec.insert(int_vec.begin(), 21);
+		std::cout << "Begin :" << *(int_vec.begin()) << " End :" << int_vec.back() << std::endl; 
+		int_vec.insert(int_vec.begin(),1, 1336);
+		int_vec.insert(int_vec.begin(),3, 13);
+
 		for (ft_vector<int>::iterator i = int_vec.begin(); i != int_vec.end(); i++)
-			std::cout << *i  << std::endl;
+			std::cout << "v :" << *i  << std::endl;
 		std::cout << "size : " << int_vec.size() << " capacity : "  << int_vec.capacity() << std::endl;
 		return (1);
 	}
