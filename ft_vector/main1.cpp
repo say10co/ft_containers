@@ -51,12 +51,33 @@ int main(int ac,  char	**av)
 		std::cout << "int : " << is_integral<const int>::value << std::endl;
 	}
 	{
+		int arr[] = {42, 43, 44, 45, 46, 47};
+		ft_vector<int> int_vec;
+		int_vec.reserve(50);
+		int_vec.insert(int_vec.begin(), 6);
+		int_vec.insert(int_vec.begin(), 5);
+		int_vec.insert(int_vec.begin(), 4);
+
+		int_vec.insert(int_vec.begin() + 1, 10, 1337);
+		int_vec.insert(int_vec.begin() + 2,  arr, arr+6);
+		//int_vec.insert(int_vec.begin() + 2,  arr, arr+6);
+		
+		for (ft_vector<int>::iterator i = int_vec.begin(); i != int_vec.end(); i++)
+			std::cout << "v :" << *i  << std::endl;
+		std::cout << "size : " << int_vec.size() << " capacity : "
+					<< int_vec.capacity() << std::endl;
+
+		return (1);
+
+	}
+	{
 		ft_vector<int> int_vec;
 		int_vec.push_back(1);
 		int_vec.push_back(2);
 		int_vec.push_back(3);
 		int_vec.insert(int_vec.end(), 4);
 		int_vec.reserve(10);
+		
 
 		ft_vector<int>::iterator it = int_vec.begin() + 2;
 		std::cout << "insert iterator old_value : " << *it << std::endl;
