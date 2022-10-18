@@ -46,10 +46,12 @@ class ft_vector
 	public:
 
 		template <class  InputIterator>
-		ft_vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
+		ft_vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), 
+				typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type * = nullptr);
 
 		explicit ft_vector (const allocator_type& alloc = allocator_type());
-		explicit ft_vector (size_type n, const value_type &val = value_type(),const allocator_type& alloc = allocator_type());
+		explicit ft_vector (size_type n, const value_type &val = value_type(),
+				const allocator_type& alloc = allocator_type());
 		ft_vector (const ft_vector& x);
 		~ft_vector();
 		ft_vector  &operator=(const  ft_vector &obj);
@@ -85,18 +87,21 @@ class ft_vector
 			
 		//Modifiers	 
 		void push_back (const value_type& val);
+
 		template <class InputIterator>
-		void assign (InputIterator first, InputIterator last);
+		void assign (InputIterator first, InputIterator last, 
+				typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type * = nullptr);
+		void assign (size_type n, const value_type& val);
+
 		void pop_back();
 		iterator insert (iterator position, const value_type& val);
 		void  insert(iterator position, size_type n,  const value_type& val);
 		template <class InputIterator>
 		void insert (iterator position, InputIterator first, InputIterator last, 
 				typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type * = nullptr);
-
-
-	protected:
-
+	
+		iterator erase (iterator position);
+		iterator erase (iterator first, iterator last);
 
 };
 	#include "v_modifiers.tpp"

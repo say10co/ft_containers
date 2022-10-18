@@ -47,11 +47,31 @@ int main(int ac,  char	**av)
 {
 	(void)ac;
 	(void)av;
+
+	{
+		char arr[] = {'2', '3', '4', '5', '6', '7'};
+		ft_vector<Test> int_vec(arr, arr+6);	
+
+		ft_vector<Test>::iterator ret =  int_vec.erase(int_vec.end() -1 );
+		std::cout << "ret :  " << *ret << std::endl;
+		for (ft_vector<Test>::iterator i = int_vec.begin(); i != int_vec.end(); i++)
+			std::cout << "v :" << *i  << std::endl;
+		std::cout << int_vec.size() << " " << int_vec.capacity() << std::endl;
+		return (1);
+	}
+	{
+		ft_vector<Test>  test_vec(1, 'a');
+		std::cout << "Before assigning "  << std::endl;
+		test_vec[0] = 'z';
+		std::cout << "After assigning "  << std::endl;
+		return (0);
+	}
 	{
 		std::cout << "int : " << is_integral<const int>::value << std::endl;
 	}
 	{
 		int arr[] = {42, 43, 44, 45, 46, 47};
+
 		ft_vector<int> int_vec;
 		int_vec.reserve(50);
 		int_vec.insert(int_vec.begin(), 6);
@@ -59,13 +79,12 @@ int main(int ac,  char	**av)
 		int_vec.insert(int_vec.begin(), 4);
 
 		int_vec.insert(int_vec.begin() + 1, 10, 1337);
-		int_vec.insert(int_vec.begin() + 2,  arr, arr+6);
-		//int_vec.insert(int_vec.begin() + 2,  arr, arr+6);
-		
+		int_vec.insert(int_vec.begin() + 2,  arr, arr);
+
 		for (ft_vector<int>::iterator i = int_vec.begin(); i != int_vec.end(); i++)
 			std::cout << "v :" << *i  << std::endl;
 		std::cout << "size : " << int_vec.size() << " capacity : "
-					<< int_vec.capacity() << std::endl;
+			<< int_vec.capacity() << std::endl;
 
 		return (1);
 
@@ -77,7 +96,7 @@ int main(int ac,  char	**av)
 		int_vec.push_back(3);
 		int_vec.insert(int_vec.end(), 4);
 		int_vec.reserve(10);
-		
+
 
 		ft_vector<int>::iterator it = int_vec.begin() + 2;
 		std::cout << "insert iterator old_value : " << *it << std::endl;
@@ -139,12 +158,18 @@ int main(int ac,  char	**av)
 		std::cout << "int_vec stores " << int(int_vec.size()) << " numbers.\n";
 		return 0;
 	}
-
 	{
 		//int arr[] =  {16, 13, 42, 1337};
+		{
+			ft_vector<int> int_vec;
+			int_vec.assign(7, 1337);
+			for (ft_vector<int>::iterator std_it = int_vec.begin(); std_it != int_vec.end(); std_it++)
+				std::cout << "std::it value : " << *std_it << std::endl;
+		}	
+
 		char char_arr[] = {'a', 'b', 'c','d'};
 		ft_vector<char> first;
-		first.assign(char_arr+1 , char_arr+4);
+		first.assign(char_arr , char_arr+3);
 		std::vector<char> char_first;
 		char_first.assign(char_arr+1, char_arr+4);
 		for (std::vector<char>::iterator std_it = char_first.begin(); std_it != char_first.end(); std_it++)
