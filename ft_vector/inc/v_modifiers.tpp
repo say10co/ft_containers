@@ -134,7 +134,6 @@ typename ft_vector<type, Alloc>::iterator ft_vector<type, Alloc>::erase (iterato
 template <class type,class Alloc>
 typename ft_vector<type, Alloc>::iterator ft_vector<type, Alloc>::erase (iterator first, iterator last)
 {
-
 	iterator ite = this->end();
 	size_type size = last - first;
 	size_type index = first - this->_m_data;
@@ -149,5 +148,22 @@ typename ft_vector<type, Alloc>::iterator ft_vector<type, Alloc>::erase (iterato
 		(this->_allocator).destroy(this->_m_data + index1++);
 	}
 	this->_size -= size;
-	return (ret);	
+	return (ret);
+}
+
+template <class type, class Alloc>
+void ft_vector<type, Alloc>::swap(ft_vector &x)
+{
+	std::swap(this->_m_data, x._m_data);
+	std::swap(this->_size, x._size);
+	std::swap(this->_capacity, x._capacity);
+	std::swap(this->_allocator, x._allocator);
+	//Exception safety 
+	//https://cplusplus.com/reference/vector/vector/swap/
+}
+template <class type, class Alloc>
+void ft_vector<type, Alloc>::clear()
+{
+	ft_distroy(this->_m_data, this->_allocator, this->_size);
+	this->_size =  0;
 }

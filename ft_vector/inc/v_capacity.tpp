@@ -84,7 +84,7 @@ void ft_vector<type, Alloc>::reserve(size_type n)
 		this->_m_data = new_ptr;
 	}
 }
-
+/*
 template <class type, class Alloc>
 void ft_vector<type, Alloc>::shrink_to_fit()
 {
@@ -101,3 +101,4 @@ void ft_vector<type, Alloc>::shrink_to_fit()
 		this->_m_data = new_ptr;
 	}
 }
+*/

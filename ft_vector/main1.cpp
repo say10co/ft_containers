@@ -49,6 +49,35 @@ int main(int ac,  char	**av)
 	(void)av;
 
 	{
+		iterator_traites<ft_vector<Test>::iterator> test_trait;	
+		std::cout << (typeid(test_trait::pointer) == typeid(Test *)) << std::endl;
+		return (1);
+	}
+	{
+		ft_vector<Test> foo(4, 'Z');
+		std::cout << "before clear" << std::endl;
+		foo.clear();
+		std::cout << "After clear" << std::endl;
+		std::cout << "foo.zie() : "<<  foo.size() << " foo.capacity() : " << foo.capacity() << std::endl;
+		return (1);
+	}
+	{
+
+		ft_vector<int> foo(3, 42);
+		ft_vector<int> bar(5, 21);
+		foo.reserve(42);
+		foo.swap(bar);
+		std::cout << "foo.capacity() :" << foo.capacity() << std::endl;
+		std::cout << "bar.capacity() :" << bar.capacity() << std::endl;
+		std::cout << "foo : " ;
+		for (unsigned int i = 0; i < foo.size(); i++)
+			std::cout << foo[i] << " ";
+		std::cout << std::endl << "bar : " ;
+		for (unsigned int i = 0; i < bar.size(); i++)
+			std::cout << bar[i] << " ";
+		return (1);
+	}
+	{
 		char arr[] = {'2', '3', '4', '5', '6', '7'};
 		ft_vector<Test> int_vec(arr, arr+6);	
 
@@ -138,26 +167,28 @@ int main(int ac,  char	**av)
 		std::cout << "Capacity : " << myvector.capacity() << " size : " << myvector.size() << std::endl;
 		return (0);
 	}
-	{
-		ft_vector<Test> test_vec;
-		test_vec.push_back('y');
-		test_vec.push_back('z');
-		std::cout << "test_vec.begin() :" << *(test_vec.begin())
-			<< " test_vec.back() : " << test_vec.back() << std::endl;
-		std::cout << "test_vec.size : " << test_vec.size() 
-			<< " test_vector capacity : " << test_vec.capacity()<< std::endl;
+	/*
+	   {
+	   ft_vector<Test> test_vec;
+	   test_vec.push_back('y');
+	   test_vec.push_back('z');
+	   std::cout << "test_vec.begin() :" << *(test_vec.begin())
+	   << " test_vec.back() : " << test_vec.back() << std::endl;
+	   std::cout << "test_vec.size : " << test_vec.size() 
+	   << " test_vector capacity : " << test_vec.capacity()<< std::endl;
 
-		ft_vector<int> int_vec;
-		int i = 0;
-		do {
-			std::cout << "I = " << i << " _Capacity = " << int_vec.capacity() << std::endl;
-			int_vec.push_back(i++);
-			if (i == 50)
-				int_vec.shrink_to_fit();
-		} while (i < 200);
-		std::cout << "int_vec stores " << int(int_vec.size()) << " numbers.\n";
-		return 0;
-	}
+	   ft_vector<int> int_vec;
+	   int i = 0;
+	   do {
+	   std::cout << "I = " << i << " _Capacity = " << int_vec.capacity() << std::endl;
+	   int_vec.push_back(i++);
+	   if (i == 50)
+	   int_vec.shrink_to_fit();
+	   } while (i < 200);
+	   std::cout << "int_vec stores " << int(int_vec.size()) << " numbers.\n";
+	   return 0;
+	   }
+	   */
 	{
 		//int arr[] =  {16, 13, 42, 1337};
 		{
@@ -192,7 +223,7 @@ int main(int ac,  char	**av)
 		t.reserve(20);
 		std::cout << "T capacity : :" <<  t.capacity() << std::endl;
 		std::cout << "T size : "  << t.size() << std::endl;
-		t.shrink_to_fit();
+		//t.shrink_to_fit();
 		std::cout << "T capacity : :" <<  t.capacity() << std::endl;
 		std::cout << t.max_size() << std::endl;
 		for (ft_vector<Test>::const_iterator it  = t.begin(); it != t.end(); it++ )
@@ -224,8 +255,7 @@ int main(int ac,  char	**av)
 		std::cout << "(it <= it1) "<< (it <= it1) << std::endl;
 		std::cout << "(it < it1) " << (it < it1) << std::endl;
 		std::cout << "(it > it1) " << (it > it1) << std::endl;
-
-		std::cout << (it1 - --it) << std::endl;
+std::cout << (it1 - --it) << std::endl;
 		std::cout << "Crafted result : " << *(2 +  (++it - 1) ) << std::endl;
 		std::cout << "Crafted result : " << *((1 + it) + 2 ) << std::endl;
 		return (1);

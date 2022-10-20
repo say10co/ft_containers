@@ -13,8 +13,8 @@ class ft_vector
 		typedef type							value_type;
 		typedef Alloc							allocator_type;
 		typedef typename allocator_type::reference			reference;
-		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::const_reference	const_reference; 
+		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::const_pointer	const_pointer;  
 		typedef v_iterator<ft_vector<value_type> > iterator;  
 		typedef v_iterator<ft_vector<const value_type> > const_iterator;  
@@ -30,6 +30,7 @@ class ft_vector
 		size_type	_size;
 		size_type 	_capacity;
 		allocator_type _allocator;
+
 		void ft_distroy(value_type *p, allocator_type &alloc, size_type size);
 		pointer advance_by(pointer ptr, size_type nb_bytes, bool decrease = false) const
 		{
@@ -69,7 +70,7 @@ class ft_vector
 		size_type	capacity()	const;
 		bool 		empty()		const;
 		void 		reserve (size_type n);
-		void 		shrink_to_fit();
+		//void 		shrink_to_fit(); // c++ 11
 		void 		resize (size_type n, value_type val = value_type());
 		
 			
@@ -102,6 +103,8 @@ class ft_vector
 	
 		iterator erase (iterator position);
 		iterator erase (iterator first, iterator last);
+		void swap (ft_vector& x);
+		void clear();
 
 };
 	#include "v_modifiers.tpp"

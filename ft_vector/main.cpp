@@ -72,6 +72,11 @@ int main(int ac,  char	**av)
 
 */
 	{
+	terator_traits<Test> test_trait;	
+	std::cout << (typeid(test_trait::pointer) == typeid(Test *)) << std::endl;
+	return (1);
+	}
+	{
 		ft_vector<char> vec(3, '*');
 		ft_vector<char>::iterator it = vec.begin();
 		std::cout << it[0] << std::endl;
