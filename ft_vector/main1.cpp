@@ -1,8 +1,8 @@
 #include  <iostream>
 #include <vector>
 
-#include "inc/ft_vector.hpp"
-
+#include "inc/vector.hpp"
+using namespace ft;
 class Test
 {
 	private:
@@ -49,22 +49,34 @@ int main(int ac,  char	**av)
 	(void)av;
 
 	{
-		iterator_traites<ft_vector<Test>::iterator> test_trait;	
-		std::cout << (typeid(test_trait::pointer) == typeid(Test *)) << std::endl;
-		return (1);
+		vector<int> int_vec(1);
+		vector<int>::const_iterator const_it = int_vec.begin();
+		vector<int>::iterator  it = int_vec.begin();
+		*it = 21;
+		std::cout <<"*it : " <<  *const_it << std::endl;
+		//return (1);
 	}
 	{
-		ft_vector<Test> foo(4, 'Z');
+		std::cout << "TEST : iterator_traits " << std::endl;
+		typedef	iterator_traites<const int *> test_trait;	
+		std::cout << (typeid(test_trait::pointer) == typeid(const int* )) << std::endl;
+		//return (1);
+	}
+	{
+
+		std::cout << "TEST : vector.clear() " << std::endl;
+		vector<Test> foo(4, 'Z');
 		std::cout << "before clear" << std::endl;
 		foo.clear();
 		std::cout << "After clear" << std::endl;
 		std::cout << "foo.zie() : "<<  foo.size() << " foo.capacity() : " << foo.capacity() << std::endl;
-		return (1);
+		//return (1);
 	}
 	{
 
-		ft_vector<int> foo(3, 42);
-		ft_vector<int> bar(5, 21);
+		std::cout << "TEST : vector.swap() " << std::endl;
+		vector<int> foo(3, 42);
+		vector<int> bar(5, 21);
 		foo.reserve(42);
 		foo.swap(bar);
 		std::cout << "foo.capacity() :" << foo.capacity() << std::endl;
@@ -75,33 +87,39 @@ int main(int ac,  char	**av)
 		std::cout << std::endl << "bar : " ;
 		for (unsigned int i = 0; i < bar.size(); i++)
 			std::cout << bar[i] << " ";
-		return (1);
+		//return (1);
+
 	}
 	{
+		std::cout << "TEST : vector.erase() " << std::endl;
 		char arr[] = {'2', '3', '4', '5', '6', '7'};
-		ft_vector<Test> int_vec(arr, arr+6);	
+		vector<Test> int_vec(arr, arr+6);	
 
-		ft_vector<Test>::iterator ret =  int_vec.erase(int_vec.end() -1 );
+		vector<Test>::iterator ret =  int_vec.erase(int_vec.end() -1 );
 		std::cout << "ret :  " << *ret << std::endl;
-		for (ft_vector<Test>::iterator i = int_vec.begin(); i != int_vec.end(); i++)
+		for (vector<Test>::iterator i = int_vec.begin(); i != int_vec.end(); i++)
 			std::cout << "v :" << *i  << std::endl;
 		std::cout << int_vec.size() << " " << int_vec.capacity() << std::endl;
-		return (1);
+		//return (1);
 	}
 	{
-		ft_vector<Test>  test_vec(1, 'a');
+		std::cout << "TEST : vector.operator[]() " << std::endl;
+		vector<Test>  test_vec(1, 'a');
 		std::cout << "Before assigning "  << std::endl;
 		test_vec[0] = 'z';
 		std::cout << "After assigning "  << std::endl;
-		return (0);
+		//return (0);
 	}
 	{
+		std::cout << "TEST : is_integral " << std::endl;
 		std::cout << "int : " << is_integral<const int>::value << std::endl;
+		//return (1);
 	}
 	{
+		std::cout << "TEST : vector.insert() (1)(2)(3) " << std::endl;
 		int arr[] = {42, 43, 44, 45, 46, 47};
 
-		ft_vector<int> int_vec;
+		vector<int> int_vec;
 		int_vec.reserve(50);
 		int_vec.insert(int_vec.begin(), 6);
 		int_vec.insert(int_vec.begin(), 5);
@@ -110,44 +128,46 @@ int main(int ac,  char	**av)
 		int_vec.insert(int_vec.begin() + 1, 10, 1337);
 		int_vec.insert(int_vec.begin() + 2,  arr, arr);
 
-		for (ft_vector<int>::iterator i = int_vec.begin(); i != int_vec.end(); i++)
+		for (vector<int>::iterator i = int_vec.begin(); i != int_vec.end(); i++)
 			std::cout << "v :" << *i  << std::endl;
 		std::cout << "size : " << int_vec.size() << " capacity : "
 			<< int_vec.capacity() << std::endl;
-
-		return (1);
+		//return (1);
 
 	}
 	{
-		ft_vector<int> int_vec;
+
+		std::cout << "TEST : vector.insert() (1)(2)(3) " << std::endl;
+		vector<int> int_vec;
 		int_vec.push_back(1);
 		int_vec.push_back(2);
 		int_vec.push_back(3);
 		int_vec.insert(int_vec.end(), 4);
 		int_vec.reserve(10);
-
-
-		ft_vector<int>::iterator it = int_vec.begin() + 2;
+		vector<int>::iterator it = int_vec.begin() + 2;
 		std::cout << "insert iterator old_value : " << *it << std::endl;
 		const int n   = 4; const int v = 1337;
 		int_vec.insert(int_vec.end(), n,  v);
 		std::cout << "Begin :" << *(int_vec.begin()) << " End :" << int_vec.back() << std::endl; 
 
-		for (ft_vector<int>::iterator i = int_vec.begin(); i != int_vec.end(); i++)
+		for (vector<int>::iterator i = int_vec.begin(); i != int_vec.end(); i++)
 			std::cout << "v :" << *i  << std::endl;
 		std::cout << "size : " << int_vec.size() << " capacity : "  << int_vec.capacity() << std::endl;
-		return (1);
+		//return (1);
 	}
 	{
-		ft_vector<Test> test_vec;
+		
+		std::cout << "TEST : vector.pop_back() " << std::endl;
+		vector<Test> test_vec;
 		test_vec.push_back('a');
 		test_vec.push_back('x');
 		test_vec.pop_back();
 		std::cout << test_vec[0] << std::endl;
-		return (1);
+		//return (1);
 	}
 	{
-		ft_vector<int> myvector;
+		std::cout << "TEST : vector.back() " << std::endl;
+		vector<int> myvector;
 		int sum (0);
 		myvector.push_back (100);
 
@@ -165,11 +185,11 @@ int main(int ac,  char	**av)
 		}
 		std::cout << "The elements of myvector add up to " << sum << '\n';
 		std::cout << "Capacity : " << myvector.capacity() << " size : " << myvector.size() << std::endl;
-		return (0);
+		//return (0);
 	}
 	/*
 	   {
-	   ft_vector<Test> test_vec;
+	   vector<Test> test_vec;
 	   test_vec.push_back('y');
 	   test_vec.push_back('z');
 	   std::cout << "test_vec.begin() :" << *(test_vec.begin())
@@ -177,7 +197,7 @@ int main(int ac,  char	**av)
 	   std::cout << "test_vec.size : " << test_vec.size() 
 	   << " test_vector capacity : " << test_vec.capacity()<< std::endl;
 
-	   ft_vector<int> int_vec;
+	   vector<int> int_vec;
 	   int i = 0;
 	   do {
 	   std::cout << "I = " << i << " _Capacity = " << int_vec.capacity() << std::endl;
@@ -192,27 +212,27 @@ int main(int ac,  char	**av)
 	{
 		//int arr[] =  {16, 13, 42, 1337};
 		{
-			ft_vector<int> int_vec;
+			vector<int> int_vec;
 			int_vec.assign(7, 1337);
-			for (ft_vector<int>::iterator std_it = int_vec.begin(); std_it != int_vec.end(); std_it++)
+			for (vector<int>::iterator std_it = int_vec.begin(); std_it != int_vec.end(); std_it++)
 				std::cout << "std::it value : " << *std_it << std::endl;
 		}	
 
 		char char_arr[] = {'a', 'b', 'c','d'};
-		ft_vector<char> first;
+		vector<char> first;
 		first.assign(char_arr , char_arr+3);
 		std::vector<char> char_first;
 		char_first.assign(char_arr+1, char_arr+4);
 		for (std::vector<char>::iterator std_it = char_first.begin(); std_it != char_first.end(); std_it++)
 			std::cout << "std::it value : " << *std_it << std::endl;
-		for (ft_vector<char>::iterator it = first.begin(); it != first.end(); it++)
+		for (vector<char>::iterator it = first.begin(); it != first.end(); it++)
 			std::cout << "it value : " << *it << std::endl;
 		std::cout << "first size : " << first.size() << std::endl;
 		std::cout << "first capacity : " << first.capacity() << std::endl;
-		return (1);
+		//return (1);
 	}
 	{
-		ft_vector<Test> t(10, 'c');
+		vector<Test> t(10, 'c');
 		t.front() = 'A'; std::cout << "t.front() " << t.front() <<  std::endl; 
 		t.at(t.size() - 1) = 'P';
 		std::cout << t.back() << std::endl;
@@ -226,14 +246,14 @@ int main(int ac,  char	**av)
 		//t.shrink_to_fit();
 		std::cout << "T capacity : :" <<  t.capacity() << std::endl;
 		std::cout << t.max_size() << std::endl;
-		for (ft_vector<Test>::const_iterator it  = t.begin(); it != t.end(); it++ )
+		for (vector<Test>::const_iterator it  = t.begin(); it != t.end(); it++ )
 			std::cout << *it << std::endl;
 		t.resize(0, 'x');
 		std::cout << std::endl << t.empty() << std::endl;
 
 		return (1);	
-		ft_vector<Test>::iterator it = t.begin();
-		ft_vector<Test>::iterator it1;
+		vector<Test>::iterator it = t.begin();
+		vector<Test>::iterator it1;
 
 		Test a('x');
 		Test a1('9');
@@ -247,7 +267,7 @@ int main(int ac,  char	**av)
 		std::cout << (std::addressof(it += 42) == std::addressof(it)) << std::endl;
 		return (1);
 		it1 = it + 1;
-		ft_vector<Test>::iterator tmp = (it += 1);	
+		vector<Test>::iterator tmp = (it += 1);	
 		std::cout <<"(it == it1) " << (it == it1) << std::endl;
 		return (1);
 		std::cout <<"(it == it1) " << (it == it1) << std::endl;
@@ -274,8 +294,8 @@ std::cout << (it1 - --it) << std::endl;
 		Test tl('*');
 		alloc.construct(v, tl);
 		return (1);
-		ft_vector<Test> v1(2, '*');
-		ft_vector<Test> v2(3, 'a');
+		vector<Test> v1(2, '*');
+		vector<Test> v2(3, 'a');
 		v1 = v2;
 
 		//std::vector<Test> v3(2, 'R');
