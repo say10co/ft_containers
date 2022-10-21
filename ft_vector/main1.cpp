@@ -30,7 +30,6 @@ class Test
 		}
 		Test &operator=(const Test &r)
 		{
-			(void) r;
 			this->key = r.key;
 			//std::cout << "Assignment operator called" << std::endl;
 			return (*this);
@@ -48,6 +47,20 @@ int main(int ac,  char	**av)
 	(void)ac;
 	(void)av;
 
+	{
+		vector<int> int_vec;
+		vector<Test> test_vec(1, 'a');
+		vector<Test>::reverse_iterator rit(test_vec.end());
+		std::cout << "rit->key() " << rit->get_key() << std::endl; 
+		int_vec.reserve(10);
+		for (int i = 0; i < 10; i++)
+			int_vec.push_back(i);
+		vector<int>::reverse_iterator rit_e(int_vec.begin());
+		vector<int>::reverse_iterator rit_b (int_vec.end());
+		for (; rit_e != rit_b; )
+			std::cout << "*rit : " << *--rit_e << std::endl; 
+		return (1);
+	}
 	{
 		vector<int> int_vec(1);
 		vector<int>::const_iterator const_it = int_vec.begin();

@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "iterators.tpp"
+#include "reverse_iterator.tpp"
 #include "enable_if.tpp"
 namespace ft
 {
@@ -17,13 +18,14 @@ namespace ft
 			typedef typename allocator_type::const_reference	const_reference; 
 			typedef typename allocator_type::pointer			pointer;
 			typedef typename allocator_type::const_pointer	const_pointer;  
-			typedef ft::iterator<value_type> iterator;  
-			typedef ft::iterator<const value_type> const_iterator;  
 			typedef ptrdiff_t diffrerence_type; 
 			typedef typename allocator_type::size_type size_type;	// Usually size_t
 					
-			//typedef (...) reverse_iterator 
-			//typedef (...) const_reverse_iterator
+			typedef ft::iterator<value_type> iterator;  
+			typedef ft::iterator<const value_type> const_iterator;  
+			typedef ft::reverse_iterator<iterator>  reverse_iterator; 
+			typedef ft::reverse_iterator<const iterator>  const_reverse_iterator; 
+
 	
 			//typedef iterator<vector<value_type> > iterator;  
 			//typedef iterator<vector<const value_type> > const_iterator;  
