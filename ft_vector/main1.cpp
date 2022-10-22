@@ -48,6 +48,12 @@ int main(int ac,  char	**av)
 	(void)av;
 
 	{
+		vector<int> int_vec(21, 42);
+		vector<int>::const_reverse_iterator begin(int_vec.end());
+		vector<int>::const_reverse_iterator end(int_vec.begin());
+		std::cout << (begin <= end) << std::endl;
+	}
+	{
 		vector<int> int_vec;
 		vector<Test> test_vec(1, 'a');
 		vector<Test>::reverse_iterator rit(test_vec.end());

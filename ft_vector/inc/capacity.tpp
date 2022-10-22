@@ -58,7 +58,7 @@ namespace ft
 	template <class type, class Alloc>
 	typename vector<type, Alloc>::size_type vector<type, Alloc>::max_size() const 
 	{
-		return (-1);
+		return (this->_allocator.max_size());
 	}
 	
 	template <class type, class Alloc>

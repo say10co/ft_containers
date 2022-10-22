@@ -26,8 +26,9 @@ namespace ft
 	vector<type, Alloc>::vector(InputIterator first,  InputIterator last,const allocator_type &alloc,
 			typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type *)
 	{
-			size_type size = last - first;
-	
+			size_type size = 0;
+			for (InputIterator tmp = first; tmp != last; tmp++, size++)
+				;
 			this->_allocator = alloc;
 			this->_m_data = (this->_allocator).allocate(size);
 			this->_size = size;
@@ -35,7 +36,7 @@ namespace ft
 	
 			for (size_type i = 0; i < size; i++)
 					(this->_allocator).construct(this->_m_data + i, *first++);
-			std::cout << "vector Range Constructor Called :D" << std::endl;
+			//std::cout << "vector Range Constructor Called :D" << std::endl;
 	}
 	
 	template <class type, class Alloc >
@@ -102,7 +103,33 @@ namespace ft
 	{
 			return (iterator(this->_m_data));
 	}
-	
+
+	template <class type, class Alloc >
+	typename vector<type, Alloc>::reverse_iterator vector<type, Alloc>::rbegin()
+	{
+		return (reverse_iterator(this->_m_data + this->_size));
+	}
+
+	template <class type, class Alloc>
+	typename vector<type, Alloc>::const_reverse_iterator vector<type, Alloc>::rbegin() const
+	{
+		return (reverse_iterator(this->_m_data + this->_size));
+	}
+
+	template <class type, class Alloc >
+	typename vector<type, Alloc>::reverse_iterator vector<type, Alloc>::rend()
+	{
+		return (reverse_iterator(this->_m_data));
+	}
+
+	template <class type, class Alloc>
+	typename vector<type, Alloc>::const_reverse_iterator vector<type, Alloc>::rend() const
+	{
+		return (reverse_iterator(this->_m_data));
+	}
+
+
+
 	template <class type, class Alloc >
 	typename vector<type, Alloc>::iterator vector<type, Alloc>::end()
 	{
@@ -121,5 +148,62 @@ namespace ft
 			if (this->_m_data == NULL)
 					return (iterator(NULL));
 			return (iterator(this->_m_data +this->_size));
+	}
+	template <class type, class Alloc >
+	bool operator== (const vector<type,Alloc>& lhs, const vector<type,Alloc>& rhs)
+	{
+		typedef typename vector<type, Alloc>::size_type size_type;
+
+		if (lhs.size() == rhs.size())
+		{
+			for (size_type i = 0; i < lhs.size(); i++)
+			{
+				if (lhs[i] != rhs[i])
+					return (false);
+			}
+			return (true);
+		}
+		return (false);
+
+	}
+
+	template <class type, class Alloc >
+	bool operator>(const vector<type,Alloc>& lhs, const vector<type,Alloc>& rhs)
+	{
+		return (rhs < lhs);
+	}
+	template <class type, class Alloc >
+	bool operator!= (const vector<type,Alloc>& lhs, const vector<type,Alloc>& rhs)
+	{
+		return (!(lhs == rhs));
+	}
+	template <class type, class Alloc >
+	bool operator>= (const vector<type,Alloc>& lhs, const vector<type,Alloc>& rhs)
+	{
+		return (!(lhs < rhs));
+	}
+	template <class type, class Alloc >
+	bool operator<= (const vector<type,Alloc>& lhs, const vector<type,Alloc>& rhs)
+	{
+		return (!(rhs < lhs));
+	}
+
+	template <class type, class Alloc >
+	bool operator< (const vector<type,Alloc>& lhs, const vector<type,Alloc>& rhs)
+	{
+		typedef typename vector<type, Alloc>::size_type size_type;
+
+		//bool ret = (lhs.size() > rhs.size());	
+		size_type min_size = std::min(lhs.size(), rhs.size());
+		for (size_type i = 0; i < min_size; i++)
+		{		
+			if (lhs[i] > rhs[i])
+				return (false);
+			else if ( rhs[i] > lhs[i])
+				return (true);
+		}
+		if (lhs.size() < rhs.size())
+			return (true);
+		return (false);
 	}
 }

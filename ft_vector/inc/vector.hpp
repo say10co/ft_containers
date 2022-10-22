@@ -2,9 +2,10 @@
 # define FT_VECTOR_HPP 
 
 #include <memory>
+
+#include "enable_if.tpp"
 #include "iterators.tpp"
 #include "reverse_iterator.tpp"
-#include "enable_if.tpp"
 namespace ft
 {
 	template <class type, class Alloc = std::allocator<type> >
@@ -24,7 +25,8 @@ namespace ft
 			typedef ft::iterator<value_type> iterator;  
 			typedef ft::iterator<const value_type> const_iterator;  
 			typedef ft::reverse_iterator<iterator>  reverse_iterator; 
-			typedef ft::reverse_iterator<const iterator>  const_reverse_iterator; 
+			typedef ft::reverse_iterator<const_iterator>  const_reverse_iterator; 
+
 
 	
 			//typedef iterator<vector<value_type> > iterator;  
@@ -58,7 +60,12 @@ namespace ft
 			iterator 		end();
 			const_iterator	begin() const;
 			const_iterator 	end() const;	
-	
+			reverse_iterator rbegin();
+			const_reverse_iterator rbegin() const;
+			reverse_iterator rend();
+			const_reverse_iterator rend() const;
+
+				
 			/* Allocator : */	
 			allocator_type get_allocator() const;	
 	

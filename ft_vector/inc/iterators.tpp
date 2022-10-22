@@ -37,8 +37,9 @@ namespace ft
 		public:
 			
 			iterator();
+
 			template<typename T>
-			iterator(const T &it);
+			iterator(const T &it, typename ft::enable_if<!is_integral<T>::value, T>::type * = nullptr);
 			iterator &operator=(const iterator &it);
 			~iterator();
 			iterator(pointer p);
@@ -79,7 +80,7 @@ namespace ft
 	iterator<type>::iterator()
 		:_ptr(NULL)
 	{
-		std::cout << "iterator Constuctor called " << std::endl;
+		//std::cout << "iterator Constuctor called " << std::endl;
 	}
 	
 	template<typename type>
@@ -137,6 +138,12 @@ namespace ft
 		this->_ptr = advance_by(this->_ptr, n *sizeof(value_type));
 		return(*this);
 	}
+
+	template<typename t_iterator>  
+	t_iterator operator+(int n, const t_iterator &it)
+	{
+		return (it + n);
+	}
 	
 	template<typename type>
 	iterator<type> &iterator<type>::operator-=(int n) 
@@ -153,13 +160,12 @@ namespace ft
 	}
 	template<typename type>
 	template<typename T>
-	iterator<type>::iterator(const T &it)
+	iterator<type>::iterator(const T &it, typename ft::enable_if<!is_integral<T>::value, T>::type *)
 	{
 			this->_ptr = it.get_ptr();
 			// *this->_ptr = it;
 			//std::cout << "iterator Copy constructor called" << std::endl;
 	}
-	
 	template<typename type>
 	iterator<type>::~iterator()
 	{

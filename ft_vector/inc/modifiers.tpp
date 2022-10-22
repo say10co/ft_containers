@@ -13,8 +13,9 @@ namespace ft
 	void vector<type, Alloc>::assign (InputIterator first, InputIterator last,
 			typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type *)
 	{
-		size_type size = last - first;  
-	
+		size_type size = 0;
+		for (InputIterator tmp = first; tmp != last; tmp++, size++)
+				;
 		ft_distroy(this->_m_data, this->_allocator, this->_size);
 		if (size > this->_capacity)
 		{
@@ -75,7 +76,7 @@ namespace ft
 			typename  enable_if<!is_integral<InputIterator>::value, InputIterator>::type*)
 	{
 	
-		iterator tmp_first = first;
+		InputIterator  tmp_first = first;
 		size_type nb_elements = 0;
 		size_type index = 0;
 		pointer new_ptr;
@@ -145,7 +146,7 @@ namespace ft
 		for (iterator it = last; it != ite; it++)
 		{
 			(this->_allocator).construct(this->_m_data + index++, *it);
-			std::cout << (it == (this->_m_data + index1) ) << std::endl;
+			//std::cout << (it == (this->_m_data + index1) ) << std::endl;
 			(this->_allocator).destroy(this->_m_data + index1++);
 		}
 		this->_size -= size;
