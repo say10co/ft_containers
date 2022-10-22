@@ -1,3 +1,4 @@
+
 namespace ft
 {
 	template <class type, class Alloc > 
@@ -135,9 +136,9 @@ namespace ft
 	{
 			iterator tmp_it = this->_m_data;
 	
-			if (this->_m_data != NULL)
+			//if (this->_m_data != NULL)
 					return (iterator(this->_m_data + this->_size));
-			return (tmp_it);
+			//return (tmp_it);
 	}
 	
 	template <class type, class Alloc >

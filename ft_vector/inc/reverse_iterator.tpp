@@ -18,11 +18,18 @@ namespace ft
 			iterator_type _base_it;
 	
 		public:
-			reverse_iterator(); template<typename Iter>
+
+			template <typename Iterator1>
+			bool operator==(const reverse_iterator<Iterator1>& rhs);
+			reverse_iterator(); 
+
+			template<typename Iter>
 			reverse_iterator(const reverse_iterator<Iter> &rev_it);
 
+			/*
 			template<typename T>
-			reverse_iterator(const reverse_iterator &rev_it, typename ft::enable_if<!is_integral<T>::value, T>::type * = nullptr);
+			reverse_iterator(const T  &rev_it, typename ft::enable_if<!is_integral<T>::value, T>::type * = nullptr);
+			*/
 
 
 			reverse_iterator &operator=(const reverse_iterator &it);
@@ -66,16 +73,16 @@ namespace ft
 	{
 		//std::cout << "revers_iterator iterator constructor " << std::endl;
 	}
-	/*
+
 	template<typename type>
 	template<typename Iter>
 	reverse_iterator<type>::reverse_iterator(const reverse_iterator<Iter>  &it)
 	{
 			this->_base_it = it.base();
-			// *this->_base_it = it;
 			//std::cout << "reverse_iterator Copy constructor called" << std::endl;
+			// *this->_base_it = it;
 	}
-	*/
+
 	template<typename type>
 	reverse_iterator<type>::~reverse_iterator()
 	{
@@ -94,10 +101,13 @@ namespace ft
 		return(_base_it[-n -1]) ;
 	}
 
-	template <class Iterator>
-	bool operator==(const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs)
+	template <typename type>
+	template <class Iterator1>
+	//bool reverse_iterator<type>::operator==(const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator1>& rhs)
+	bool reverse_iterator<type>::operator==(const reverse_iterator<Iterator1>& rhs)
 	{
-		return (lhs.base() == rhs.base());
+		return (this->base() == rhs.base());
+		//return (lhs.base() == rhs.base());
 	}
 
 	template<typename Iterator>
@@ -185,6 +195,9 @@ namespace ft
 	template<typename type>
 	typename reverse_iterator<type>::reference reverse_iterator<type>::operator*()
 	{
+		//std::cout << "this->base_it -1 : " ;
+		//std::cout << "ptr " << this->_base_it.get_ptr()  << std::endl;
+		//std::cout << *(this->_base_it -1 ) << std::endl;
 		return (*(this->_base_it - 1));
 	}
 	
@@ -212,6 +225,7 @@ namespace ft
 	template<typename T>
 	reverse_iterator<type>::reverse_iterator(const T &rev_it, typename ft::enable_if<!is_integral<T>::value, T>::type *)
 	{
+		std::cout << "saver template" << std::endl;
 		(void) rev_it;
 		//this->_base_it = rev_it.base();
 	}
