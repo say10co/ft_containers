@@ -50,7 +50,7 @@ namespace ft
 			iterator &operator--(void);
 	
 			template<class t_iterator>
-			friend t_iterator operator+(int n, const t_iterator &it);
+			friend iterator<t_iterator> operator+(int n, const iterator<t_iterator> &it);
 	
 			int operator-(const iterator &it) const;  // return pointer as an int for the moment 
 			iterator operator-(int n) const;
@@ -140,7 +140,7 @@ namespace ft
 	}
 
 	template<typename t_iterator>  
-	t_iterator operator+(int n, const t_iterator &it)
+	iterator<t_iterator> operator+(int n, const iterator<t_iterator> &it)
 	{
 		return (it + n);
 	}
