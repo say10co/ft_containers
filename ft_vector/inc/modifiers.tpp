@@ -58,7 +58,7 @@ namespace ft
 	template<class type, class Alloc>
 	typename vector<type, Alloc>::iterator vector<type, Alloc>::insert (iterator position, const value_type& val)
 	{
-		size_type distance = position - this->_m_data;
+		size_type distance = position.get_ptr() - this->_m_data;
 		this->insert(position, 1, val);
 		return (iterator(this->_m_data + distance));
 	}
@@ -107,7 +107,7 @@ namespace ft
 		{
 			// Coping overwridden elements 
 			vector copy(*this);
-			index = position - this->_m_data; 
+			index = position.get_ptr() - this->_m_data; 
 			it = copy.begin() + index;
 			ite = copy.end();
 	
@@ -138,15 +138,14 @@ namespace ft
 	{
 		iterator ite = this->end();
 		size_type size = last - first;
-		size_type index = first - this->_m_data;
-		size_type index1 = last - this->_m_data;
+		size_type index = first.get_ptr() - this->_m_data;
+		size_type index1 = last.get_ptr() - this->_m_data;
 		iterator ret = this->_m_data + index;;
 	
 		ft_distroy(this->_m_data + index, this->_allocator, size);
 		for (iterator it = last; it != ite; it++)
 		{
 			(this->_allocator).construct(this->_m_data + index++, *it);
-			//std::cout << (it == (this->_m_data + index1) ) << std::endl;
 			(this->_allocator).destroy(this->_m_data + index1++);
 		}
 		this->_size -= size;
@@ -160,6 +159,7 @@ namespace ft
 		std::swap(this->_size, x._size);
 		std::swap(this->_capacity, x._capacity);
 		std::swap(this->_allocator, x._allocator);
+
 		//Exception safety 
 		//https://cplusplus.com/reference/vector/vector/swap/
 	}

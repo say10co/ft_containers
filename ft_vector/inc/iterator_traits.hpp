@@ -1,5 +1,5 @@
-#ifndef ITERATOR_TRAITES_HPP  
-#define ITERATOR_TRAITES_HPP 
+#ifndef iterator_traits_HPP  
+#define iterator_traits_HPP 
 
 namespace ft
 {
@@ -10,7 +10,7 @@ namespace ft
 	struct random_access_iterator_tag : public bidirectional_iterator_tag { };
 	
 	template <typename Iterator>
-	struct iterator_traites
+	struct iterator_traits
 	{
 		typedef typename Iterator::difference_type difference_type;
 		typedef typename Iterator::value_type value_type;
@@ -20,7 +20,7 @@ namespace ft
 	};
 	
 	template <typename T>
-	struct iterator_traites<T*>
+	struct iterator_traits<T*>
 	{
 		typedef ptrdiff_t difference_type;
 		typedef T value_type;
@@ -30,7 +30,7 @@ namespace ft
 	};
 	
 	template <typename T>
-	struct iterator_traites<const T*>
+	struct iterator_traits<const T*>
 	{
 		typedef ptrdiff_t difference_type;
 		typedef T value_type;
@@ -40,4 +40,4 @@ namespace ft
 	};
 };
 
-#endif //2ITERATOR_TRAITES_HPP
+#endif //2iterator_traits_HPP

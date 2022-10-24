@@ -6,7 +6,7 @@
 /*   By: adriouic <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 17:38:31 by adriouic          #+#    #+#             */
-/*   Updated: 2022/10/22 22:51:18 by adriouic         ###   ########.fr       */
+/*   Updated: 2022/10/24 23:38:36 by adriouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,27 @@
 #include "../inc/vector.hpp"
 #define TESTED_TYPE int
 #define TESTTED_NAMESPACE ft
+void foo (const int *n)
+{
+	(void)n;
+}
+int main()
+{
 
+	 int x = 100;
+	const int * n = &x;
+	int * nn = &x;
+	foo(n);
+	foo(nn);
+	ft::vector<int> int_vec;
+	ft::vector<int>::const_iterator cit = int_vec.begin();
+	ft::vector<int>::iterator it = int_vec.begin();
+	std::cout << (it != cit) << std::endl;
+	(void) cit;
+	//std::sort(int_vec.begin(), int_vec.end());
+
+}
+/*
 int		main(void)
 {
 	const int size = 5;
@@ -36,7 +56,6 @@ int		main(void)
 		//it[i] = (size - i) * 5;
 		std::cout << "v : " << it[i]  << std::endl;
 
-	/*
 
 	it = it + 5;
 	it = 1 + it;
@@ -55,5 +74,3 @@ int		main(void)
 	std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
 */
 	//printSize(vct, true);
-	return (0);
-}

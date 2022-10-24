@@ -22,8 +22,9 @@ namespace ft
 			typedef ptrdiff_t diffrerence_type; 
 			typedef typename allocator_type::size_type size_type;	// Usually size_t
 					
-			typedef ft::iterator<value_type> iterator;  
-			typedef ft::iterator<const value_type> const_iterator;  
+			typedef ft::iterator<value_type, false> iterator;  
+			typedef ft::iterator<value_type, true> const_iterator;  
+
 			typedef ft::reverse_iterator<iterator>  reverse_iterator; 
 			typedef ft::reverse_iterator<const_iterator>  const_reverse_iterator; 
 
