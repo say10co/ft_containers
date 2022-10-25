@@ -38,6 +38,22 @@ namespace ft
 		typedef const T& reference;
 		typedef std::random_access_iterator_tag iterator_category;
 	};
+
+	template <bool is_const, typename const_type, typename non_const_type>
+	struct deduce;
+
+	template <typename const_type, typename non_const_type>
+	struct deduce<true, const_type, non_const_type>
+	{
+		typedef const_type type;
+	};
+
+	template <typename const_type, typename non_const_type>
+	struct deduce<false, const_type, non_const_type>
+	{
+		typedef non_const_type type;
+	};
+
 };
 
 #endif //2iterator_traits_HPP
