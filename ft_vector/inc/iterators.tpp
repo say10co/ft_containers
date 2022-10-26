@@ -1,21 +1,27 @@
+
 #include "iterator_traits.hpp" 
+struct random_access_iterator_tag
+{
+};
 namespace ft
 {
 	template <class type, bool is_const>
 	class iterator
 	{
+		private:
+			type * _ptr;
+
+
 		public:
 			typedef typename deduce<is_const, const type*, type*>::type pointer;
 			typedef typename deduce<is_const, const type&, type&>::type reference;
 			typedef ptrdiff_t											difference_type;
-			typedef size_t 												size_type;
-			typedef random_access_iterator_tag 							iterator_category;
+			typedef ft::random_access_iterator_tag 							iterator_category;
 			typedef type 												value_type;
-
-		private:
-			type * _ptr;
+			typedef size_t 												size_type;
 
 		public:
+
 			template<typename T, bool is_const_type>
 			iterator(const iterator<T, is_const_type>  &it);
 

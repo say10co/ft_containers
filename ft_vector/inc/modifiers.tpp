@@ -155,10 +155,10 @@ namespace ft
 	template <class type, class Alloc>
 	void vector<type, Alloc>::swap(vector &x)
 	{
+		std::swap(this->_allocator, x._allocator);
 		std::swap(this->_m_data, x._m_data);
 		std::swap(this->_size, x._size);
 		std::swap(this->_capacity, x._capacity);
-		std::swap(this->_allocator, x._allocator);
 
 		//Exception safety 
 		//https://cplusplus.com/reference/vector/vector/swap/

@@ -110,5 +110,5 @@ namespace ft
 	#include "constructors.tpp"
 	#include "capacity.tpp"
 	#include "accessors.tpp"	
-//	#include "iterators.tpp"
+
 #endif /* FT_VECTOR_HPP */

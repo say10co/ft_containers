@@ -11,50 +11,28 @@ namespace ft
 	{
 		return (this->_capacity);
 	}
-	
+
 	template <class type, class Alloc >
 	void vector<type, Alloc>::resize (size_type n, value_type val)
 	{
-			
-		if (this->_capacity < n)
+		if (n < this->_size)	
+			ft_distroy(this->_m_data + n, this->_allocator, this->_size - n);
+		else if (n > this->_size)
 		{
-			size_type old_size = this->_size;
-			size_type old_cap = this->_capacity;
-			pointer old_ptr = this->_m_data;
-			iterator old_it(this->_m_data);
-			this->_m_data = (this->_allocator).allocate(n);
-	
-			for (size_type i = 0; i < n; i++)
+			if (n > this->_capacity)
 			{
-				if (i < old_size)
-					//(this->_allocator).construct(this->_m_data + (i * sizeof(value_type)), *old_it++);
-					(this->_allocator).construct(this->_m_data + i, *old_it++);
-				else
-					//(this->_allocator).construct(this->_m_data + (i * sizeof(value_type)), val);
-					(this->_allocator).construct(this->_m_data + i, val);
+				pointer old_ptr = this->_m_data;
+				this->_m_data = (this->_allocator).allocate(n);
+				std::memmove(this->_m_data, old_ptr, this->_size * sizeof(value_type));
+				ft_distroy(old_ptr, this->_allocator, this->_size);
+				this->_capacity = n;
 			}
-			ft_distroy(old_ptr, this->_allocator, old_size);
-			(this->_allocator).deallocate(old_ptr, old_cap);
-		}
-		else if (this->_size < n)
-		{
-			pointer start = this->_m_data + this->_size;
-			for (size_type i = n; i < n; i++)
-			{
-				(this->_allocator).construct(start, val);
-				start += sizeof(value_type);
-			}
-		}
-		else if (this->_size > n) 
-		{
-			//pointer start = this->_m_data + (n * sizeof(value_type));
-			pointer start = this->_m_data + n;
-			ft_distroy(start, this->_allocator, (this->_size - n));
+			for (size_type i = this->_size ; i < n; i++)
+				(this->_allocator).construct(this->_m_data + i, val);
 		}
 		this->_size = n;
-		this->_capacity = n;
 	}
-	
+
 	template <class type, class Alloc>
 	typename vector<type, Alloc>::size_type vector<type, Alloc>::max_size() const 
 	{
