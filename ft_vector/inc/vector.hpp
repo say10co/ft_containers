@@ -2,6 +2,7 @@
 # define FT_VECTOR_HPP 
 
 #include <memory>
+#include <algorithm>
 
 #include "enable_if.tpp"
 #include "iterators.tpp"

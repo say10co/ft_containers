@@ -1,4 +1,3 @@
-
 namespace ft
 {
 	template <class type, class Alloc>
@@ -13,10 +12,17 @@ namespace ft
 	void vector<type, Alloc>::assign (InputIterator first, InputIterator last,
 			typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type *)
 	{
+		ft_distroy(this->_m_data, this->_allocator, this->_size);
+		if (std::is_same<typename ft::iterator_traits<InputIterator>::iterator_category, 
+						typename std::input_iterator_tag>::value) // std::iterator_tags for the moment
+		{
+			for (;first  != last; first++)
+				this->push_back(*first);
+			return ;
+		}
 		size_type size = 0;
 		for (InputIterator tmp = first; tmp != last; tmp++, size++)
 				;
-		ft_distroy(this->_m_data, this->_allocator, this->_size);
 		if (size > this->_capacity)
 		{
 			(this->_allocator).deallocate(this->_m_data, this->_capacity);
