@@ -23,8 +23,11 @@ namespace ft
 			{
 				pointer old_ptr = this->_m_data;
 				this->_m_data = (this->_allocator).allocate(n);
-				std::memmove(this->_m_data, old_ptr, this->_size * sizeof(value_type));
+				for (size_type i = 0; i < this->_size; i++)
+					this->_allocator.construct(this->_m_data + i, *(old_ptr + i));
+				//std::memmove(this->_m_data, old_ptr, this->_size * sizeof(value_type));
 				ft_distroy(old_ptr, this->_allocator, this->_size);
+				this->_allocator.deallocate(old_ptr, this->_size);
 				this->_capacity = n;
 			}
 			for (size_type i = this->_size ; i < n; i++)

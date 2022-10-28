@@ -81,18 +81,19 @@ namespace ft
 	void vector<type, Alloc>::insert (iterator position, InputIterator first, InputIterator last,
 			typename  enable_if<!is_integral<InputIterator>::value, InputIterator>::type*)
 	{
-	
-		InputIterator  tmp_first = first;
-		size_type nb_elements = 0;
-		size_type index = 0;
+		//InputIterator  tmp_first = first;
 		pointer new_ptr;
+		vector new_elements(first, last);	
+		size_type nb_elements = new_elements.size();
+		size_type total_size  = this->_size + nb_elements;
+		size_type index = 0;
 	
 		iterator it = this->begin();
 		iterator ite = this->end();
-	
+		/*
 		while (tmp_first++ != last)
 			nb_elements++;
-		size_type total_size  = this->_size + nb_elements;
+			*/
 		
 		if (this->_size + nb_elements > this->_capacity) // reallocation needed 
 		{
@@ -104,8 +105,8 @@ namespace ft
 				(this->_allocator).construct(new_ptr + index, *first);
 			for (;it != ite; it++, index++)
 				(this->_allocator).construct(new_ptr + index, *it);
-	
 			ft_distroy(this->_m_data, this->_allocator, this->_size);
+			this->_allocator.deallocate(this->_m_data, this->_size);
 			this->_m_data = new_ptr;
 			this->_capacity = total_size;
 		}
@@ -116,17 +117,16 @@ namespace ft
 			index = position.get_ptr() - this->_m_data; 
 			it = copy.begin() + index;
 			ite = copy.end();
-	
+
 			for(;first != last; first++, index++)
 			{
 				(this->_allocator).destroy(this->_m_data + index);
 				(this->_allocator).construct(this->_m_data + index, *first);
 			}
-	
 			// restorting element after insert 
 			for (;it != ite; it++, index++)	
 			{
-				(this->_allocator).destroy(this->_m_data + index);		// Elements are constructed usint type() by default 
+				(this->_allocator).destroy(this->_m_data + index);// Elements are constructed usint type() by default 
 				(this->_allocator).construct(this->_m_data + index, *it);
 			}
 		}
@@ -136,28 +136,56 @@ namespace ft
 	template <class type,class Alloc>
 	typename vector<type, Alloc>::iterator vector<type, Alloc>::erase (iterator position)
 	{
-		return (this->erase(position, position+1));
+		return (this->erase(position, position + 1));
 	}
-	
+
 	template <class type,class Alloc>
 	typename vector<type, Alloc>::iterator vector<type, Alloc>::erase (iterator first, iterator last)
 	{
+		iterator it = first;
+		iterator dest = first;
+		size_type size= 0;
+
+		if (first == last)
+			return (first);
+		for (;it < last; it++)
+		{
+			this->_allocator.destroy(it.get_ptr());
+			size++;
+		}
+		it = last;
+		for (;it < this->end(); it++, dest++)	
+		{
+			this->_allocator.construct(dest.get_ptr(), *it);
+			this->_allocator.destroy(it.get_ptr());
+		}
+		this->_size -= size;
+		return (first);
+	}
+	/*	
+	template <class type,class Alloc>
+	typename vector<type, Alloc>::iterator vector<type, Alloc>::erase (iterator first, iterator last)
+	{
+		
 		iterator ite = this->end();
 		size_type size = last - first;
 		size_type index = first.get_ptr() - this->_m_data;
 		size_type index1 = last.get_ptr() - this->_m_data;
+		(void) index1;
 		iterator ret = this->_m_data + index;;
 	
-		ft_distroy(this->_m_data + index, this->_allocator, size);
-		for (iterator it = last; it != ite; it++)
+		//ft_distroy(this->_m_data + index, this->_allocator, size);
+		for (iterator it = last; it < ite; it++)
 		{
+			(this->_allocator).destroy(this->_m_data + index);
 			(this->_allocator).construct(this->_m_data + index++, *it);
-			(this->_allocator).destroy(this->_m_data + index1++);
+			//(this->_allocator).destroy(this->_m_data + index1++);
+			(this->_allocator).destroy(it.get_ptr());
 		}
 		this->_size -= size;
 		return (ret);
 	}
-	
+	*/	
 	template <class type, class Alloc>
 	void vector<type, Alloc>::swap(vector &x)
 	{
@@ -174,5 +202,11 @@ namespace ft
 	{
 		ft_distroy(this->_m_data, this->_allocator, this->_size);
 		this->_size =  0;
+	}
+
+	template <class type, class Alloc>
+	void swap (vector<type, Alloc>& x, vector<type, Alloc>& y)
+	{	
+		x.swap(y);
 	}
 }

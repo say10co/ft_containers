@@ -51,6 +51,8 @@ namespace ft
 	vector<type, Alloc>::vector(const vector<type, Alloc>& x)
 			:_size(0), _capacity(0)
 	{
+			
+			this->_m_data = this->_allocator.allocate(0);
 			*this = x;
 			//std::cout << "Copy Constructor called" << std::endl;
 	}

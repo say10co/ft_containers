@@ -16,7 +16,7 @@ namespace ft
 			typedef typename deduce<is_const, const type*, type*>::type pointer;
 			typedef typename deduce<is_const, const type&, type&>::type reference;
 			typedef ptrdiff_t											difference_type;
-			typedef ft::random_access_iterator_tag 							iterator_category;
+			typedef std::random_access_iterator_tag 							iterator_category;
 			typedef type 												value_type;
 			typedef size_t 												size_type;
 
