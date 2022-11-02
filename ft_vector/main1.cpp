@@ -48,6 +48,13 @@ int main(int ac,  char	**av)
 	(void)av;
 
 	{
+		vector<int> x(10, 42);
+		vector<int> y(200, 1337);
+		swap(x, y);
+		std::cout << "x.size() : " << x.size() << "  " << "y.size() : " << y.size() << std::endl;
+
+	}
+	{
 		vector<int> int_vec(21, 42);
 		vector<int>::const_reverse_iterator begin(int_vec.end());
 		vector<int>::const_reverse_iterator end(int_vec.begin());
@@ -77,7 +84,7 @@ int main(int ac,  char	**av)
 	}
 	{
 		std::cout << "TEST : iterator_traits " << std::endl;
-		typedef	iterator_traites<const int *> test_trait;	
+		typedef	iterator_traits<const int *> test_trait;	
 		std::cout << (typeid(test_trait::pointer) == typeid(const int* )) << std::endl;
 		//return (1);
 	}

@@ -4,10 +4,7 @@ namespace ft
 	template <class type, class Alloc > 
 	vector<type, Alloc>::vector(const allocator_type &alloc)
 			:_m_data(NULL), _size(0), _capacity(0), _allocator(alloc)
-	{
-			this->_m_data = this->_allocator.allocate(0);
-			//std::cout << "Empty container constructor :D" << std::endl;
-	}
+	{}
 	
 	template <class type, class Alloc > 
 	vector<type, Alloc>::vector(size_type n,  const value_type &val, const allocator_type &alloc)
@@ -15,7 +12,9 @@ namespace ft
 	{
 			value_type *tmp_ptr;
 	
-			this->_m_data = (this->_allocator).allocate(n); // throws excpetion
+			//if (n)
+			//	this->_m_data = (this->_allocator).allocate(n); // throws excpetion
+			this->_m_data = ft_allocate(this->_allocator, n);
 			tmp_ptr = _m_data;
 			for (size_type i = 0; i < n; i++)
 					(this->_allocator).construct(tmp_ptr++, val);
@@ -29,9 +28,8 @@ namespace ft
 			:_size(0), _capacity(0), _allocator(alloc)
 	{
 			if (std::is_same<typename ft::iterator_traits<InputIterator>::iterator_category, 
-						typename std::input_iterator_tag>::value) // std::iterator_tags for the moment
+						typename std::input_iterator_tag>::value) 
 			{
-				this->_m_data = this->_allocator.allocate(0);
 				for (;first != last; first++)
 				this->push_back(*first);
 				return ;
@@ -39,7 +37,7 @@ namespace ft
 			size_type size = 0;
 			for (InputIterator tmp = first; tmp != last; tmp++, size++)
 			this->_allocator = alloc;
-			this->_m_data = (this->_allocator).allocate(size);
+			this->_m_data = ft_allocate(this->_allocator, size);
 			for (size_type i = 0; i < size; i++)
 					(this->_allocator).construct(this->_m_data + i, *first++);
 			this->_size = size;
@@ -51,10 +49,7 @@ namespace ft
 	vector<type, Alloc>::vector(const vector<type, Alloc>& x)
 			:_size(0), _capacity(0)
 	{
-			
-			this->_m_data = this->_allocator.allocate(0);
 			*this = x;
-			//std::cout << "Copy Constructor called" << std::endl;
 	}
 	
 	template <class type, class Alloc >
@@ -63,12 +58,10 @@ namespace ft
 
 			const_iterator cit = obj.begin();
 			ft_distroy(this->_m_data, this->_allocator, this->_size);
-			this->_allocator.deallocate(this->_m_data, this->_capacity);
 
+			ft_deallocate(this->_m_data, this->_allocator, this->_capacity);
 			this->_allocator  = obj._allocator; // new allocator 	
-			
-			this->_m_data = this->_allocator.allocate(obj._capacity); 
-
+			this->_m_data = ft_allocate(this->_allocator, obj._capacity);
 			this->_size = obj._size;
 			this->_capacity = obj._capacity;
 			for (size_type i = 0; i < obj._size; i++)
@@ -80,7 +73,7 @@ namespace ft
 	vector<type, Alloc>::~vector()
 	{
 			ft_distroy(this->_m_data, this->_allocator, this->_size);
-			(this->_allocator).deallocate(this->_m_data, this->_capacity);	
+			ft_deallocate(this->_m_data, this->_allocator, this->_capacity);
 	}
 	
 	template <class type, class Alloc >
@@ -155,6 +148,7 @@ namespace ft
 					return (iterator(NULL));
 			return (iterator(this->_m_data +this->_size));
 	}
+
 	template <class type, class Alloc >
 	bool operator== (const vector<type,Alloc>& lhs, const vector<type,Alloc>& rhs)
 	{
@@ -199,7 +193,6 @@ namespace ft
 	{
 		typedef typename vector<type, Alloc>::size_type size_type;
 
-		//bool ret = (lhs.size() > rhs.size());	
 		size_type min_size = std::min(lhs.size(), rhs.size());
 		for (size_type i = 0; i < min_size; i++)
 		{		
@@ -212,4 +205,20 @@ namespace ft
 			return (true);
 		return (false);
 	}
+
+	template<class type, class Alloc>
+	void vector<type, Alloc>::ft_deallocate(value_type *p, allocator_type &alloc, size_type size)
+	{
+		if (size)
+			alloc.deallocate(p, size);
+	}
+
+	template<class type, class Alloc>
+	typename vector<type, Alloc>::value_type *vector<type, Alloc>::ft_allocate(allocator_type &alloc, size_type size)
+	{
+		if (size)
+			return (alloc.allocate(size));
+		return (NULL);
+	}
+
 }

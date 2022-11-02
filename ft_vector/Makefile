@@ -27,6 +27,6 @@ fclean: clean
 
 re: fclean all
 
-test : test/tets.cpp
-	c++  -Wall -Werror -Wextra -fsanitize=address test.cpp -std=c++98
+t: test/tets.cpp
+	c++  -Wall -Werror -Wextra -fsanitize=address $< -std=c++98
 

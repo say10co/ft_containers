@@ -27,7 +27,8 @@ namespace ft
 					this->_allocator.construct(this->_m_data + i, *(old_ptr + i));
 				//std::memmove(this->_m_data, old_ptr, this->_size * sizeof(value_type));
 				ft_distroy(old_ptr, this->_allocator, this->_size);
-				this->_allocator.deallocate(old_ptr, this->_size);
+				if (this->_capacity)
+					this->_allocator.deallocate(old_ptr, this->_size);
 				this->_capacity = n;
 			}
 			for (size_type i = this->_size ; i < n; i++)
@@ -61,27 +62,11 @@ namespace ft
 			for (size_type i = 0; i < old_size; i++)
 				(this->_allocator).construct(new_ptr + i, *old_it++);
 			ft_distroy(this->_m_data, this->_allocator, old_size);
-			(this->_allocator).deallocate(this->_m_data, this->_capacity);
+			if (this->_capacity)
+				(this->_allocator).deallocate(this->_m_data, this->_capacity);
 			this->_capacity = n;
 			this->_m_data = new_ptr;
 		}
 	}
 };
-/*
-template <class type, class Alloc>
-void vector<type, Alloc>::shrink_to_fit()
-{
-	if (this->_capacity != this->_size)
-	{
-		iterator old_it = this->begin();
-		size_type size = this->_size;
-		pointer new_ptr = (this->_allocator).allocate(size);	
-		for (size_type i = 0; i < size; i++)
-			(this->_allocator).construct(advance_by(new_ptr, i * sizeof(value_type)), *old_it++);
-		ft_distroy(this->_m_data, this->_allocator, size);
-		(this->_allocator).deallocate(this->_m_data, this->_capacity);
-		this->_capacity = size;
-		this->_m_data = new_ptr;
-	}
-}
-*/
+

@@ -15,6 +15,9 @@ namespace ft
 		public:
 			typedef typename deduce<is_const, const type*, type*>::type pointer;
 			typedef typename deduce<is_const, const type&, type&>::type reference;
+			//typedef typename type*  pointer;
+			//typedef typename type&  reference;
+
 			typedef ptrdiff_t											difference_type;
 			typedef std::random_access_iterator_tag 							iterator_category;
 			typedef type 												value_type;
@@ -44,7 +47,8 @@ namespace ft
 			reference operator*();
 			pointer operator->();
 			reference operator[](int n) const;
-	
+
+
 			template<typename T, bool is_const_type> bool operator==(const iterator<T, is_const_type> &it) const;
 			template<typename T, bool is_const_type> bool operator!=(const iterator<T, is_const_type> &it) const;
 			template<typename T, bool is_const_type> bool operator<=(const iterator<T, is_const_type> &it) const;

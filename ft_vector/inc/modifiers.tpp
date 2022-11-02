@@ -1,3 +1,5 @@
+#include <iostream>	
+
 namespace ft
 {
 	template <class type, class Alloc>
@@ -25,8 +27,10 @@ namespace ft
 				;
 		if (size > this->_capacity)
 		{
-			(this->_allocator).deallocate(this->_m_data, this->_capacity);
-			this->_m_data = (this->_allocator).allocate(size);
+			if (this->_capacity)
+				(this->_allocator).deallocate(this->_m_data, this->_capacity);
+			if (size)
+				this->_m_data = (this->_allocator).allocate(size);
 			this->_capacity = size;
 		}
 		this->_size = size;
@@ -46,7 +50,8 @@ namespace ft
 				for (iterator it = this->begin(); it != this->end(); it++)
 					(this->_allocator).construct(new_ptr + i++, *it);
 				ft_distroy(this->_m_data, this->_allocator, this->_size);
-				(this->_allocator).deallocate(this->_m_data, this->_capacity); // Old capacity  
+				if (this->_capacity)
+					(this->_allocator).deallocate(this->_m_data, this->_capacity); // Old capacity  
 				this->_m_data = new_ptr;
 				this->_capacity = capacity;
 			}
@@ -75,13 +80,11 @@ namespace ft
 		vector tmp(n, val);
 		this->insert(position, tmp.begin(), tmp.end());
 	}
-	
 	template<class type, class Alloc>
 	template <class InputIterator>
 	void vector<type, Alloc>::insert (iterator position, InputIterator first, InputIterator last,
 			typename  enable_if<!is_integral<InputIterator>::value, InputIterator>::type*)
 	{
-		//InputIterator  tmp_first = first;
 		pointer new_ptr;
 		vector new_elements(first, last);	
 		size_type nb_elements = new_elements.size();
@@ -90,44 +93,47 @@ namespace ft
 	
 		iterator it = this->begin();
 		iterator ite = this->end();
-		/*
-		while (tmp_first++ != last)
-			nb_elements++;
-			*/
-		
+
 		if (this->_size + nb_elements > this->_capacity) // reallocation needed 
 		{
-			new_ptr = (this->_allocator).allocate(total_size);
-	
+			if (total_size)
+				new_ptr = (this->_allocator).allocate(total_size);
+
 			for (;it != position; it++, index++) 
 				(this->_allocator).construct(new_ptr + index, *it);
-			for (;first != last; first++,  index++)
-				(this->_allocator).construct(new_ptr + index, *first);
+
+			for (iterator tmp = new_elements.begin(); tmp != new_elements.end(); tmp++, index++)
+				(this->_allocator).construct(new_ptr + index, *tmp);
+
 			for (;it != ite; it++, index++)
 				(this->_allocator).construct(new_ptr + index, *it);
+
 			ft_distroy(this->_m_data, this->_allocator, this->_size);
-			this->_allocator.deallocate(this->_m_data, this->_size);
+
+			if (this->_capacity)
+				this->_allocator.deallocate(this->_m_data, this->_size);
+
 			this->_m_data = new_ptr;
 			this->_capacity = total_size;
 		}
 		else
 		{
-			// Coping overwridden elements 
-			vector copy(*this);
-			index = position.get_ptr() - this->_m_data; 
-			it = copy.begin() + index;
-			ite = copy.end();
+			vector copy(position, this->end());
+			iterator start = position;
 
-			for(;first != last; first++, index++)
+			for(iterator i = new_elements.begin(); i != new_elements.end(); i++)
 			{
-				(this->_allocator).destroy(this->_m_data + index);
-				(this->_allocator).construct(this->_m_data + index, *first);
+				if (start < this->end())
+					(this->_allocator).destroy(start.get_ptr());
+				(this->_allocator).construct(start.get_ptr(), *i);
+				start++;
 			}
-			// restorting element after insert 
-			for (;it != ite; it++, index++)	
+			for (iterator it = copy.begin(); it != copy.end(); it++)	
 			{
-				(this->_allocator).destroy(this->_m_data + index);// Elements are constructed usint type() by default 
-				(this->_allocator).construct(this->_m_data + index, *it);
+				if (start < this->end())
+					(this->_allocator).destroy(start.get_ptr());
+				(this->_allocator).construct(start.get_ptr(), *it);
+				start++;
 			}
 		}
 		this->_size += nb_elements;

@@ -34,7 +34,9 @@ namespace ft
 			size_type 		_capacity;
 			allocator_type	_allocator;
 
-			void ft_distroy(value_type *p, allocator_type &alloc, size_type size);
+			void 		ft_distroy(value_type *p, allocator_type &alloc, size_type size);
+			void 		ft_deallocate(value_type *p, allocator_type &alloc, size_type size);
+			value_type* ft_allocate(allocator_type &alloc, size_type size);
 		public:
 	
 			template <class  InputIterator>
