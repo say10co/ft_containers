@@ -14,6 +14,8 @@ namespace ft
 	void vector<type, Alloc>::assign (InputIterator first, InputIterator last,
 			typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type *)
 	{
+		size_type size;
+
 		ft_distroy(this->_m_data, this->_allocator, this->_size);
 		if (std::is_same<typename ft::iterator_traits<InputIterator>::iterator_category, 
 						typename std::input_iterator_tag>::value) // std::iterator_tags for the moment
@@ -22,15 +24,18 @@ namespace ft
 				this->push_back(*first);
 			return ;
 		}
-		size_type size = 0;
+		//size = last - first;
+		size = 0;
 		for (InputIterator tmp = first; tmp != last; tmp++, size++)
 				;
 		if (size > this->_capacity)
 		{
-			if (this->_capacity)
-				(this->_allocator).deallocate(this->_m_data, this->_capacity);
-			if (size)
-				this->_m_data = (this->_allocator).allocate(size);
+			//if (this->_capacity)
+			//	(this->_allocator).deallocate(this->_m_data, this->_capacity);
+			//if (size)
+			//	this->_m_data = (this->_allocator).allocate(size);
+			ft_deallocate(this->_m_data, this->_allocator, this->_capacity);
+			this->_m_data = ft_allocate(this->_allocator, size);
 			this->_capacity = size;
 		}
 		this->_size = size;
@@ -41,21 +46,23 @@ namespace ft
 	template<class type, class Alloc>
 	void vector<type, Alloc>::push_back (const value_type& val)
 	{
-			int	i = 0;
+			size_type capacity;
+			size_type size;
+			pointer new_ptr;
 	
 			if (this->_size == this->_capacity)	
 			{
-				size_type capacity = (this->_capacity) == 0 ? 1 : this->_capacity * 2 ;
-				pointer new_ptr = (this->_allocator).allocate(capacity);
-				for (iterator it = this->begin(); it != this->end(); it++)
-					(this->_allocator).construct(new_ptr + i++, *it);
-				ft_distroy(this->_m_data, this->_allocator, this->_size);
-				if (this->_capacity)
-					(this->_allocator).deallocate(this->_m_data, this->_capacity); // Old capacity  
+				capacity = (this->_capacity) == 0 ? 1 : this->_capacity * 2 ;
+				new_ptr = (this->_allocator).allocate(capacity);
+				size = this->_size;
+				for (size_type i = 0; i < size; i++)
+					(this->_allocator).construct(new_ptr + i, *(this->_m_data + i));
+				ft_distroy(this->_m_data, this->_allocator, size);
+				ft_deallocate(this->_m_data, this->_allocator, this->_capacity);
 				this->_m_data = new_ptr;
 				this->_capacity = capacity;
 			}
-			(this->_allocator).construct(this->_m_data + this->_size, val);
+			this->_allocator.construct(this->_m_data + this->_size, val);
 			this->_size += 1;
 	}
 	 
@@ -94,7 +101,8 @@ namespace ft
 		iterator it = this->begin();
 		iterator ite = this->end();
 
-		if (this->_size + nb_elements > this->_capacity) // reallocation needed 
+		//if (this->_size + nb_elements > this->_capacity) // reallocation needed 
+		if (total_size > this->_capacity) // reallocation needed 
 		{
 			if (total_size)
 				new_ptr = (this->_allocator).allocate(total_size);
@@ -111,7 +119,8 @@ namespace ft
 			ft_distroy(this->_m_data, this->_allocator, this->_size);
 
 			if (this->_capacity)
-				this->_allocator.deallocate(this->_m_data, this->_size);
+				this->_allocator.deallocate(this->_m_data, this->_capacity);
+				//this->_allocator.deallocate(this->_m_data, this->_size);
 
 			this->_m_data = new_ptr;
 			this->_capacity = total_size;

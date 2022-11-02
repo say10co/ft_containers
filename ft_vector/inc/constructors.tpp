@@ -27,6 +27,8 @@ namespace ft
 			typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type *)
 			:_size(0), _capacity(0), _allocator(alloc)
 	{
+			size_type size;
+
 			if (std::is_same<typename ft::iterator_traits<InputIterator>::iterator_category, 
 						typename std::input_iterator_tag>::value) 
 			{
@@ -34,14 +36,15 @@ namespace ft
 				this->push_back(*first);
 				return ;
 			}
-			size_type size = 0;
+			//size = last - first;
+			size = 0;
 			for (InputIterator tmp = first; tmp != last; tmp++, size++)
-			this->_allocator = alloc;
+				;
 			this->_m_data = ft_allocate(this->_allocator, size);
+			this->_capacity = size;
+			this->_size = size;
 			for (size_type i = 0; i < size; i++)
 					(this->_allocator).construct(this->_m_data + i, *first++);
-			this->_size = size;
-			this->_capacity = size;
 			//std::cout << "vector Range Constructor Called :D" << std::endl;
 	}
 	
