@@ -24,16 +24,12 @@ namespace ft
 				this->push_back(*first);
 			return ;
 		}
-		//size = last - first;
-		size = 0;
-		for (InputIterator tmp = first; tmp != last; tmp++, size++)
-				;
+		size = std::distance(first, last);
+		//size = 0;
+		//for (InputIterator tmp = first; tmp != last; tmp++, size++)
+		//		;
 		if (size > this->_capacity)
 		{
-			//if (this->_capacity)
-			//	(this->_allocator).deallocate(this->_m_data, this->_capacity);
-			//if (size)
-			//	this->_m_data = (this->_allocator).allocate(size);
 			ft_deallocate(this->_m_data, this->_allocator, this->_capacity);
 			this->_m_data = ft_allocate(this->_allocator, size);
 			this->_capacity = size;
@@ -97,6 +93,7 @@ namespace ft
 		size_type nb_elements = new_elements.size();
 		size_type total_size  = this->_size + nb_elements;
 		size_type index = 0;
+		size_type new_cap = this->_capacity  * 2 > total_size ?  this->_capacity  * 2 : total_size;
 	
 		iterator it = this->begin();
 		iterator ite = this->end();
@@ -105,7 +102,8 @@ namespace ft
 		if (total_size > this->_capacity) // reallocation needed 
 		{
 			if (total_size)
-				new_ptr = (this->_allocator).allocate(total_size);
+				//new_ptr = (this->_allocator).allocate(total_size);
+				new_ptr = (this->_allocator).allocate(new_cap);
 
 			for (;it != position; it++, index++) 
 				(this->_allocator).construct(new_ptr + index, *it);
@@ -123,7 +121,8 @@ namespace ft
 				//this->_allocator.deallocate(this->_m_data, this->_size);
 
 			this->_m_data = new_ptr;
-			this->_capacity = total_size;
+			//this->_capacity = total_size;
+			this->_capacity = new_cap;
 		}
 		else
 		{
@@ -176,42 +175,39 @@ namespace ft
 		}
 		this->_size -= size;
 		return (first);
-	}
-	/*	
-	template <class type,class Alloc>
-	typename vector<type, Alloc>::iterator vector<type, Alloc>::erase (iterator first, iterator last)
-	{
-		
-		iterator ite = this->end();
-		size_type size = last - first;
-		size_type index = first.get_ptr() - this->_m_data;
-		size_type index1 = last.get_ptr() - this->_m_data;
-		(void) index1;
-		iterator ret = this->_m_data + index;;
-	
-		//ft_distroy(this->_m_data + index, this->_allocator, size);
-		for (iterator it = last; it < ite; it++)
+		/*
+		iterator end = this->end();
+		pointer  dest_ptr = first.get_ptr();
+		pointer  last_ptr = last.get_ptr();
+
+		size_type size= last_ptr - dest_ptr;
+
+		if (first == last)
+			return (first);
+		for (iterator it = last ;it < end; it++, dest_ptr++)	
 		{
-			(this->_allocator).destroy(this->_m_data + index);
-			(this->_allocator).construct(this->_m_data + index++, *it);
-			//(this->_allocator).destroy(this->_m_data + index1++);
-			(this->_allocator).destroy(it.get_ptr());
+			if (dest_ptr < last_ptr)
+				this->_allocator.destroy(dest_ptr);
+			this->_allocator.construct(dest_ptr, *it);
+			this->_allocator.destroy(it.get_ptr());
 		}
 		this->_size -= size;
-		return (ret);
+		return (first);
+		*/
 	}
-	*/	
+
 	template <class type, class Alloc>
-	void vector<type, Alloc>::swap(vector &x)
+	void vector<type, Alloc>::swap(vector<type, Alloc> &x)
 	{
 		std::swap(this->_allocator, x._allocator);
 		std::swap(this->_m_data, x._m_data);
 		std::swap(this->_size, x._size);
 		std::swap(this->_capacity, x._capacity);
-
+		//
 		//Exception safety 
 		//https://cplusplus.com/reference/vector/vector/swap/
 	}
+
 	template <class type, class Alloc>
 	void vector<type, Alloc>::clear()
 	{

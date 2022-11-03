@@ -15,6 +15,7 @@ namespace ft
 	template <class type, class Alloc >
 	void vector<type, Alloc>::resize (size_type n, value_type val)
 	{
+		size_type new_cap = this->_capacity * 2 > n ?  2 * this->_capacity : n;
 		if (n < this->_size)	
 			ft_distroy(this->_m_data + n, this->_allocator, this->_size - n);
 		else if (n > this->_size)
@@ -22,14 +23,13 @@ namespace ft
 			if (n > this->_capacity)
 			{
 				pointer old_ptr = this->_m_data;
-				this->_m_data = (this->_allocator).allocate(n);
+				this->_m_data = (this->_allocator).allocate(new_cap);
 				for (size_type i = 0; i < this->_size; i++)
 					this->_allocator.construct(this->_m_data + i, *(old_ptr + i));
-				//std::memmove(this->_m_data, old_ptr, this->_size * sizeof(value_type));
 				ft_distroy(old_ptr, this->_allocator, this->_size);
 				if (this->_capacity)
-					this->_allocator.deallocate(old_ptr, this->_size);
-				this->_capacity = n;
+					this->_allocator.deallocate(old_ptr, this->_capacity);
+				this->_capacity = new_cap;
 			}
 			for (size_type i = this->_size ; i < n; i++)
 				(this->_allocator).construct(this->_m_data + i, val);

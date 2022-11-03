@@ -37,6 +37,11 @@ namespace ft
 			void 		ft_distroy(value_type *p, allocator_type &alloc, size_type size);
 			void 		ft_deallocate(value_type *p, allocator_type &alloc, size_type size);
 			value_type* ft_allocate(allocator_type &alloc, size_type size);
+
+			template <class InputIterator>
+			void range_construct(InputIterator first, InputIterator last, std::input_iterator_tag);
+			template <class InputIterator>
+			void range_construct(InputIterator first, InputIterator last, std::forward_iterator_tag);
 		public:
 	
 			template <class  InputIterator>

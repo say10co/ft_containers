@@ -12,39 +12,44 @@ namespace ft
 	{
 			value_type *tmp_ptr;
 	
-			//if (n)
-			//	this->_m_data = (this->_allocator).allocate(n); // throws excpetion
 			this->_m_data = ft_allocate(this->_allocator, n);
 			tmp_ptr = _m_data;
 			for (size_type i = 0; i < n; i++)
 					(this->_allocator).construct(tmp_ptr++, val);
 			//std::cout << "Fill constructor called :D" << std::endl;
 	}
-	
+
+	template <class type, class Alloc>
+	template <class InputIterator>
+	void vector<type, Alloc>::range_construct(InputIterator first,  InputIterator last, std::input_iterator_tag)
+	{
+		for (;first != last; first++)
+			this->push_back(*first);
+		return ;
+	}
+	template <class type, class Alloc>
+	template <class InputIterator>
+	void vector<type, Alloc>::range_construct(InputIterator first,  InputIterator last, std::forward_iterator_tag)
+	{
+		size_type size;
+
+		size = std::distance(first, last);
+
+		this->_m_data = ft_allocate(this->_allocator, size);
+		this->_capacity = size;
+		this->_size = size;
+		for (size_type i = 0; i < size; i++)
+				(this->_allocator).construct(this->_m_data + i, *first++);
+	}
+
 	template <class type, class Alloc>
 	template <class InputIterator>
 	vector<type, Alloc>::vector(InputIterator first,  InputIterator last,const allocator_type &alloc,
 			typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type *)
 			:_size(0), _capacity(0), _allocator(alloc)
 	{
-			size_type size;
-
-			if (std::is_same<typename ft::iterator_traits<InputIterator>::iterator_category, 
-						typename std::input_iterator_tag>::value) 
-			{
-				for (;first != last; first++)
-				this->push_back(*first);
-				return ;
-			}
-			//size = last - first;
-			size = 0;
-			for (InputIterator tmp = first; tmp != last; tmp++, size++)
-				;
-			this->_m_data = ft_allocate(this->_allocator, size);
-			this->_capacity = size;
-			this->_size = size;
-			for (size_type i = 0; i < size; i++)
-					(this->_allocator).construct(this->_m_data + i, *first++);
+		typedef typename ft::iterator_traits<InputIterator>::iterator_category category;
+			range_construct(first, last, category());
 			//std::cout << "vector Range Constructor Called :D" << std::endl;
 	}
 	
