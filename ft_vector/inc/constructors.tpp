@@ -65,15 +65,19 @@ namespace ft
 	{
 
 			const_iterator cit = obj.begin();
-			ft_distroy(this->_m_data, this->_allocator, this->_size);
+			const_iterator cit_end = obj.end();
+			value_type *m_data;
 
+			ft_distroy(this->_m_data, this->_allocator, this->_size);
 			ft_deallocate(this->_m_data, this->_allocator, this->_capacity);
+
 			this->_allocator  = obj._allocator; // new allocator 	
 			this->_m_data = ft_allocate(this->_allocator, obj._capacity);
 			this->_size = obj._size;
 			this->_capacity = obj._capacity;
-			for (size_type i = 0; i < obj._size; i++)
-				(this->_allocator).construct(this->_m_data + i, *cit++);
+			m_data = this->_m_data;
+			while (cit != cit_end)
+				(this->_allocator).construct(m_data++, *cit++);
 			return (*this);
 	}
 	

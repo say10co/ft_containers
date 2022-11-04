@@ -5,29 +5,37 @@ namespace ft
 	template <class type, class Alloc>
 	void vector<type, Alloc>::assign (size_type n, const value_type& val)
 	{
-		vector tmp(n, val);
-		this->assign(tmp.begin(), tmp.end());
+		size_type size = n;
+
+		ft_distroy(this->_m_data, this->_allocator, this->_size);
+		if (size > this->_capacity)
+		{
+			ft_deallocate(this->_m_data, this->_allocator, this->_capacity);
+			this->_m_data = ft_allocate (this->_allocator, size);
+			this->_capacity = size;
+		}
+		for (size_type i = 0; i < size; i++)
+			(this->_allocator).construct(this->_m_data + i, val);
+		this->_size = size;
 	}
 	
 	template <class type, class Alloc>
-	template <class InputIterator>
-	void vector<type, Alloc>::assign (InputIterator first, InputIterator last,
-			typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type *)
+	template <class IteratorType>
+	void vector<type, Alloc>::assign_aux(IteratorType first, IteratorType last, std::input_iterator_tag)
 	{
-		size_type size;
+		for (;first != last; first++)
+			this->push_back(*first);
+		return ;
+	}
 
-		ft_distroy(this->_m_data, this->_allocator, this->_size);
-		if (std::is_same<typename ft::iterator_traits<InputIterator>::iterator_category, 
-						typename std::input_iterator_tag>::value) // std::iterator_tags for the moment
-		{
-			for (;first  != last; first++)
-				this->push_back(*first);
-			return ;
-		}
+	template <class type, class Alloc>
+	template <class IteratorType>
+	void vector<type, Alloc>::assign_aux(IteratorType first, IteratorType last, std::forward_iterator_tag)
+	{
+		size_type	size;
+		value_type *m_data;
+		
 		size = std::distance(first, last);
-		//size = 0;
-		//for (InputIterator tmp = first; tmp != last; tmp++, size++)
-		//		;
 		if (size > this->_capacity)
 		{
 			ft_deallocate(this->_m_data, this->_allocator, this->_capacity);
@@ -35,8 +43,21 @@ namespace ft
 			this->_capacity = size;
 		}
 		this->_size = size;
-		for (size_type i = 0; i < size ; i++)
-			(this->_allocator).construct(this->_m_data + i, *first++);
+		m_data = this->_m_data;
+		while (first < last)
+			(this->_allocator).construct(m_data++, *first++);
+	}
+
+	template <class type, class Alloc>
+	template <class InputIterator>
+	void vector<type, Alloc>::assign (InputIterator first, InputIterator last,
+			typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type *)
+	{
+		typedef typename ft::iterator_traits<InputIterator>::iterator_category iterator_category;
+
+		ft_distroy(this->_m_data, this->_allocator, this->_size);
+		assign_aux(first, last, iterator_category());
+
 	}
 	
 	template<class type, class Alloc>
@@ -156,44 +177,24 @@ namespace ft
 	template <class type,class Alloc>
 	typename vector<type, Alloc>::iterator vector<type, Alloc>::erase (iterator first, iterator last)
 	{
-		iterator it = first;
-		iterator dest = first;
-		size_type size= 0;
-
-		if (first == last)
-			return (first);
-		for (;it < last; it++)
-		{
-			this->_allocator.destroy(it.get_ptr());
-			size++;
-		}
-		it = last;
-		for (;it < this->end(); it++, dest++)	
-		{
-			this->_allocator.construct(dest.get_ptr(), *it);
-			this->_allocator.destroy(it.get_ptr());
-		}
-		this->_size -= size;
-		return (first);
-		/*
 		iterator end = this->end();
 		pointer  dest_ptr = first.get_ptr();
 		pointer  last_ptr = last.get_ptr();
-
 		size_type size= last_ptr - dest_ptr;
 
 		if (first == last)
 			return (first);
+		while (dest_ptr < last_ptr)
+				this->_allocator.destroy(dest_ptr++);
+
+		dest_ptr = first.get_ptr();
 		for (iterator it = last ;it < end; it++, dest_ptr++)	
 		{
-			if (dest_ptr < last_ptr)
-				this->_allocator.destroy(dest_ptr);
 			this->_allocator.construct(dest_ptr, *it);
 			this->_allocator.destroy(it.get_ptr());
 		}
 		this->_size -= size;
 		return (first);
-		*/
 	}
 
 	template <class type, class Alloc>
