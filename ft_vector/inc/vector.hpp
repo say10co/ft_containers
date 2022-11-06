@@ -46,6 +46,12 @@ namespace ft
 			void assign_aux(IteratorType first, IteratorType last, std::input_iterator_tag);
 			template <class IteratorType>
 			void assign_aux(IteratorType first, IteratorType last, std::forward_iterator_tag);
+
+			template <class InputIterator>
+			void insert_aux(iterator position, InputIterator first, InputIterator  last, std::input_iterator_tag);
+			template <class InputIterator>
+			void insert_aux(iterator position, InputIterator first, InputIterator  last, std::forward_iterator_tag);
+			void make_space(const size_type index, const size_type nb_elements);
 		public:
 	
 			template <class  InputIterator>

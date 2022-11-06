@@ -3,23 +3,6 @@
 namespace ft
 {
 	template <class type, class Alloc>
-	void vector<type, Alloc>::assign (size_type n, const value_type& val)
-	{
-		size_type size = n;
-
-		ft_distroy(this->_m_data, this->_allocator, this->_size);
-		if (size > this->_capacity)
-		{
-			ft_deallocate(this->_m_data, this->_allocator, this->_capacity);
-			this->_m_data = ft_allocate (this->_allocator, size);
-			this->_capacity = size;
-		}
-		for (size_type i = 0; i < size; i++)
-			(this->_allocator).construct(this->_m_data + i, val);
-		this->_size = size;
-	}
-	
-	template <class type, class Alloc>
 	template <class IteratorType>
 	void vector<type, Alloc>::assign_aux(IteratorType first, IteratorType last, std::input_iterator_tag)
 	{
@@ -47,6 +30,25 @@ namespace ft
 		while (first < last)
 			(this->_allocator).construct(m_data++, *first++);
 	}
+
+	template <class type, class Alloc>
+	void vector<type, Alloc>::assign (size_type n, const value_type& val)
+	{
+		size_type size = n;
+
+		ft_distroy(this->_m_data, this->_allocator, this->_size);
+		if (size > this->_capacity)
+		{
+			ft_deallocate(this->_m_data, this->_allocator, this->_capacity);
+			this->_m_data = ft_allocate (this->_allocator, size);
+			this->_capacity = size;
+		}
+		for (size_type i = 0; i < size; i++)
+			(this->_allocator).construct(this->_m_data + i, val);
+		this->_size = size;
+	}
+	
+	
 
 	template <class type, class Alloc>
 	template <class InputIterator>
@@ -89,26 +91,115 @@ namespace ft
 		(this->_allocator).destroy(this->_m_data + this->_size - 1);
 		this->_size--;
 	}
-	
+
+	template<class type, class Alloc>
+	void vector<type, Alloc>::make_space(const size_type index, const size_type nb_elements)
+	{
+		const size_type vec_size = this->_size;
+		pointer new_mdata;
+		size_type new_cap; 
+
+		if (!nb_elements)
+			return ;
+		if (this->_capacity - vec_size >= nb_elements)
+		{
+			for (long i = vec_size - 1; i >= (long)index; i--)
+			{
+					this->_allocator.construct(this->_m_data + nb_elements + i, *(this->_m_data + i));
+					this->_allocator.destroy(this->_m_data + i);
+			}
+		}
+		else // Reasllocation needed
+		{
+			new_cap = this->_capacity  * 2 > (vec_size + nb_elements) ?  this->_capacity  * 2 : (vec_size + nb_elements);
+			new_mdata = ft_allocate(this->_allocator, new_cap);	
+			
+			for (size_type i = 0; i < index; i++)
+			{
+				this->_allocator.construct(new_mdata + i, *(this->_m_data + i));
+				this->_allocator.destroy(this->_m_data + i);
+			}
+			for (size_type i = index; i < vec_size; i++)
+			{
+				this->_allocator.construct(new_mdata + i + nb_elements, *(this->_m_data + i));
+				this->_allocator.destroy(this->_m_data + i);
+			}
+			ft_deallocate(this->_m_data, this->_allocator , this->_capacity);
+			this->_m_data = new_mdata;
+			this->_capacity = new_cap;
+		}
+		//this->_size += nb_elements;
+
+	}
+
+	template<class type, class Alloc>
+	template <class InputIterator>
+	void vector<type, Alloc>::insert_aux(iterator position, InputIterator first, InputIterator last, std::input_iterator_tag)
+	{
+		pointer start = this->begin().get_ptr();
+		pointer tmp_mdata = this->_m_data;
+		pointer end =   this->end().get_ptr();
+		pointer pos =   position.get_ptr();
+		size_type cap = this->_capacity;
+
+		this->_m_data = ft_allocate(this->_allocator , cap);
+		this->_size = 0;
+
+		for (; start != pos; start++)	
+		{
+			this->push_back(*start);
+			this->_allocator.destroy(start);
+		}
+		for (;first != last; first++)
+			this->push_back(*first);
+		for (; start != end; start++)	
+		{
+			this->push_back(*start);
+			this->_allocator.destroy(start);
+		}
+		ft_deallocate(tmp_mdata, this->_allocator, cap);
+	}
+
+	template<class type, class Alloc>
+	template <class InputIterator>
+	void vector<type, Alloc>::insert_aux(iterator position, InputIterator first, InputIterator last, std::forward_iterator_tag)
+	{
+		const size_type index = position.get_ptr() - this->_m_data;
+		const size_type range_size = std::distance(first, last);
+		this->make_space(index, range_size);
+		for (size_type i = index; i < index + range_size ; i++)
+			this->_allocator.construct(this->_m_data + i, *first++);
+		this->_size += range_size;
+	}
+
 	template<class type, class Alloc>
 	typename vector<type, Alloc>::iterator vector<type, Alloc>::insert (iterator position, const value_type& val)
 	{
-		size_type distance = position.get_ptr() - this->_m_data;
-		this->insert(position, 1, val);
-		return (iterator(this->_m_data + distance));
+		const size_type distance = position.get_ptr() - this->_m_data;
+		this->make_space(distance, 1);
+		this->_allocator.construct(this->_m_data + distance, val);
+		this->_size++;
+		return (this->_m_data + distance);
 	}
 	
 	template<class type, class Alloc>
 	void vector<type, Alloc>::insert (iterator position, size_type n, const value_type& val)
 	{
-		vector tmp(n, val);
-		this->insert(position, tmp.begin(), tmp.end());
+		const size_type index = position.get_ptr() - this->_m_data;
+		this->make_space(index, n);
+		for (size_type i = index; i < index + n; i++)
+			this->_allocator.construct(this->_m_data + i, val);
+		this->_size += n;
 	}
+
 	template<class type, class Alloc>
 	template <class InputIterator>
 	void vector<type, Alloc>::insert (iterator position, InputIterator first, InputIterator last,
 			typename  enable_if<!is_integral<InputIterator>::value, InputIterator>::type*)
 	{
+		typedef typename ft::iterator_traits<InputIterator>::iterator_category iterator_category;
+		insert_aux(position, first, last, iterator_category());
+	/*	
 		pointer new_ptr;
 		vector new_elements(first, last);	
 		size_type nb_elements = new_elements.size();
@@ -116,7 +207,7 @@ namespace ft
 		size_type index = 0;
 		size_type new_cap = this->_capacity  * 2 > total_size ?  this->_capacity  * 2 : total_size;
 	
-		iterator it = this->begin();
+		iterator it  = this->begin();
 		iterator ite = this->end();
 
 		//if (this->_size + nb_elements > this->_capacity) // reallocation needed 
@@ -139,10 +230,8 @@ namespace ft
 
 			if (this->_capacity)
 				this->_allocator.deallocate(this->_m_data, this->_capacity);
-				//this->_allocator.deallocate(this->_m_data, this->_size);
 
 			this->_m_data = new_ptr;
-			//this->_capacity = total_size;
 			this->_capacity = new_cap;
 		}
 		else
@@ -166,6 +255,7 @@ namespace ft
 			}
 		}
 		this->_size += nb_elements;
+		*/
 	}
 	
 	template <class type,class Alloc>
@@ -204,7 +294,7 @@ namespace ft
 		std::swap(this->_m_data, x._m_data);
 		std::swap(this->_size, x._size);
 		std::swap(this->_capacity, x._capacity);
-		//
+		
 		//Exception safety 
 		//https://cplusplus.com/reference/vector/vector/swap/
 	}
@@ -222,3 +312,83 @@ namespace ft
 		x.swap(y);
 	}
 }
+
+
+
+
+
+
+
+
+
+/*
+	template<class type, class Alloc>
+	template <class InputIterator>
+	void vector<type, Alloc>::insert_aux(iterator position, InputIterator first, InputIterator last, std::forward_iterator_tag, bool no_range)
+	{
+		size_type range_size = std::distance(first, last);
+		size_type total_size = this->_size + range_size; 
+		size_type new_cap = this->_capacity  * 2 > total_size ?  this->_capacity  * 2 : total_size;
+		value_type *new_mdata;
+		value_type *tmp_m_data;
+
+		pointer pit = this->begin().get_ptr();
+		pointer pite = this->end().get_ptr();
+		pointer pos = position.get_ptr();
+
+		if (total_size > this->_capacity)
+		{
+			new_mdata = ft_allocate(this->_allocator, new_cap);
+			tmp_m_data = new_mdata;
+			for (;(pit < pos && pit != pite); pit++)
+			{
+				//std::cout << "1 " <<  *pit << std::endl;
+				this->_allocator.construct(tmp_m_data++, *pit);
+				this->_allocator.destroy(pit);
+				//this->_allocator.deallocate(pit, 1);
+			}
+			for (InputIterator it = first; it != last; it++)
+			{
+				//std::cout << "2 " <<  *first << std::endl;
+				this->_allocator.construct(tmp_m_data++, (!no_range ? *it : *first));
+			}
+			for (;pit != pite; pit++)
+			{
+				//std::cout << "3 " <<  *pit << std::endl;
+				this->_allocator.construct(tmp_m_data++, *pit);
+				this->_allocator.destroy(pit);
+				//this->_allocator.deallocate(pit, 1);
+			}
+			ft_deallocate(this->_m_data, this->_allocator, this->_size);
+			this->_capacity = new_cap;
+			this->_m_data = new_mdata;
+			this->_size = total_size;
+		}
+		else
+		{
+			this->_size = total_size;
+			for (;(pite >= pos && pit != pite);)
+			{
+				total_size--;
+				if (this->_m_data + total_size < pite)
+					this->_allocator.destroy(this->_m_data + total_size);
+				this->_allocator.construct(this->_m_data + total_size, *--pite);
+			}
+			for (size_type i = 0; i < range_size; i++)
+			{
+				total_size--;
+				if (this->_m_data + total_size < pite)
+					this->_allocator.destroy(this->_m_data + total_size);
+
+				this->_allocator.construct(this->_m_data + total_size, ( !no_range ? *--last : *first)); // first holds val
+			}
+			for (;(pite > pit);)
+			{
+				total_size--;
+				if (this->_m_data + total_size < pite)
+					this->_allocator.destroy(this->_m_data + total_size);
+				this->_allocator.construct(this->_m_data + total_size, *--pite);
+			}
+		}
+	}
+*/
