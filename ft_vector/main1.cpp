@@ -1,14 +1,19 @@
+//#define NAMESPACE ft
 #include  <iostream>
+#include <sstream>
 #include <vector>
 
 #include "inc/vector.hpp"
+
 using namespace ft;
+
 class Test
 {
 	private:
 
 	public:
 		char key;
+		Test() : key('A'){}
 		Test(char c)
 		{
 			key = c;
@@ -42,14 +47,148 @@ std::ostream &operator<<(std::ostream &os, const Test &t)
 	return (os);
 }
 
+template < typename T1>
+bool pred(const T1 &a, const T1 &b)
+{	
+	return (a == b);
+}
+
+bool hello(int  a, int b)
+{	
+	return (a == b);
+}
+
 int main(int ac,  char	**av)
 {
 	(void)ac;
 	(void)av;
 
 	{
+		// define NAMESPACE in Makefile 
+		{
+			bool eq;
+
+			std::string str = "Hello World";
+			std::string str1 = "HELLO WORLD";
+			const char *c_str = "Hello World";
+
+			eq = NAMESPACE::equal(str.begin(), str.end(), str1.begin(), pred<char>);
+			std::cout << std::boolalpha << eq << std::endl; 
+
+			eq = NAMESPACE::equal(str.begin(), str.end(), c_str, pred<char>);
+			std::cout << std::boolalpha << eq << std::endl; 
+
+		}
+		{
+			bool eq;
+
+			std::string str = "Hello World";
+			std::string str1 = "HELLO WORLD";
+			const char *c_str = "Hello World";
+
+			eq = NAMESPACE::equal(str.begin(), str.end(), str1.begin());
+			std::cout << std::boolalpha << eq << std::endl; 
+
+			eq = NAMESPACE::equal(str.begin(), str.end(), c_str);
+			std::cout << std::boolalpha << eq << std::endl; 
+		}
+		return 1;
+	}
+	{
+
+		{
+			pair<const char *, unsigned int > str_uint = make_pair("hello", 42);
+			std::cout << "first :" << str_uint.first << " second :" << str_uint.second << std::endl;
+			return  1;
+		}
+		{
+			pair<std::string, unsigned int > str_uint("hello", 42);
+			pair<std::string, int > str_int(std::string("hello 1337"), 1337);
+			str_uint = str_int;
+			std::cout << "first :" << str_uint.first << " second :" << str_uint.second << std::endl;
+			return 1;
+		}
+		{
+			pair<int, Test> int_test;
+			std::cout << "first :" << int_test.first << " second :" << int_test.second << std::endl;
+			pair<int, char> int_char(42, 'X');
+			std::cout << "first :" << int_char.first << " second :" << int_char.second << std::endl;
+			int_test = int_char; 
+			std::cout << "first :" << int_test.first << " second :" << int_test.second << std::endl;
+		}
+
+		return (1);
+	}
+	{
+		vector<int> int_vec(10, 10);
+		vector<int> int_vec1(10, 11);
+		int_vec1.swap(int_vec);
+
+		return (1);
+	}
+	{
+		std::istringstream s("12345678901234567890");
+		std::istreambuf_iterator<char> begin(s), end;
+		vector<char> char_vec(begin, end);
+		return 1;
+	}
+	{
+
+		vector<int> int_vec; 
+		std::vector<int> std_int_vec; 
+		vector<int>::iterator it ;
+		std::vector<int>::iterator std_it ;
+
+		it = int_vec.insert(int_vec.end(), 5);
+		int_vec.insert(it, 4);
+		it = int_vec.insert(int_vec.begin()+2, 6);
+		int_vec.insert(it, 7);
+
+		std_it = std_int_vec.insert(std_int_vec.end(), 5);
+		std_int_vec.insert(std_it, 4);
+		std_it = std_int_vec.insert(std_int_vec.begin()+ 2, 6);
+		std_int_vec.insert(std_it, 7);
+
+		for (vector<int>::iterator i = int_vec.begin(); i != int_vec.end(); i++)
+			std::cout  <<  *i  << " " << std::endl;
+
+		std::cout << "-----------" << std::endl;
+		for (std::vector<int>::iterator i = std_int_vec.begin(); i != std_int_vec.end(); i++)
+			std::cout  <<  *i  << " " << std::endl;
+		return 1;
+	}
+	{
+		std::cout << "TEST : vector.insert() (1)(2)(3) " << std::endl;
+		int arr[] = {42, 43, 44, 45, 46, 47};
+
+		vector<int> int_vec;
+		//int_vec.reserve(50);
+		int_vec.insert(int_vec.begin(), 6);
+		int_vec.insert(int_vec.begin(), 5);
+		int_vec.insert(int_vec.begin(), 4);
+
+		int_vec.insert(int_vec.begin() + 1, 10, 1337);
+		int_vec.insert(int_vec.begin() + 2,  arr, arr+6);
+
+		for (vector<int>::iterator i = int_vec.begin(); i != int_vec.end(); i++)
+			std::cout << "v :" << *i  << std::endl;
+		std::cout << "size : " << int_vec.size() << " capacity : "
+			<< int_vec.capacity() << std::endl;
+		//return (1);
+
+	}
+	{
 		vector<int> x(10, 42);
-		vector<int> y(200, 1337);
+		vector<int>::iterator it = x.insert(x.end(), 1337);
+		std::cout << *it << std::endl;
+		return 1;
+
+	}
+	{
+		vector<int> x(10, 42);
+		vector<int> y(10, 42);
+		std::cout << (x == y) << std::endl;
+		return 1;
 		swap(x, y);
 		std::cout << "x.size() : " << x.size() << "  " << "y.size() : " << y.size() << std::endl;
 
@@ -182,7 +321,7 @@ int main(int ac,  char	**av)
 		//return (1);
 	}
 	{
-		
+
 		std::cout << "TEST : vector.pop_back() " << std::endl;
 		vector<Test> test_vec;
 		test_vec.push_back('a');
@@ -301,7 +440,7 @@ int main(int ac,  char	**av)
 		std::cout << "(it <= it1) "<< (it <= it1) << std::endl;
 		std::cout << "(it < it1) " << (it < it1) << std::endl;
 		std::cout << "(it > it1) " << (it > it1) << std::endl;
-std::cout << (it1 - --it) << std::endl;
+		std::cout << (it1 - --it) << std::endl;
 		std::cout << "Crafted result : " << *(2 +  (++it - 1) ) << std::endl;
 		std::cout << "Crafted result : " << *((1 + it) + 2 ) << std::endl;
 		return (1);
