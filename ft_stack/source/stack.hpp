@@ -1,7 +1,7 @@
 #ifndef STACK_HPP
 # define STACK_HPP 
 
-#include "../../ft_vector/inc/vector.hpp"
+#include "../../ft_vector/source/vector.hpp"
 
 namespace ft
 {

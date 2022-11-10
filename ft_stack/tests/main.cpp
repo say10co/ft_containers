@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
-#include "inc/stack.hpp"
+#include "../source/stack.hpp"
 #include <stack>
 #include <vector>
 

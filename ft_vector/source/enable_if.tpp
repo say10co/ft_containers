@@ -4,35 +4,35 @@ namespace ft
 	/*-------------Enable if -------------*/
 
 	template <bool, typename T = void>
-	struct enable_if
-	{
-	};
-	
+		struct enable_if
+		{
+		};
+
 	template<typename T>
-	struct enable_if<true, T>
-	{
-		typedef T type;
-	};
-	
+		struct enable_if<true, T>
+		{
+			typedef T type;
+		};
+
 	/*-------------Is integral -------------*/
-	
+
 	template <class T, T v>
-	struct  integral_constant
-	{
-		static const T value = v;
-		typedef T value_type;
-		typedef integral_constant<T, v> type;
-	};
-	
+		struct  integral_constant
+		{
+			static const T value = v;
+			typedef T value_type;
+			typedef integral_constant<T, v> type;
+		};
+
 	typedef integral_constant<bool, true> true_type;
 	typedef integral_constant<bool, false> false_type;
-	
+
 
 	template <typename T>
-	struct is_integral : public false_type
+		struct is_integral : public false_type
 	{
 	};
-	
+
 	//template <typename T> struct is_integral : public false_type {};
 	template <> struct is_integral<bool> 					: public true_type {};
 	template <> struct is_integral<char> 					: public true_type {};

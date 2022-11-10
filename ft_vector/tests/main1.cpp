@@ -3,7 +3,7 @@
 #include <sstream>
 #include <vector>
 
-#include "inc/vector.hpp"
+#include "../source/vector.hpp"
 
 using namespace ft;
 
@@ -62,6 +62,19 @@ int main(int ac,  char	**av)
 {
 	(void)ac;
 	(void)av;
+
+	{
+		vector<Test> int_vec;
+		int_vec.reserve(100);
+		for (int i = 0; i < 10; i++)
+			int_vec.push_back(i + 48);
+
+		std::cout << "------------" << std::endl;
+		int_vec.erase(int_vec.begin());
+		for (vector<Test>::iterator it = int_vec.begin(); it != int_vec.end() ; it++)
+			std::cout << *it << " ";
+		return 1;
+	}
 
 	{
 		// define NAMESPACE in Makefile 

@@ -1,8 +1,0 @@
-std::allocator::alloate does not construct objects pointed by
-
-++itrator-- ---> tmp = iterator; iterator-- (1) & tmp++ (2)  // iterator reamains decremented 
-
-POINTER operator->() This is called the "drill-down behavior." 
-	if obj->x return type is not a pointer then it perfoms:
-	returned_obj.operator->() ... and so one util it reaches to a pointer;
-	then the memober lookup is handled by the language;
