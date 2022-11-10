@@ -132,27 +132,36 @@ namespace ft
 		template <class InputIterator>
 		void vector<type, Alloc>::insert_aux(iterator position, InputIterator first, InputIterator last, std::input_iterator_tag)
 		{
-			pointer start = this->begin().get_ptr();
-			pointer tmp_mdata = this->_m_data;
-			pointer end =   this->end().get_ptr();
-			pointer pos =   position.get_ptr();
-			size_type cap = this->_capacity;
+			vector range(first, last);
 
-			this->_m_data = ft_allocate(this->_allocator , cap);
-			this->_size = 0;
+			pointer start		= this->begin().get_ptr();
+			pointer tmp_mdata	= this->_m_data;
+			pointer end			=   this->end().get_ptr();
+			pointer pos 		=   position.get_ptr();
+			pointer range_s 	= range.begin().get_ptr();
+			pointer p;
+			size_type range_size = range.size();
 
-			for (; start != pos; start++)	
+			size_type cap = this->_capacity; 
+			this->_m_data = ft_allocate(this->_allocator , cap + range_size);
+			this->_capacity = cap + range_size;
+			p = this->_m_data;
+
+			for (; start != pos; start++, p++)	
 			{
-				this->push_back(*start);
+				this->_allocator.construct(p, *start);
 				this->_allocator.destroy(start);
 			}
-			for (;first != last; first++)
-				this->push_back(*first);
+			for (size_type i = 0; i < range_size; i++)
+			{
+				this->_allocator.construct(p++,*range_s++);
+			}	
 			for (; start != end; start++)	
 			{
-				this->push_back(*start);
+				this->_allocator.construct(p, *start);
 				this->_allocator.destroy(start);
 			}
+			this->_size += range_size;
 			ft_deallocate(tmp_mdata, this->_allocator, cap);
 		}
 
