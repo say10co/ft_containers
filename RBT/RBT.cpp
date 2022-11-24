@@ -2,19 +2,33 @@
 #include <iostream>
 
 template<typename value_type, typename Compare, typename Alloc> 
-void RBT::Insert(value_type value)
+void RBT<value_type,Compare,Alloc>::Insert(value_type value)
 {
-	this->_root = Insert_helper(this->_root, value);
+	this->_root = Insert_helper(this->_root, NULL, value);
 	this->_root->_color = BLACK;
 }
 
 template<typename value_type, typename Compare, typename Alloc> 
-RBT::~RBT()
+void RBT<value_type,Compare,Alloc>::deleteRBT(RBT *& root)
 {
+	if (root == NULL)
+		return;
+	deleteRBT(root->_child[LEFT]);
+	deleteRBT(root->_child[RBT]);
+	delete root;
+	root = NULL;
 }
 
 template<typename value_type, typename Compare, typename Alloc> 
-bool RBT::isRednode(const Node *node)
+RBT<value_type,Compare,Alloc>::~RBT()
+{
+	deleteRBT(this->_root);
+	std::cout << (this->_root == NULL ? "root is null" : "root is not null") << std::endl;
+	std::cout << "~RBT() called" << std::endl;
+}
+
+template<typename value_type, typename Compare, typename Alloc> 
+bool RBT<value_type,Compare,Alloc>::isRednode(const Node *node)
 {
 	if (node == NULL)
 		return false;
@@ -22,12 +36,18 @@ bool RBT::isRednode(const Node *node)
 }
 
 template<typename value_type, typename Compare, typename Alloc> 
-Node *RBT::rotate(Node *node, bool dir)
+Node *RBT<value_type,Compare,Alloc>::rotate(Node *node, bool dir)
 {
 	Node *new_root;
 	new_root = node->_child[!dir];
+
 	node->_child[!dir] = new_root->_child[dir];
+	if (new_root->_child[dir])
+		new_root->_child[dir]->_parent = node;
+
 	new_root->_child[dir] = node;
+	new_root->_parent = node->_parent;
+	node->_parent = new_root;
 
 	new_root->_color = node->_color;
 	node->_color = RED;
@@ -35,7 +55,7 @@ Node *RBT::rotate(Node *node, bool dir)
 }
 
 template<typename value_type, typename Compare, typename Alloc> 
-Node  *RBT::doubleRotate(Node *node, bool dir)
+Node  *RBT<value_type,Compare,Alloc>::doubleRotate(Node *node, bool dir)
 {
 	// inverse rotation for midle node
 	node->_child[!dir] = rotate(node->_child[!dir], !dir);
@@ -44,7 +64,7 @@ Node  *RBT::doubleRotate(Node *node, bool dir)
 }
 
 template<typename value_type, typename Compare, typename Alloc> 
-void RBT::colorFlip(Node *node)
+void RBT<value_type,Compare,Alloc>::colorFlip(Node *node)
 {
 	node->_color = !(node->_color);
 	node->_child[LEFT]->_color = !(node->_child[LEFT]->_color);
@@ -52,24 +72,21 @@ void RBT::colorFlip(Node *node)
 }
 
 template<typename value_type, typename Compare, typename Alloc> 
-Node *RBT::Insert_helper(Node *node, int value)
+Node *RBT<value_type,Compare,Alloc>::Insert_helper(Node *node, Node *parent, int key)
 {
 	bool side;
-	bool side1;
 
 	if (node == NULL)
-		return new Node(value);
+		return new Node(value, parent);
 
-	side = this->_comp_obj(node->_value, value);
-	side = value > node->_value ? 1 : 0;
-	assert(side1 == side);
+	side = this->_comp_obj(node->_p->first, key);
 
-	node->_child[side] = Insert_helper(node->_child[side], value);
+	node->_child[side] = Insert_helper(node->_child[side], node, value);
 	return BalanceSubTree(node, side);
 }
 
 template<typename value_type, typename Compare, typename Alloc> 
-Node *RBT::BalanceSubTree(Node *node, bool side)
+Node *RBT<value_type,Compare,Alloc>::BalanceSubTree(Node *node, bool side)
 {
 	Node *child = node->_child[side];
 	Node *op_child = node->_child[!side];
@@ -93,16 +110,16 @@ Node *RBT::BalanceSubTree(Node *node, bool side)
 }
 
 template<typename value_type, typename Compare, typename Alloc> 
-Node *RBT::getMax(Node *node)
+Node *RBT<value_type,Compare,Alloc>::getMax(Node *node)
 {
-	if (!(node->_child[RIGHT]))
+	if (! node || !(node->_child[RIGHT]))
 		return (node);
 	return (getMax(node->_child[RIGHT]));
 }
 
 
 template<typename value_type, typename Compare, typename Alloc> 
-void RBT::delete_(int data)
+void RBT<value_type,Compare,Alloc>::delete_(int data)
 {
 	bool isBalanced = false;
 	this->root = DeleteHelper(root, data, isBalanced);
@@ -111,18 +128,17 @@ void RBT::delete_(int data)
 }
 
 template<typename value_type, typename Compare, typename Alloc> 
-Node *RBT::DeleteHelper(Node *node, int value, bool &isBalanced)
+Node *RBT<value_type,Compare,Alloc>::DeleteHelper(Node *node, int key, bool &isBalanced)
 {
 	Node *child;
 	bool dir;
-
 
 	if (!node)
 	{
 		isBalanced = true;
 		return node;
 	}
-	if (node->_value == value)
+	if (node->_key == key)
 	{
 		// Has at most one child
 		if (!node->_child[LEFT] || !node->_child[RIGHT])
@@ -132,6 +148,9 @@ Node *RBT::DeleteHelper(Node *node, int value, bool &isBalanced)
 				child = node->_child[RIGHT];
 			else if (node->_child[LEFT])
 				child = node->_child[LEFT];
+			// updating parent of child with parent of node
+			if (child != NULL)
+				child->_parent = node->_parent;
 
 			if (isRednode(node))
 			{
@@ -148,7 +167,7 @@ Node *RBT::DeleteHelper(Node *node, int value, bool &isBalanced)
 			}
 			else // node is black and has no children 
 			{
-				//std::cout << "deleted  : " << node->_value << std::endl;
+				//std::cout << "deleted  : " << node->_key << std::endl;
 				delete(node);
 				return NULL; // node is replaced with NULL (deleted)
 			}
@@ -158,14 +177,14 @@ Node *RBT::DeleteHelper(Node *node, int value, bool &isBalanced)
 		{
 			// replace node whith max key in left sub tree
 			Node *max = getMax(node->_child[LEFT]);
-			node->_value = max->_value;
-			value = max->_value; // delete max node by updating the value ; recurse on max_node
+			node->_key = max->_key;
+			value = max->_key; // delete max node by updating the value ; recurse on max_node
 		}
 
 	}
 
-	dir = this->_comp_obj(node->_value, value); //(value > node->_value);//  left 0; right 1
-	//dir = (value > node->_value);//  left 0; right 1
+	dir = this->_comp_obj(node->p->first, key); //(value > node->_key);//  left 0; right 1
+	//dir = (value > node->_key);//  left 0; right 1
 	node->_child[dir] = DeleteHelper(node->_child[dir], value, isBalanced);
 
 	if (isBalanced)
@@ -174,7 +193,7 @@ Node *RBT::DeleteHelper(Node *node, int value, bool &isBalanced)
 }
 
 template<typename value_type, typename Compare, typename Alloc> 
-Node *RBT::BalanceDelete(Node *node, bool dir, bool &isBalanced)
+Node *RBT<value_type,Compare,Alloc>::BalanceDelete(Node *node, bool dir, bool &isBalanced)
 {
 	Node *parent;
 	Node *siblling;
@@ -184,6 +203,7 @@ Node *RBT::BalanceDelete(Node *node, bool dir, bool &isBalanced)
 	parent = node;
 	siblling = node->_child[!dir];
 	redsibllingRotation = false;
+
 	if (isRednode(siblling))
 	{
 		// make it black siblling case
@@ -210,7 +230,9 @@ Node *RBT::BalanceDelete(Node *node, bool dir, bool &isBalanced)
 	// sibbling has near red child or far left red child 
 	else
 	{
+		isBalanced = true;
 		parentColor = parent->_color;
+		
 		if (isRednode(siblling->_child[!dir]))
 			parent = rotate(parent, dir);
 		else
@@ -220,11 +242,11 @@ Node *RBT::BalanceDelete(Node *node, bool dir, bool &isBalanced)
 		parent->_child[!dir]->_color= BLACK;
 		parent->_color = parentColor;
 
-		if (redsibllingRotation)
-			node->_child[dir] = parent; // with original color
-		else
-			node = parent;
-		isBalanced = true;
+		if (!redsibllingRotation) // parent == node
+			return parent;
+
+		node->_child[dir] = parent; // with original color
+		parent->_parent = node;
 	}
 	return node;
 }
