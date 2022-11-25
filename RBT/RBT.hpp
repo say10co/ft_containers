@@ -8,20 +8,22 @@
 #define LEFT 0
 #define RIGHT 1
 
-template<typename value_type, typename Alloc> 
+//template<typename value_type, typename Alloc> 
+template<typename value_type> 
 struct Node
 {
 	int _color;
 	value_type *_p;
 	struct Node *_parent;
 	struct Node **_child;
-	Alloc _allocator;
+	//Alloc _allocator;
 
 	Node() {}
 	Node(const value_type &c_pair, Node *parent)
 	{
-		this->_p =  _allocator.allocate(sizeof(value_type)) ;
-		this->_allocator.construct(this->_p, c_pair);
+		//this->_p =  _allocator.allocate(sizeof(value_type)) ;
+		this->_p = new value_type(c_pair);
+		//this->_allocator.construct(this->_p, c_pair);
 		this->_color = RED;
 
 		_child = new Node* [2];
@@ -32,15 +34,18 @@ struct Node
 	~Node()
 	{
 		std::cout << "~Node() dcalled" << std::endl;
-		this->_allocator.deallocate(this->_p, sizeof(value_type));
+		//this->_allocator.deallocate(this->_p, sizeof(value_type));
+		delete this->_p;
 		delete (_child);
 		_child = NULL;
 	}
 
 };
 
-template<typename value_type, typename Alloc> 
-void printBT(const std::string& prefix, const Node<value_type, Alloc>* node, bool isLeft)
+//template<typename value_type, typename Alloc> 
+template<typename value_type> 
+//void printBT(const std::string& prefix, const Node<value_type, Alloc>* node, bool isLeft)
+void printBT(const std::string& prefix, const Node<value_type>* node, bool isLeft)
 {
     if( node != nullptr )
     {
@@ -58,8 +63,10 @@ void printBT(const std::string& prefix, const Node<value_type, Alloc>* node, boo
     }
 }
 
-template<typename value_type, typename Alloc> 
-void printBT(const Node<value_type, Alloc>* node)
+//template<typename value_type, typename Alloc> 
+template<typename value_type> 
+//void printBT(const Node<value_type, Alloc>* node)
+void printBT(const Node<value_type>* node)
 {
     printBT("", node, false);
 }
@@ -68,7 +75,8 @@ template<typename value_type, typename Compare, typename Alloc>
 class RBT
 {
 	private:
-		typedef struct Node<value_type, Alloc> Node;
+		typedef struct Node<value_type> Node;
+		//typedef struct Node<value_type, Alloc> Node;
 		Node *_root;
 		Compare _comp_obj;
 
@@ -89,6 +97,7 @@ class RBT
 		void  delete_(value_type data);
 		Node *get_root() { return this->_root; }
 		void Insert(const value_type &value);
+		Node *getMin(); // uses internal pointer
 
 		RBT(): _root(NULL) {}
 
@@ -100,13 +109,24 @@ class RBT
 };
 
 	template<typename value_type, typename Compare, typename Alloc> 
+	Node<value_type> *RBT<value_type, Compare, Alloc>::getMin()
+	{	
+			Node* tmp_node;
+
+			tmp_node = this->_root;
+			while (tmp_node && tmp_node->_child[LEFT])
+				tmp_node = tmp_node->_child[LEFT];
+			return (tmp_node);
+	}
+	template<typename value_type, typename Compare, typename Alloc> 
 void RBT<value_type,Compare,Alloc>::Insert(const value_type &value)
 {
 	this->_root = Insert_helper(this->_root, NULL, value);
 	this->_root->_color = BLACK;
 }
 	template<typename value_type, typename Compare, typename Alloc> 
-Node<value_type,Alloc>* RBT<value_type,Compare,Alloc>::Insert_helper(Node *node, Node *parent, const value_type &value)
+//Node<value_type,Alloc>* RBT<value_type,Compare,Alloc>::Insert_helper(Node *node, Node *parent, const value_type &value)
+Node<value_type>* RBT<value_type,Compare,Alloc>::Insert_helper(Node *node, Node *parent, const value_type &value)
 {
 	bool side;
 
@@ -146,7 +166,8 @@ bool RBT<value_type,Compare,Alloc>::isRednode(const Node *node)
 }
 
 	template<typename value_type, typename Compare, typename Alloc> 
-Node<value_type,Alloc> *RBT<value_type,Compare,Alloc>::rotate(Node *node, bool dir)
+//Node<value_type,Alloc> *RBT<value_type,Compare,Alloc>::rotate(Node *node, bool dir)
+Node<value_type> *RBT<value_type,Compare,Alloc>::rotate(Node *node, bool dir)
 {
 	Node *new_root;
 	new_root = node->_child[!dir];
@@ -167,7 +188,8 @@ Node<value_type,Alloc> *RBT<value_type,Compare,Alloc>::rotate(Node *node, bool d
 }
 
 	template<typename value_type, typename Compare, typename Alloc> 
-Node<value_type,Alloc>* RBT<value_type,Compare,Alloc>::doubleRotate(Node *node, bool dir)
+//Node<value_type,Alloc>* RBT<value_type,Compare,Alloc>::doubleRotate(Node *node, bool dir)
+Node<value_type>* RBT<value_type,Compare,Alloc>::doubleRotate(Node *node, bool dir)
 {
 	// inverse rotation for midle node
 	node->_child[!dir] = rotate(node->_child[!dir], !dir);
@@ -184,7 +206,8 @@ void RBT<value_type,Compare,Alloc>::colorFlip(Node *node)
 }
 
 	template<typename value_type, typename Compare, typename Alloc> 
-Node<value_type,Alloc>* RBT<value_type,Compare,Alloc>::BalanceSubTree(Node *node, bool side)
+//Node<value_type,Alloc>* RBT<value_type,Compare,Alloc>::BalanceSubTree(Node *node, bool side)
+Node<value_type>* RBT<value_type,Compare,Alloc>::BalanceSubTree(Node *node, bool side)
 {
 	Node *child = node->_child[side];
 	Node *op_child = node->_child[!side];
@@ -208,7 +231,8 @@ Node<value_type,Alloc>* RBT<value_type,Compare,Alloc>::BalanceSubTree(Node *node
 }
 
 	template<typename value_type, typename Compare, typename Alloc> 
-Node<value_type,Alloc>* RBT<value_type,Compare,Alloc>::getMax(Node *node)
+//Node<value_type,Alloc>* RBT<value_type,Compare,Alloc>::getMax(Node *node)
+Node<value_type>* RBT<value_type,Compare,Alloc>::getMax(Node *node)
 {
 	if (!(node->_child[RIGHT]))
 		return (node);
@@ -220,13 +244,14 @@ Node<value_type,Alloc>* RBT<value_type,Compare,Alloc>::getMax(Node *node)
 void RBT<value_type,Compare,Alloc>::delete_(value_type data)
 {
 	bool isBalanced = false;
-	this->root = DeleteHelper(this->_root, data, isBalanced);
+	this->_root = DeleteHelper(this->_root, data, isBalanced);
 	if(this->_root != NULL)
 		this->_root->_color = BLACK;
 }
 
 	template<typename value_type, typename Compare, typename Alloc> 
-Node<value_type,Alloc>* RBT<value_type,Compare,Alloc>::DeleteHelper(Node *node, value_type data, bool &isBalanced)
+//Node<value_type,Alloc>* RBT<value_type,Compare,Alloc>::DeleteHelper(Node *node, value_type data, bool &isBalanced)
+Node<value_type>* RBT<value_type,Compare,Alloc>::DeleteHelper(Node *node, value_type data, bool &isBalanced)
 {
 	Node *child;
 	bool dir;
@@ -236,7 +261,7 @@ Node<value_type,Alloc>* RBT<value_type,Compare,Alloc>::DeleteHelper(Node *node, 
 		isBalanced = true;
 		return node;
 	}
-	if (node->_p->first == data._p->first)
+	if (node->_p->first == data.first)
 	{
 		// Has at most one child
 		if (!node->_child[LEFT] || !node->_child[RIGHT])
@@ -281,7 +306,7 @@ Node<value_type,Alloc>* RBT<value_type,Compare,Alloc>::DeleteHelper(Node *node, 
 
 	}
 
-	dir = this->_comp_obj(node->p->first, data._p->first); //(value > node->_key);//  left 0; right 1
+	dir = this->_comp_obj(node->_p->first, data.first); //(value > node->_key);//  left 0; right 1
 	//dir = (value > node->_key);//  left 0; right 1
 	node->_child[dir] = DeleteHelper(node->_child[dir], data, isBalanced);
 
@@ -291,7 +316,8 @@ Node<value_type,Alloc>* RBT<value_type,Compare,Alloc>::DeleteHelper(Node *node, 
 }
 
 	template<typename value_type, typename Compare, typename Alloc> 
-Node<value_type,Alloc>* RBT<value_type,Compare,Alloc>::BalanceDelete(Node *node, bool dir, bool &isBalanced)
+//Node<value_type,Alloc>* RBT<value_type,Compare,Alloc>::BalanceDelete(Node *node, bool dir, bool &isBalanced)
+Node<value_type>* RBT<value_type,Compare,Alloc>::BalanceDelete(Node *node, bool dir, bool &isBalanced)
 {
 	Node *parent;
 	Node *siblling;
