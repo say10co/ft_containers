@@ -327,30 +327,23 @@ Node<value_type>* RBT<value_type,Compare,Alloc>::BalanceDelete(Node *node, bool 
 	parent = node;
 	siblling = node->_child[!dir];
 	redsibllingRotation = false;
+
 	if (isRednode(siblling))
 	{
-		// make it black siblling case
-		// make sure to update nod's child[dir] after later rotation
 		node = rotate(node, dir);
-		siblling = parent->_child[!dir]; // now siblling is black
+		siblling = parent->_child[!dir];
 		redsibllingRotation =  true;
 	}
 	if (!siblling)
 		return node;
 
-	// case sibbling has tow balck children;
 	if (!isRednode(siblling->_child[LEFT]) && !isRednode(siblling->_child[RIGHT]))
 	{
-		// make it black and it's balanced
-		if (isRednode(node)) 
+		if (isRednode(parent)) 
 			isBalanced = true; 
-
-		//Else we get double black at node ; so  recurse to solve it;
-		// double black is then solved at root level
-		node->_color = BLACK;
+		parent->_color = BLACK;
 		siblling->_color = RED;
 	}
-	// sibbling has near red child or far left red child 
 	else
 	{
 		parentColor = parent->_color;
