@@ -1,3 +1,5 @@
+#ifndef ENABLE_IF_HPP 
+#define ENABLE_IF_HPP
 
 namespace ft
 {
@@ -50,3 +52,5 @@ namespace ft
 	template <> struct is_integral<unsigned long int> 		: public true_type {};
 	template <> struct is_integral<unsigned long long int>  : public true_type {};
 };
+
+#endif /*ENABLE_IF_HPP */ 

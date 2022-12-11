@@ -1,4 +1,4 @@
-#include "iterator_traits.hpp" 
+#include "../../utils/iterator_traits.hpp" 
 namespace ft
 {
 	template<typename Iterator>
@@ -205,13 +205,16 @@ namespace ft
 	template<typename type>
 		typename reverse_iterator<type>::reference reverse_iterator<type>::operator*()
 		{
-			return (*(this->_base_it - 1));
+			iterator_type it(this->_base_it);
+			it--;
+			return (*it);
+			//return (*(this->_base_it - 1));
 		}
 
 	template<typename type>
 		typename reverse_iterator<type>::pointer reverse_iterator<type>::operator->()
 		{
-			return &(operator*());
+			return &(this->operator*());
 		}
 
 	template<typename type>

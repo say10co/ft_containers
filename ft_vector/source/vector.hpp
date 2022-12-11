@@ -3,7 +3,7 @@
 
 #include <memory>
 #include <algorithm>
-#include "enable_if.tpp"
+#include "../../utils/enable_if.hpp"
 #include "iterators.tpp"
 #include "reverse_iterator.tpp"
 
@@ -129,6 +129,6 @@ namespace ft
 #include "constructors.tpp"
 #include "capacity.tpp"
 #include "accessors.tpp"	
-#include "pair.tpp"
+#include "../../utils/pair.hpp"
 
 #endif /* FT_VECTOR_HPP */
