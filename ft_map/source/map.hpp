@@ -37,7 +37,7 @@ namespace ft
 								//typedef iterator_traits<iterator>::difference_type difference_type;
 								typedef size_t size_type;
 
-						private:
+						public:
 
 							class value_compare
 							{
@@ -63,6 +63,10 @@ namespace ft
 								key_compare _comp;
 								size_type _size;
 								RBT_type *_root;
+
+								template <typename IteratorType>
+								IteratorType get_bound(const key_type &key, bool bound) const;
+
 
 
 								//template <class Iterator>
@@ -134,7 +138,7 @@ namespace ft
 								void print()
 								{
 										//if (this->_root)
-										printBT(this->_root->get_root()->_child[LEFT]);
+										//printBT(this->_root->get_root()->_child[LEFT]);
 								}
 				};
 };
@@ -154,14 +158,14 @@ namespace ft
 					:_allocator(alloc), _comp(comp), _size(0)//, value_comp(comp)
 				{
 						this->_root = new RBT_type();
-
-						while (first != last)
-						{
-								this->insert(*first);
-								first++;
-								//this->_size++;
-						}
-						this->_size = this->_root->GetTreesize();
+						this->insert(first, last);
+						//while (first != last)
+						//{
+						//		this->insert(*first);
+						//		first++;
+						//		//this->_size++;
+						//}
+						//this->_size = this->_root->GetTreesize();
 				}
 
 		template < class Key, class T, class Compare, class Alloc>
@@ -287,7 +291,9 @@ namespace ft
 				typename map<Key, T, Compare, Alloc>::iterator map<Key, T, Compare, Alloc>::insert(iterator position, const value_type &val)
 				{
 						(void) position;
-						return (base_insert(val));
+						Node<value_type> *ret = base_insert(val);
+						this->_size = this->_root->GetTreesize();
+						return (ret);
 				}
 
 		template < class Key, class T, class Compare, class Alloc>
@@ -300,7 +306,7 @@ namespace ft
 						node = base_insert(ft::make_pair(k, mapped_type()));
 						this->_size = this->_root->GetTreesize();
 
-						if (this->_size == tmp_size) // No insertion
+						if (this->_size == tmp_size && 0) // No insertion
 								node->_p->second = mapped_type();
 						return (node->_p->second);
 				}
@@ -326,7 +332,7 @@ namespace ft
 				void map<Key,T,Compare,Alloc>::erase(iterator first, iterator last)
 				{
 						while (first != last)
-								this->_root->delete_(*first);
+								this->_root->delete_(*first++);
 
 						this->_size = this->_root->GetTreesize();
 				}
@@ -375,36 +381,62 @@ namespace ft
 						Node<value_type> *const n = this->_root->find_node(key);
 
 						if (!n)
-								return (end());
+								return (this->end());
 						return (n);
 				}
 		template < class Key, class T, class Compare, class Alloc>
 				typename map<Key,T,Compare,Alloc>::size_type  map<Key,T,Compare,Alloc>::count(const key_type &key) const
 				{
-						return (this->find(key) == this->end());
+						return (this->find(key) != this->end());
 				}
+		template < class Key, class T, class Compare, class Alloc>
+			template <typename IteratorType>
+			IteratorType map<Key,T,Compare,Alloc>::get_bound(const key_type &key, bool bound) const
+			{
+				bool upper_bound(1);
+				bool lower_bound(0);
+
+				IteratorType begin = this->begin();
+				IteratorType end = this->end();
+				while (begin != end)
+				{
+					if (bound == upper_bound && this->_comp(key, begin->first))
+						return (begin);
+					if (bound == lower_bound && !this->_comp(begin->first, key))
+						return (begin);
+					begin++;
+				}	
+				return (end);
+
+			}
+		
 		template < class Key, class T, class Compare, class Alloc>
 				typename map<Key,T,Compare,Alloc>::iterator map<Key,T,Compare,Alloc>::lower_bound(const key_type &key)
 				{
-						Node<value_type> *n;
+						return (this->get_bound<iterator>(key, 0));
+						//Node<vanue_type> *n;
 
-						n = this->_root->get_bound(key, 0); // Zero(0) for lower
-						if (!n)
-								return (end());
-						return (n);
+						//n = this->_root->get_bound(key, 0); // Zero(0) for lower
+						//if (!n)
+						//		return (this->end());
+						//return (n);
 				}
 		template < class Key, class T, class Compare, class Alloc>
 				typename map<Key,T,Compare,Alloc>::const_iterator map<Key,T,Compare,Alloc>::lower_bound(const key_type &key) const
 				{
-						Node<value_type> * const n = this->_root->get_bound(key, 0); // Zero(0) for lower
-						if (!n)
-								return (end());
-						return (n);
+						return (this->get_bound<const_iterator>(key, 0));
+						//Node<value_type> * const n = this->_root->get_bound(key, 0); // Zero(0) for lower
+
+						//if (!n)
+						//		return (end());
+						//return (n);
 
 				}
 		template < class Key, class T, class Compare, class Alloc>
 				typename map<Key,T,Compare,Alloc>::iterator map<Key,T,Compare,Alloc>::upper_bound(const key_type &key)
 				{
+
+						return (this->get_bound<iterator>(key, 1));
 						Node<value_type> *n;
 
 						n = this->_root->get_bound(key, 1); // One(0) for upper
@@ -417,6 +449,7 @@ namespace ft
 		template < class Key, class T, class Compare, class Alloc>
 				typename map<Key,T,Compare,Alloc>::const_iterator map<Key,T,Compare,Alloc>::upper_bound(const key_type &key) const
 				{
+						return (this->get_bound<const_iterator>(key, 1));
 						Node<value_type> * const n = this->_root->get_bound(key, 1); // One(1) for upper
 						if (!n)
 								return (end());
@@ -459,7 +492,7 @@ namespace ft
 		template < class Key, class T, class Compare, class Alloc>
 				bool operator== ( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs )
 				{
-						if (!(lhs.size() != rhs.size()))
+						if (lhs.size() != rhs.size())
 								return (false);
 						return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 				}
@@ -489,6 +522,11 @@ namespace ft
 				{
 						return (!(lhs < rhs));
 				}
+		template <class Key, class T, class Compare, class Alloc>
+		void swap (map<Key,T,Compare,Alloc>& x, map<Key,T,Compare,Alloc>& y)
+		{
+			x.swap(y);
+		}
 };
 
 #endif /* MAP_HPP */

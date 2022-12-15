@@ -3,6 +3,9 @@
 #include "../../ft_map/source/map.hpp"
 #include "../../utils/pair.hpp"
 #include <unistd.h>
+#include <map>
+
+#define EQUAL(x) ((x) ? (std::cout << "\033[1;32mAC\033[0m\n") : (std::cout << "\033[1;31mWA\033[0m\n"))
 
 		template <typename value_type>
 void check_parent(const Node<value_type> *node)
@@ -33,6 +36,35 @@ int main(int ac,  char	**av)
 		(void)av;
 
 		{
+				std::map<char, std::string> m;
+				ft::map<char, std::string> ft_m;
+
+				m['a'] = "an element";
+				m['b'] = "another element";
+				m['c'] = m['b'];
+				m['a'] = "test";
+
+				ft_m['a'] = "an element";
+				std::cout << "ft_m['a'] " << ft_m['a'] << std::endl;
+				return 1;
+				ft_m['b'] = "another element";
+				ft_m['c'] = ft_m['b'];
+				ft_m['a'] = "test";
+				std::cout << "std::map : " << m['a'] << m['b'] <<  m['c']<< std::endl;
+				std::cout << "ft::map : " << ft_m['a'] << ft_m['b']<< ft_m['c']<< std::endl;
+
+				EQUAL(m['a'] == ft_m['a'] && m['b'] == ft_m['b'] && m['c'] == ft_m['c'] && m.size() == ft_m.size());
+				return 1;
+
+				ft::map<int, std::string > my_map;
+				for (size_t i = 0; i < 1e6; i++)
+				{
+						my_map[i] = "stack_overflow";	
+				}
+				return (1);
+
+		}
+		{
 				ft::pair<int, std::string > arr[] = {
 						ft::make_pair(1, "42"),
 						ft::make_pair(2, "43"),
@@ -52,10 +84,10 @@ int main(int ac,  char	**av)
 				{
 						std::cout << "my_map size :"<< my_map.size() << std::endl;
 						std::cout << "my_map " << std::endl;
-						my_map.print();
+						//my_map.print();
 						std::cout << "my_second_map size :"<< my_second_map.size() << std::endl;
 						std::cout << "my_second_map " << std::endl;
-						my_second_map.print();
+						//						my_second_map.print();
 				}
 
 				my_second_map.swap(my_map);
@@ -68,7 +100,7 @@ int main(int ac,  char	**av)
 						my_map.print();
 						std::cout << "my_second_map size :"<< my_second_map.size() << std::endl;
 						std::cout << "my_second_map " << std::endl;
-						my_second_map.print();
+						//						my_second_map.print();
 				}
 				std::cout << "found value :" <<   my_map.find(7)->second << std::endl;
 				my_second_map.clear();
@@ -84,15 +116,15 @@ int main(int ac,  char	**av)
 				my_second_map.insert(ft::make_pair(1, "shiiit"));
 				my_second_map.insert(my_second_map.begin(), ft::make_pair(1, "shiiit"));
 				my_map.insert(ft::make_pair(1, "shiiit"));
-				my_map.print();
-				my_second_map.print();
+				//				my_map.print();
+				//				my_second_map.print();
 				my_map[1] = "shiiiiit";
 				my_map[0] = "zerooo";
-				my_map.print();
+				//				my_map.print();
 				my_map.erase(1);
 				my_map.erase(0);
 				std::cout << "After erase call" << std::endl;
-				my_map.print();
+				//				my_map.print();
 				typedef ft::map<int, std::string>::const_iterator c_iterator;
 				for (c_iterator it = my_map.begin(); it != my_map.end(); )
 				{
@@ -101,7 +133,7 @@ int main(int ac,  char	**av)
 						my_map.erase(it++);
 				}
 				std::cout << "After erasing all" << std::endl;
-				my_map.print();
+				//				my_map.print();
 				std::cout << "my_map size : " << my_map.size() << std::endl;
 				my_map.swap(my_second_map);
 				std::cout << "my_map size : " << my_map.size() << std::endl;
@@ -191,7 +223,7 @@ int main(int ac,  char	**av)
 		tree.insert(arr[5]); // 6
 		tree.erase(3); 
 		tree.insert(ft::make_pair(8, 33)); // 8
-		tree.print();
+										   //		tree.print();
 		ft::map<int, int>::iterator it = tree.begin();
 		ft::map<int, int>::iterator end = tree.end();
 		while (it != end)
