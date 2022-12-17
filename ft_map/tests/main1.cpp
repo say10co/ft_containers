@@ -7,8 +7,8 @@
 
 #define EQUAL(x) ((x) ? (std::cout << "\033[1;32mAC\033[0m\n") : (std::cout << "\033[1;31mWA\033[0m\n"))
 
-		template <typename value_type>
-void check_parent(const Node<value_type> *node)
+		template <typename value_type, typename Alloc>
+void check_parent(const Node<value_type, Alloc> *node)
 {
 		if (!node)
 				return ;
@@ -35,6 +35,17 @@ int main(int ac,  char	**av)
 		(void)ac;
 		(void)av;
 
+		{
+  			ft::map<char,int> mymap;
+  			// Iterator with default comparison object std::less
+  			ft::map<char,int>::iterator it;
+  			
+  			// Iterator with comparison object std::grater
+  			ft::map<char,int, std::greater<int> >::iterator my_it(mymap.begin()); // Compiles OK 
+			 (void) my_it;
+			 return 1;
+
+		}
 		{
 				std::map<char, std::string> m;
 				ft::map<char, std::string> ft_m;
@@ -246,7 +257,7 @@ int main(int ac,  char	**av)
 		//tree.delete_(arr[1]);
 		//tree.delete_(arr[4]);
 		//tree.delete_(arr[3]);
-		check_parent(tree.get_root()->get_root());
+		//check_parent(tree.get_root()->get_root());
 		//printBT(tree.get_root());
 }
 }
