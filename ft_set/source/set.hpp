@@ -6,7 +6,7 @@
 #include "../../utils/pair.hpp"
 #include "../../utils/enable_if.hpp"
 #include "../../utils/iterator_traits.hpp"
-#include "../RBT.hpp"
+#include "../../RBT/RBT_set.hpp"
 #include "iterator.tpp"
 #include "reverse_iterator.tpp"
 
@@ -23,7 +23,7 @@ namespace ft
 								typedef Compare value_compare;
 								typedef Compare key_compare;
 
-								typedef RBT<value_type, Compare, Alloc> _Tree_type; 
+								typedef RBT_set<value_type, Compare, Alloc> _Tree_type; 
 
 								typedef Alloc allocator_type;
 								typedef typename allocator_type::reference reference;
@@ -59,7 +59,7 @@ namespace ft
 								//};
 
 						private:
-								typedef RBT<value_type, Compare, Alloc> RBT_type;
+								typedef RBT_set<value_type, Compare, Alloc> RBT_type;
 
 								allocator_type _allocator;
 								key_compare _comp;
