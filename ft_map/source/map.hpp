@@ -290,7 +290,7 @@ namespace ft
 		template < class Key, class T, class Compare, class Alloc>
 				void map<Key,T,Compare,Alloc>::clear()
 				{
-						this->_root->deleteRBT(this->_root->get_root()->_child[LEFT]);
+						this->_root->eleteRBT();
 						this->_size = 0;
 				}
 		template < class Key, class T, class Compare, class Alloc>

@@ -145,28 +145,10 @@ namespace ft
 						if (x._size)
 							this->_root->copy_tree(*(x._root));
 						this->_size = x._size;
-						//std::cout << "x.size() " << x._size << std::endl;
-						//std::cout << "this->_size " << this->_size << std::endl;
 						this->_comp = x._comp;
 						this->_allocator = x._allocator;
-						//std::cout <<  "operator = called" << std::endl;
-						//std::cout << "begin : " << this->begin()->first << std::endl;
 
-						//while (begin != end)
-						//		this->insert(*begin++);
 						return (*this);
-
-
-						//const_iterator begin = x.begin();
-						//const_iterator end = x.end();
-						//delete (this->_root);
-						//this->_root = new RBT_type();
-						//while (begin != end)
-						//		this->insert(*begin++);
-						//this->_size = x._size;
-						//this->_comp = x._comp;
-						//this->_allocator = x._allocator;
-						//return (*this);
 				}
 
 		template <class Key, class Compare, class Alloc>
@@ -276,7 +258,7 @@ namespace ft
 		template <class Key, class Compare, class Alloc>
 				void set<Key,Compare,Alloc>::clear()
 				{
-						this->_root->deleteRBT(this->_root->get_root()->_child[LEFT]);
+						this->_root->deleteRBT();
 						this->_size = 0;
 				}
 		template <class Key, class Compare, class Alloc>

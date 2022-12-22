@@ -66,8 +66,9 @@ class RBT
 
 		const _NodeType *get_root() const { return &this->_root; }
 		void  delete_(value_type data);
-		void deleteRBT(_NodeType *&node);
-		void delete_all(_NodeType *&node);
+		//void deleteRBT(_NodeType *&node);
+		void deleteRBT();
+		void delete_all(_NodeType *node);
 
 		_NodeType *get_root() { return &this->_root; }
 		size_type GetTreesize() { return this->_size; }
@@ -281,21 +282,24 @@ Node<value_type,Alloc>* RBT<value_type,Compare, Alloc>::Insert_helper(_NodeType 
 }
 
 		template<typename value_type, typename Compare, typename Alloc> 
-void RBT<value_type,Compare,Alloc>::deleteRBT(_NodeType *&node)
+//void RBT<value_type,Compare,Alloc>::deleteRBT(_NodeType *&node)
+void RBT<value_type,Compare,Alloc>::deleteRBT()
 {
 		this->_size = 0;
-		delete_all(node);
+		
+		delete_all(this->_root._child[LEFT]);
+		this->_root._child[LEFT] = NULL;
+		this->_root._child[RIGHT] = NULL;
 }
 
 		template<typename value_type, typename Compare, typename Alloc> 
-void RBT<value_type,Compare,Alloc>::delete_all(_NodeType *&node)
+void RBT<value_type,Compare,Alloc>::delete_all(_NodeType *node)
 {
 		if (node == NULL)
 				return;
-		deleteRBT(node->_child[LEFT]);
-		deleteRBT(node->_child[RIGHT]);
+		delete_all(node->_child[LEFT]);
+		delete_all(node->_child[RIGHT]);
 		delete node;
-		node = NULL;
 }
 
 		template<typename value_type, typename Compare, typename Alloc> 
@@ -304,7 +308,7 @@ RBT<value_type,Compare,Alloc>::~RBT()
 		if (this->_size != 0)
 		{
 			this->_size = 0;
-			deleteRBT(this->_root._child[LEFT]);
+			deleteRBT();
 		}
 }
 
