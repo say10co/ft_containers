@@ -27,13 +27,15 @@ template<typename value_type, typename Compare, typename Alloc>
 typename RBT_set<value_type,Compare,Alloc>::_NodeType *RBT_set<value_type,Compare,Alloc>::find_node(const value_type &key) const
 {
 		bool side;
+		bool cond;
 		_NodeType *node = this->_root._child[RIGHT];
 
 		while (node)
 		{
-				if (!this->compare_key(*(node->_p), key) && !this->compare_key(key, *(node->_p)))
+				cond =  this->compare_key(*(node->_p), key);
+				if (!cond && !this->compare_key(key, *(node->_p)))
 						return (node);
-				side = this->compare_key(*(node->_p), key);
+				side = cond;
 				node = node->_child[side];
 		}
 		return (NULL);

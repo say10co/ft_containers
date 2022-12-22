@@ -67,6 +67,15 @@ namespace ft
 								RBT_type *_root;
 
 						public:
+								template <typename T1>
+								void my_swap(T1 &l, T1 &r)
+								{
+									T1 tmp;
+									
+									tmp = l;
+									l = r;
+									r = tmp;
+								}
 
 								// Capacity
 								bool empty() const;
@@ -118,13 +127,9 @@ namespace ft
 										void insert (InputIterator first, InputIterator last);
 								allocator_type get_allocator() const;
 
-
 								_NodeType *base_insert(const value_type& val)
 								{
 										return ( this->_root->Insert(val));
-								}
-								void print()
-								{
 								}
 				};
 };
@@ -282,15 +287,15 @@ namespace ft
 		template < class Key, class T, class Compare, class Alloc>
 				void map<Key,T,Compare,Alloc>::swap(map &x)
 				{
-						std::swap(this->_size, x._size);
-						std::swap(this->_root, x._root);
-						std::swap(this->_comp, x._comp);
-						std::swap(this->_allocator, x._allocator);
+						my_swap(this->_size, x._size);
+						my_swap(this->_root, x._root);
+						my_swap(this->_comp, x._comp);
+						my_swap(this->_allocator, x._allocator);
 				}
 		template < class Key, class T, class Compare, class Alloc>
 				void map<Key,T,Compare,Alloc>::clear()
 				{
-						this->_root->eleteRBT();
+						this->_root->deleteRBT();
 						this->_size = 0;
 				}
 		template < class Key, class T, class Compare, class Alloc>

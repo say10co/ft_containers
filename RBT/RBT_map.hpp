@@ -26,14 +26,16 @@ template<typename value_type, typename Compare, typename Alloc>
 typename RBT_map<value_type,Compare,Alloc>::_NodeType *RBT_map<value_type,Compare,Alloc>::find_node(const typename  value_type::first_type &key) const
 {
 		bool side;
+		bool cond;
 		_NodeType *node = this->_root._child[RIGHT];
 		value_type p_key(key, typename value_type::second_type());
 
 		while (node)
 		{
-				if (!this->compare_key(*(node->_p), p_key) && !this->compare_key(p_key, *(node->_p)))
+				cond = this->compare_key(*(node->_p), p_key);
+				if (!cond && !this->compare_key(p_key, *(node->_p)))
 						return (node);
-				side = this->compare_key(*(node->_p), p_key);
+				side = cond;
 				node = node->_child[side];
 		}
 		return (NULL);
