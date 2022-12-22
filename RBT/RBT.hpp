@@ -31,6 +31,39 @@ class RBT
 
 	public:
 
+		void copy_tree(const RBT &tree)
+		{
+			_NodeType *root_node = tree._root._child[LEFT];
+
+			this->_size = tree._size;
+			this->_root._child[LEFT] = copy(root_node, &this->_root);
+			this->_root._child[RIGHT] = this->_root._child[LEFT];
+			
+		}	
+		_NodeType *copy(const _NodeType *root_node, _NodeType *parent )
+		{
+			_NodeType *new_node;
+
+			if (!root_node)
+				return NULL;
+			new_node = new _NodeType(*(root_node->_p), parent);
+			new_node->_color = root_node->_color;
+			new_node->_child[RIGHT] = copy(root_node->_child[RIGHT], new_node);
+			new_node->_child[LEFT] = copy(root_node->_child[LEFT], new_node);
+			return (new_node);
+		}
+
+		template<typename key_type>
+		_NodeType *upper_bound(const key_type  &key);
+		template<typename key_type>
+		const _NodeType *upper_bound(const key_type  &key) const;
+
+		template<typename key_type>
+		_NodeType *lower_bound(const key_type  &key);
+		template<typename key_type>
+		const _NodeType *lower_bound(const key_type  &key) const;
+
+
 		const _NodeType *get_root() const { return &this->_root; }
 		void  delete_(value_type data);
 		void deleteRBT(_NodeType *&node);
@@ -53,10 +86,103 @@ class RBT
 
 };
 
+	template<typename value_type, typename Compare, typename Alloc>
+		template<typename key_type>
+const Node<value_type, Alloc> *RBT<value_type, Compare, Alloc>::lower_bound(const key_type  &key) const
+{
+	_NodeType * curr = this->_root._child[LEFT];
+	const _NodeType *lower_bound = &(this->_root);
+
+	while (curr)
+	{
+		if (!this->compare_key(*(curr->_p), key) && !this->compare_key(key, *(curr->_p)))
+		{
+			lower_bound = curr;
+			break ;
+		}
+		if (this->compare_key(key, *(curr->_p)) == true) 
+		{
+			lower_bound = curr;
+			curr = curr->_child[LEFT];
+		}
+		else
+			curr = curr->_child[RIGHT];
+	}
+	return (lower_bound);
+}
+
+	template<typename value_type, typename Compare, typename Alloc>
+		template<typename key_type>
+const Node<value_type, Alloc> *RBT<value_type, Compare, Alloc>::upper_bound(const key_type  &key) const
+{
+	_NodeType * curr = this->_root._child[LEFT];
+	const _NodeType *upper_bound = &(this->_root);
+
+	while (curr)
+	{
+		if (this->compare_key(key, *(curr->_p)) == true)
+		{
+			upper_bound = curr;
+			curr = curr->_child[LEFT];
+		}
+		else
+			curr = curr->_child[RIGHT];
+	}
+	return (upper_bound);
+}
+
+
+
+	template<typename value_type, typename Compare, typename Alloc>
+		template<typename key_type>
+Node<value_type, Alloc> *RBT<value_type, Compare, Alloc>::lower_bound(const key_type  &key)
+{
+	_NodeType * curr = this->_root._child[LEFT];
+	_NodeType *lower_bound = &(this->_root);
+
+	while (curr)
+	{
+		if (!this->compare_key(*(curr->_p), key) && !this->compare_key(key, *(curr->_p)))
+		{
+			lower_bound = curr;
+			break ;
+		}
+		if (this->compare_key(key, *(curr->_p)) == true) 
+		{
+			lower_bound = curr;
+			curr = curr->_child[LEFT];
+		}
+		else
+			curr = curr->_child[RIGHT];
+	}
+	return (lower_bound);
+}
+
+	template<typename value_type, typename Compare, typename Alloc>
+		template<typename key_type>
+Node<value_type, Alloc> *RBT<value_type, Compare, Alloc>::upper_bound(const key_type  &key)
+{
+	_NodeType * curr = this->_root._child[LEFT];
+	_NodeType *upper_bound = &(this->_root);
+
+	while (curr)
+	{
+		if (this->compare_key(key, *(curr->_p)) == true)
+		{
+			upper_bound = curr;
+			curr = curr->_child[LEFT];
+		}
+		else
+			curr = curr->_child[RIGHT];
+	}
+	return (upper_bound);
+}
+
+
 
 	template<typename value_type, typename Compare, typename Alloc>
 RBT<value_type, Compare, Alloc>::RBT()
-		:_size(0)
+		:_root(), _comp_obj(), _size(0)
 {
 }
 

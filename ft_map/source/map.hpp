@@ -6,7 +6,6 @@
 #include "../../utils/pair.hpp"
 #include "../../utils/enable_if.hpp"
 #include "../../utils/iterator_traits.hpp"
-//#include "../../RBT/RBT.hpp"
 #include "../../RBT/RBT_map.hpp"
 #include "iterator.tpp"
 #include "reverse_iterator.tpp"
@@ -66,9 +65,6 @@ namespace ft
 								key_compare _comp;
 								size_type _size;
 								RBT_type *_root;
-
-								template <typename IteratorType>
-										IteratorType get_bound(const key_type &key, bool bound) const;
 
 						public:
 
@@ -162,13 +158,10 @@ namespace ft
 		template < class Key, class T, class Compare, class Alloc>
 				map<Key,T,Compare,Alloc> &map<Key,T,Compare,Alloc>::operator=(const map& x)
 				{
-
-						const_iterator begin = x.begin();
-						const_iterator end = x.end();
 						delete (this->_root);
 						this->_root = new RBT_type();
-						while (begin != end)
-								this->insert(*begin++);
+						if (x._size)
+							this->_root->copy_tree(*(x._root));
 						this->_size = x._size;
 						this->_comp = x._comp;
 						this->_allocator = x._allocator;
@@ -340,65 +333,39 @@ namespace ft
 						return (this->find(key) != this->end());
 				}
 		template < class Key, class T, class Compare, class Alloc>
-				template <typename IteratorType>
-				IteratorType map<Key,T,Compare,Alloc>::get_bound(const key_type &key, bool bound) const
-				{
-						bool upper_bound(1);
-						bool lower_bound(0);
-
-						IteratorType begin = this->begin();
-						IteratorType end = this->end();
-						while (begin != end)
-						{
-								if (bound == upper_bound && this->_comp(key, begin->first))
-										return (begin);
-								if (bound == lower_bound && !this->_comp(begin->first, key))
-										return (begin);
-								begin++;
-						}	
-						return (end);
-
-				}
-
-		template < class Key, class T, class Compare, class Alloc>
 				typename map<Key,T,Compare,Alloc>::iterator map<Key,T,Compare,Alloc>::lower_bound(const key_type &key)
 				{
-						return (this->get_bound<iterator>(key, 0));
+						return (this->_root->get_bound(key, 0));
 				}
 		template < class Key, class T, class Compare, class Alloc>
 				typename map<Key,T,Compare,Alloc>::const_iterator map<Key,T,Compare,Alloc>::lower_bound(const key_type &key) const
 				{
-						return (this->get_bound<const_iterator>(key, 0));
+						return (this->_root->get_bound(key, 0));
 
 				}
 		template < class Key, class T, class Compare, class Alloc>
 				typename map<Key,T,Compare,Alloc>::iterator map<Key,T,Compare,Alloc>::upper_bound(const key_type &key)
 				{
-						return (this->get_bound<iterator>(key, 1));
+						return (this->_root->get_bound(key, 1));
 				}
 
 		template < class Key, class T, class Compare, class Alloc>
 				typename map<Key,T,Compare,Alloc>::const_iterator map<Key,T,Compare,Alloc>::upper_bound(const key_type &key) const
 				{
-						return (this->get_bound<const_iterator>(key, 1));
-						_NodeType * const n = this->_root->get_bound(key, 1); // One(1) for upper
-						if (!n)
-								return (this->end());
-
-						return (const_iterator(n));
+						return (this->_root->get_bound(key, 1));
 
 				}
 		template < class Key, class T, class Compare, class Alloc>
 				ft::pair<typename map<Key,T,Compare,Alloc>::const_iterator,typename map<Key,T,Compare,Alloc>::const_iterator> 
 				map<Key,T,Compare,Alloc>::equal_range (const key_type& k) const
 				{
-						return (ft::make_pair(this->lower_bound(k), this->upper_bound(k)));
+						return (ft::make_pair(const_iterator(this->_root->get_bound(k, 0)), const_iterator( this->_root->get_bound(k, 1))));
 				}
 		template < class Key, class T, class Compare, class Alloc>
 				ft::pair<typename map<Key,T,Compare,Alloc>::iterator,typename map<Key,T,Compare,Alloc>::iterator> 
 				map<Key,T,Compare,Alloc>::equal_range (const key_type& k)
 				{
-						return (ft::make_pair(this->lower_bound(k), this->upper_bound(k)));
+						return (ft::make_pair(iterator(this->_root->get_bound(k, 0)), iterator( this->_root->get_bound(k, 1))));
 				}
 		template < class Key, class T, class Compare, class Alloc>
 				typename map<Key,T,Compare,Alloc>::reverse_iterator map<Key,T,Compare,Alloc>::rbegin()

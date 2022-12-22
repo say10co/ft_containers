@@ -36,14 +36,33 @@ int main(int ac,  char	**av)
 		(void)av;
 
 		{
-  			ft::map<char,int> mymap;
-  			// Iterator with default comparison object std::less
-  			ft::map<char,int>::iterator it;
-  			
-  			// Iterator with comparison object std::grater
+			ft::pair<int, std::string > arr[] = {
+					ft::make_pair(1, "42"),
+					ft::make_pair(2, "43"),
+					ft::make_pair(3, "44"),
+					ft::make_pair(4, "45"),
+					ft::make_pair(5, "46"),
+					ft::make_pair(6, "47"),
+					ft::make_pair(7, "48")
+
+			};
+			ft::map<int, std::string > my_map(arr, arr+sizeof(arr)/ sizeof(arr[0]));
+			ft::map<int, std::string> my_second_map = my_map;
+			ft::map<int, std::string>::iterator it = my_second_map.begin();
+			for (; it != my_second_map.end(); it++)
+				std::cout << it->first << " " << it->second << std::endl;	
+			return (1);
+                                                                         	
+		}                                                                	
+		{                                                                	
+  			ft::map<char,int> mymap;                                     	
+  			// Iterator with default comparison object std::less         	
+  			ft::map<char,int>::iterator it;                              	
+  			                                                             	
+  			// Iterator with comparison object std::grater               
   			ft::map<char,int, std::greater<int> >::iterator my_it(mymap.begin()); // Compiles OK 
-			 (void) my_it;
-			 return 1;
+			 (void) my_it;                                               	
+			 return 1;                                                   	
 
 		}
 		{

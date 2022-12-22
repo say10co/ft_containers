@@ -9,6 +9,7 @@ class RBT_set : public RBT<value_type, Compare, Alloc>
 	protected:
 		typedef typename RBT<value_type, Compare, Alloc>::_NodeType  _NodeType;
 		typedef typename RBT<value_type, Compare, Alloc>::size_type  size_type;
+		typedef value_type									key_type;
 
 		bool compare_key(const value_type &lhs, const value_type &rhs) const
 		{
@@ -17,7 +18,8 @@ class RBT_set : public RBT<value_type, Compare, Alloc>
 
 	public:
 		_NodeType *find_node(const value_type &key) const;
-		_NodeType *get_bound(const value_type &key, bool bound) const;
+		_NodeType *get_bound(const value_type &key, bool bound);
+		const _NodeType *get_bound(const value_type &key, bool bound) const;
 
 };
 
@@ -38,26 +40,23 @@ typename RBT_set<value_type,Compare,Alloc>::_NodeType *RBT_set<value_type,Compar
 }
 
 template<typename value_type, typename Compare, typename Alloc> 
-typename RBT_set<value_type,Compare,Alloc>::_NodeType *RBT_set<value_type,Compare,Alloc>::get_bound(const value_type &key, bool bound) const
+typename RBT_set<value_type,Compare,Alloc>::_NodeType *RBT_set<value_type,Compare,Alloc>::get_bound(const value_type &key, bool bound) 
 {
-		bool side;
 		bool upper(1);
-		bool cond;
 
-		_NodeType *node = this->_root._child[RIGHT];
+		if (bound == upper)
+			return(this->upper_bound(key));
+		return (this->lower_bound(key));
+}
 
-		while (node)
-		{
-				cond = this->compare_key(key, *(node->_p));
-				if (bound == upper && cond)
-						return (node);
-				else if (bound == 0 && !cond)
-						return (node);
+template<typename value_type, typename Compare, typename Alloc> 
+const typename RBT_set<value_type,Compare,Alloc>::_NodeType *RBT_set<value_type,Compare,Alloc>::get_bound(const value_type &key, bool bound) const
+{
+		bool upper(1);
 
-				side = !bound;
-				node = node->_child[side];
-		}
-		return (NULL);
+		if (bound == upper)
+			return(this->upper_bound(key));
+		return (this->lower_bound(key));
 }
 
 #endif /* RBT_SET1_HPP */

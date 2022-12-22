@@ -40,24 +40,6 @@ namespace ft
 								typedef rb_tree_reverse_iterator<const_iterator> const_reverse_iterator;	
 								typedef size_t size_type;
 
-						public:
-
-								//class value_compare : public std::binary_function<value_type,value_type,bool>
-								//{
-								//		friend class set;
-								//		protected:
-								//			Compare comp;
-								//			value_compare (Compare c) : comp(c) {}
-								//		public:
-								//			typedef bool result_type;
-								//			typedef value_type first_argument_type;
-								//			typedef value_type second_argument_type;
-								//			bool operator() (const value_type& x, const value_type& y) const
-								//			{
-								//					return comp(x, y);
-								//			}
-								//};
-
 						private:
 								typedef RBT_set<value_type, Compare, Alloc> RBT_type;
 
@@ -65,9 +47,6 @@ namespace ft
 								key_compare _comp;
 								size_type _size;
 								RBT_type *_root;
-
-								template <typename IteratorType>
-										IteratorType get_bound(const key_type &key, bool bound) const;
 
 						public:
 
@@ -161,17 +140,33 @@ namespace ft
 		template <class Key, class Compare, class Alloc>
 				set<Key,Compare,Alloc> &set<Key,Compare,Alloc>::operator=(const set& x)
 				{
-
-						const_iterator begin = x.begin();
-						const_iterator end = x.end();
 						delete (this->_root);
 						this->_root = new RBT_type();
-						while (begin != end)
-								this->insert(*begin++);
+						if (x._size)
+							this->_root->copy_tree(*(x._root));
 						this->_size = x._size;
+						//std::cout << "x.size() " << x._size << std::endl;
+						//std::cout << "this->_size " << this->_size << std::endl;
 						this->_comp = x._comp;
 						this->_allocator = x._allocator;
+						//std::cout <<  "operator = called" << std::endl;
+						//std::cout << "begin : " << this->begin()->first << std::endl;
+
+						//while (begin != end)
+						//		this->insert(*begin++);
 						return (*this);
+
+
+						//const_iterator begin = x.begin();
+						//const_iterator end = x.end();
+						//delete (this->_root);
+						//this->_root = new RBT_type();
+						//while (begin != end)
+						//		this->insert(*begin++);
+						//this->_size = x._size;
+						//this->_comp = x._comp;
+						//this->_allocator = x._allocator;
+						//return (*this);
 				}
 
 		template <class Key, class Compare, class Alloc>
@@ -244,21 +239,6 @@ namespace ft
 						this->_size = this->_root->GetTreesize();
 						return (iterator(ret));
 				}
-
-		//template <class Key, class Compare, class Alloc>
-		//		typename set<Key, Compare, Alloc>::value_type& set<Key, Compare, Alloc>::operator[] (const key_type& k)
-		//		{
-		//				_NodeType *node;
-		//				size_type tmp_size;
-
-		//				tmp_size = this->_size;
-		//				node = base_insert(k);
-		//				this->_size = this->_root->GetTreesize();
-
-		//				if (this->_size == tmp_size && 0) // No insertion
-		//						node->_p->second = value_type();
-		//				return (node->_p->second);
-		//		}
 
 		template <class Key, class Compare, class Alloc>
 				void set<Key,Compare,Alloc>::erase(iterator position)
@@ -338,54 +318,27 @@ namespace ft
 				{
 						return (this->find(key) != this->end());
 				}
-		template <class Key, class Compare, class Alloc>
-				template <typename IteratorType>
-				IteratorType set<Key,Compare,Alloc>::get_bound(const key_type &key, bool bound) const
-				{
-						bool upper_bound(1);
-						bool lower_bound(0);
-
-						IteratorType begin = this->begin();
-						IteratorType end = this->end();
-						while (begin != end)
-						{
-								if (bound == upper_bound && this->_comp(key, *begin))
-										return (begin);
-								if (bound == lower_bound && !this->_comp(*begin, key))
-										return (begin);
-								begin++;
-						}	
-						return (end);
-
-				}
 
 		template <class Key, class Compare, class Alloc>
 				typename set<Key,Compare,Alloc>::iterator set<Key,Compare,Alloc>::lower_bound(const key_type &key)
 				{
-						return (this->get_bound<iterator>(key, 0));
+						return (this->_root->get_bound(key, 0));
 				}
 		template <class Key, class Compare, class Alloc>
 				typename set<Key,Compare,Alloc>::const_iterator set<Key,Compare,Alloc>::lower_bound(const key_type &key) const
 				{
-						return (this->get_bound<const_iterator>(key, 0));
-
+						return (this->_root->get_bound(key, 0));
 				}
 		template <class Key, class Compare, class Alloc>
 				typename set<Key,Compare,Alloc>::iterator set<Key,Compare,Alloc>::upper_bound(const key_type &key)
 				{
-						return (this->get_bound<iterator>(key, 1));
+						return (this->_root->get_bound(key, 1));
 				}
 
 		template <class Key, class Compare, class Alloc>
 				typename set<Key,Compare,Alloc>::const_iterator set<Key,Compare,Alloc>::upper_bound(const key_type &key) const
 				{
-						return (this->get_bound<const_iterator>(key, 1));
-						_NodeType * const n = this->_root->get_bound(key, 1); // One(1) for upper
-						if (!n)
-								return (this->end());
-
-						return (const_iterator(n));
-
+						return (this->_root->get_bound(key, 1));
 				}
 		template <class Key, class Compare, class Alloc>
 				ft::pair<typename set<Key,Compare,Alloc>::const_iterator,typename set<Key,Compare,Alloc>::const_iterator> 

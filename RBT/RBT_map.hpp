@@ -8,6 +8,7 @@ class RBT_map : public RBT<value_type, Compare, Alloc>
 	protected:
 		typedef typename RBT<value_type, Compare, Alloc>::_NodeType  _NodeType;
 		typedef typename RBT<value_type, Compare, Alloc>::size_type  size_type;
+		typedef const typename  value_type::first_type  key_type;
 
 		bool compare_key(const value_type &lhs, const value_type &rhs) const
 		{
@@ -16,7 +17,8 @@ class RBT_map : public RBT<value_type, Compare, Alloc>
 
 	public:
 		_NodeType *find_node(const typename value_type::first_type &key) const;
-		_NodeType *get_bound(const typename  value_type::first_type &key, bool bound) const;
+		_NodeType *get_bound(const typename  value_type::first_type &key, bool bound);
+		const _NodeType *get_bound(const typename  value_type::first_type &key, bool bound) const;
 
 };
 
@@ -38,27 +40,27 @@ typename RBT_map<value_type,Compare,Alloc>::_NodeType *RBT_map<value_type,Compar
 }
 
 template<typename value_type, typename Compare, typename Alloc> 
-typename RBT_map<value_type,Compare,Alloc>::_NodeType *RBT_map<value_type,Compare,Alloc>::get_bound(const typename  value_type::first_type &key, bool bound) const
+const typename RBT_map<value_type,Compare,Alloc>::_NodeType *RBT_map<value_type,Compare,Alloc>::get_bound(const typename  value_type::first_type &key, bool bound) const
 {
-		bool side;
+			
 		bool upper(1);
-		bool cond;
+		typedef typename value_type::second_type mapped_type;
 
-		value_type p_key(key, typename value_type::second_type());
-		_NodeType *node = this->_root._child[RIGHT];
+		if (bound == upper)
+			return(this->upper_bound(ft::make_pair(key, mapped_type())));
+		return (this->lower_bound(ft::make_pair(key, mapped_type())));
+}
 
-		while (node)
-		{
-				cond = this->compare_key(p_key, *(node->_p));
-				if (bound == upper && cond)
-						return (node);
-				else if (bound == 0 && !cond)
-						return (node);
+template<typename value_type, typename Compare, typename Alloc> 
+typename RBT_map<value_type,Compare,Alloc>::_NodeType *RBT_map<value_type,Compare,Alloc>::get_bound(const typename  value_type::first_type &key, bool bound)
+{
+			
+		bool upper(1);
+		typedef typename value_type::second_type mapped_type;
 
-				side = !bound;
-				node = node->_child[side];
-		}
-		return (NULL);
+		if (bound == upper)
+			return(this->upper_bound(ft::make_pair(key, mapped_type())));
+		return (this->lower_bound(ft::make_pair(key, mapped_type())));
 }
 
 #endif /* RBT_MAP_HPP */
