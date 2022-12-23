@@ -40,6 +40,8 @@ namespace ft
 	template <class type, class Alloc>
 		typename vector<type, Alloc>::size_type vector<type, Alloc>::max_size() const 
 		{
+			if (sizeof(value_type) == 1)
+				return (std::numeric_limits<long long>::max());
 			return (this->_allocator.max_size());
 		}
 
