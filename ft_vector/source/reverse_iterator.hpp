@@ -1,3 +1,6 @@
+#ifndef REVERSE_ITERATOR_HPP
+#define  REVERSE_ITERATOR_HPP
+
 #include "../../utils/iterator_traits.hpp" 
 namespace ft
 {
@@ -231,3 +234,5 @@ namespace ft
 			return (ret);
 		}
 };
+
+#endif /* REVERSE_ITERATOR_HPP */

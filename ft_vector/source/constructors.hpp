@@ -1,3 +1,5 @@
+#ifndef CONSTRUCTORS_HPP
+#define CONSTRUCTORS_HPP 
 
 namespace ft
 {
@@ -233,3 +235,4 @@ namespace ft
 			return (NULL);
 		}
 };
+#endif /*  CONSTRUCTORS_HPP */

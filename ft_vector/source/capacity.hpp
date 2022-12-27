@@ -1,3 +1,6 @@
+#ifndef CAPACITY_HPP
+#define CAPACITY_HPP
+
 namespace ft
 {
 	template <class type, class Alloc >
@@ -72,3 +75,4 @@ namespace ft
 		}
 };
 
+#endif /* CAPACITY_HPP*/

@@ -4,8 +4,8 @@
 #include <memory>
 #include <algorithm>
 #include "../../utils/enable_if.hpp"
-#include "iterators.tpp"
-#include "reverse_iterator.tpp"
+#include "iterators.hpp"
+#include "reverse_iterator.hpp"
 
 namespace ft
 {
@@ -125,10 +125,10 @@ namespace ft
 		};
 };
 
-#include "modifiers.tpp"
-#include "constructors.tpp"
-#include "capacity.tpp"
-#include "accessors.tpp"	
+#include "modifiers.hpp"
+#include "constructors.hpp"
+#include "capacity.hpp"
+#include "accessors.hpp"	
 #include "../../utils/pair.hpp"
 
 #endif /* FT_VECTOR_HPP */
