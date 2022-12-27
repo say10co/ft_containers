@@ -40,13 +40,13 @@ namespace ft
 								bool operator==(const rb_tree_iterator &it);
 								
 						public:
-								_NodeType *get_node() const
+								_NodeType *base() const
 								{
 									return (this->_m_node);
 								}
 								template <bool _const>
 								rb_tree_iterator(const rb_tree_iterator<Type, _const> &c_iterator)
-									:_m_node(c_iterator.get_node()) 
+									:_m_node(c_iterator.base()) 
 								{
 			
 								}
