@@ -12,103 +12,98 @@
 
 namespace ft
 {
-		template < class Key, class Compare = std::less<Key>, class Alloc = std::allocator<Key> > 
-				class set
+	template < class Key, class Compare = std::less<Key>, class Alloc = std::allocator<Key> > 
+		class set
+		{
+			public:
+				typedef size_t												size_type;
+				typedef Compare 											key_compare;
+				typedef														Key key_type;
+				typedef Compare 											value_compare;
+				typedef	Key													value_type;
+				typedef Alloc 												allocator_type;
+				typedef rb_tree_iterator<_NodeType, true>					const_iterator;
+				typedef rb_tree_iterator<_NodeType, false>					iterator;
+				typedef rb_tree_reverse_iterator<iterator>					reverse_iterator;	
+				typedef rb_tree_reverse_iterator<const_iterator>			const_reverse_iterator;	
+				typedef typename allocator_type::pointer 					pointer;
+				typedef typename allocator_type::reference					reference;
+				typedef typename allocator_type::const_reference			const_reference;
+				typedef typename allocator_type::const_pointer 				const_pointer;
+				typedef typename iterator_traits<iterator>::difference_type difference_type;
+
+			private:
+				typedef RBT_set<value_type, Compare, Alloc> 				_Tree_type; 
+				typedef Node<value_type, allocator_type> 					_NodeType;
+
+				allocator_type												_allocator;
+				key_compare 												_comp;
+				size_type													_size;
+				_Tree_type 													*_root;
+
+			public:
+				
+				// = = = Member functions = = =
+
+				// Capacity
+				bool 		empty()		const;
+				size_type	size() 		const;
+				size_type	max_size() 	const;
+
+				//value_type& operator[] (const key_type& k);
+				void erase (iterator position);
+				size_type erase (const key_type& key);
+				void erase (iterator first, iterator last);
+				void swap (set& x);
+				void clear();
+
+				key_compare key_comp() const;
+				value_compare value_comp() const;
+
+				iterator find (const key_type& k);
+				const_iterator find (const key_type& k) const;
+				size_type count (const key_type& k) const;
+				iterator lower_bound (const key_type& k);
+				const_iterator lower_bound (const key_type& k) const;
+				iterator upper_bound (const key_type& k);
+				const_iterator upper_bound (const key_type& k) const;
+
+				ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
+				ft::pair<iterator,iterator>             equal_range (const key_type& k);
+
+
+				template <class InputIterator>
+						set (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
+
+				set (const set& x);
+				~set();
+				explicit set (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
+				set& operator= (const set& x);
+				iterator begin();
+				iterator end();
+				const_iterator begin() const;
+				const_iterator end() const;
+				reverse_iterator rbegin();
+				const_reverse_iterator rbegin() const;
+				reverse_iterator rend();
+				const_reverse_iterator rend() const;
+
+				_Tree_type *get_root() { return this->_root ;} 
+				ft::pair<iterator, bool> insert (const value_type& val);
+				iterator insert (iterator position, const value_type& val);
+				template <class InputIterator>
+						void insert (InputIterator first, InputIterator last);
+				allocator_type get_allocator() const;
+
+
+				_NodeType *base_insert(const value_type& val)
 				{
-
-
-						public:
-								typedef	Key key_type;
-								typedef	Key value_type;
-								typedef Compare value_compare;
-								typedef Compare key_compare;
-
-								typedef RBT_set<value_type, Compare, Alloc> _Tree_type; 
-
-								typedef Alloc allocator_type;
-								typedef typename allocator_type::reference reference;
-								typedef typename allocator_type::const_reference const_reference;
-								typedef typename allocator_type::pointer pointer;
-								typedef typename allocator_type::const_pointer const_pointer;
-
-								typedef Node<value_type, allocator_type> _NodeType;
-
-								typedef rb_tree_iterator<_NodeType, false> iterator;
-								typedef rb_tree_iterator<_NodeType, true> const_iterator;
-								typedef typename iterator_traits<iterator>::difference_type difference_type;
-								typedef rb_tree_reverse_iterator<iterator> reverse_iterator;	
-								typedef rb_tree_reverse_iterator<const_iterator> const_reverse_iterator;	
-								typedef size_t size_type;
-
-						private:
-								typedef RBT_set<value_type, Compare, Alloc> RBT_type;
-
-								allocator_type _allocator;
-								key_compare _comp;
-								size_type _size;
-								RBT_type *_root;
-
-						public:
-
-								// Capacity
-								bool empty() const;
-								size_type size() const;
-								size_type max_size() const;
-
-								//value_type& operator[] (const key_type& k);
-								void erase (iterator position);
-								size_type erase (const key_type& key);
-								void erase (iterator first, iterator last);
-								void swap (set& x);
-								void clear();
-
-								key_compare key_comp() const;
-								value_compare value_comp() const;
-
-								iterator find (const key_type& k);
-								const_iterator find (const key_type& k) const;
-								size_type count (const key_type& k) const;
-								iterator lower_bound (const key_type& k);
-								const_iterator lower_bound (const key_type& k) const;
-								iterator upper_bound (const key_type& k);
-								const_iterator upper_bound (const key_type& k) const;
-
-								ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
-								ft::pair<iterator,iterator>             equal_range (const key_type& k);
-
-
-								template <class InputIterator>
-										set (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
-
-								set (const set& x);
-								~set();
-								explicit set (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
-								set& operator= (const set& x);
-								iterator begin();
-								iterator end();
-								const_iterator begin() const;
-								const_iterator end() const;
-								reverse_iterator rbegin();
-								const_reverse_iterator rbegin() const;
-								reverse_iterator rend();
-								const_reverse_iterator rend() const;
-
-								RBT_type *get_root() { return this->_root ;} 
-								ft::pair<iterator, bool> insert (const value_type& val);
-								iterator insert (iterator position, const value_type& val);
-								template <class InputIterator>
-										void insert (InputIterator first, InputIterator last);
-								allocator_type get_allocator() const;
-
-
-								_NodeType *base_insert(const value_type& val)
-								{
-										return ( this->_root->Insert(val));
-								}
-								void print()
-								{
-								}
-				};
+						return ( this->_root->Insert(val));
+				}
+				void print()
+				{
+				}
+		};
 };
 
 namespace ft
@@ -117,7 +112,7 @@ namespace ft
 				set<Key,Compare,Alloc>::set (const key_compare& comp, const allocator_type& alloc)
 				:_allocator(alloc), _comp(comp), _size(0)
 				{
-						this->_root = new RBT_type();
+						this->_root = new _Tree_type();
 				}
 
 		template <class Key, class Compare, class Alloc>
@@ -125,7 +120,7 @@ namespace ft
 				set<Key,Compare,Alloc>::set (InputIterator first, InputIterator last, const key_compare& comp, const allocator_type& alloc)
 				:_allocator(alloc), _comp(comp), _size(0)
 				{
-						this->_root = new RBT_type();
+						this->_root = new _Tree_type();
 						this->insert(first, last);
 				}
 
@@ -141,7 +136,7 @@ namespace ft
 				set<Key,Compare,Alloc> &set<Key,Compare,Alloc>::operator=(const set& x)
 				{
 						delete (this->_root);
-						this->_root = new RBT_type();
+						this->_root = new _Tree_type();
 						if (x._size)
 							this->_root->copy_tree(*(x._root));
 						this->_size = x._size;

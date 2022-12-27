@@ -46,14 +46,19 @@ int main(int ac,  char	**av)
 					ft::make_pair(7, "48")
 
 			};
-			ft::map<int, std::string > my_map(arr, arr+sizeof(arr)/ sizeof(arr[0]));
-			ft::map<int, std::string> my_second_map = my_map;
-			ft::map<int, std::string>::iterator it = my_second_map.begin();
-			for (; it != my_second_map.end(); it++)
-				std::cout << it->first << " " << it->second << std::endl;	
+			ft::map<int, std::string > my_map;
+
+			while (1)
+				;
+			//(arr, arr+sizeof(arr)/ sizeof(arr[0]));
+			//ft::map<int, std::string> my_second_map = my_map;
+			//ft::map<int, std::string>::iterator it = my_second_map.begin();
+			//for (; it != my_second_map.end(); it++)
+			//	std::cout << it->first << " " << it->second << std::endl;	
 			return (1);
                                                                          	
 		}                                                                	
+		return 1;
 		{                                                                	
   			ft::map<char,int> mymap;                                     	
   			// Iterator with default comparison object std::less         	
@@ -127,15 +132,15 @@ int main(int ac,  char	**av)
 				{
 						std::cout << "my_map size :"<< my_map.size() << std::endl;
 						std::cout << "my_map " << std::endl;
-						my_map.print();
+//						my_map.print();
 						std::cout << "my_second_map size :"<< my_second_map.size() << std::endl;
 						std::cout << "my_second_map " << std::endl;
 						//						my_second_map.print();
 				}
 				std::cout << "found value :" <<   my_map.find(7)->second << std::endl;
 				my_second_map.clear();
-				my_second_map.print();
-				my_map.print();
+				//my_second_map.print();
+				//my_map.print();
 
 				ft::map<int, std::string>::const_iterator it = my_map.begin();
 				ft::map<int, std::string>::const_iterator end = my_map.end();

@@ -8,7 +8,8 @@ SRC = main1.cpp
 
 OBJ = ${SRC:%.cpp=%.o}
 
-FLAGS = -Wall -Werror -Wextra -fsanitize=address 
+#FLAGS = -Wall -Werror -Wextra -fsanitize=address 
+FLAGS = -Wall -Werror -Wextra 
 
 COMPILER = c++
 
