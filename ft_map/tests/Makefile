@@ -4,7 +4,7 @@ MACROS = NAMESPACE
 
 NAME = map 
 
-SRC = main1.cpp 
+SRC = main.cpp 
 
 OBJ = ${SRC:%.cpp=%.o}
 

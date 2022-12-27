@@ -15,11 +15,10 @@ namespace ft
 			public:
 				typedef typename deduce<is_const, const type*, type*>::type pointer;
 				typedef typename deduce<is_const, const type&, type&>::type reference;
-				//typedef typename type*  pointer;
-				//typedef typename type&  reference;
 
+				typedef	iterator<type, is_const>							iterator_type;
 				typedef ptrdiff_t											difference_type;
-				typedef std::random_access_iterator_tag 							iterator_category;
+				typedef std::random_access_iterator_tag 					iterator_category;
 				typedef type 												value_type;
 				typedef size_t 												size_type;
 

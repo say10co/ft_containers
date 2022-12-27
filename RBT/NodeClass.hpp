@@ -35,7 +35,7 @@ Node<value_type, Alloc>::Node()
 
 template<typename value_type, typename Alloc> 
 Node<value_type, Alloc>::Node(const Node& node)
-	:_p(NULL), _parent(NULL), _allocator(), _nodeptr_alloc()
+	:_child(NULL), _p(NULL), _parent(NULL), _allocator(), _nodeptr_alloc()
 {
 	*this = node;
 }

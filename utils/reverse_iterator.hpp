@@ -1,7 +1,8 @@
 #ifndef REVERSE_ITERATOR_HPP
 #define  REVERSE_ITERATOR_HPP
 
-#include "../../utils/iterator_traits.hpp" 
+#include "iterator_traits.hpp" 
+
 namespace ft
 {
 	template<typename Iterator>
@@ -24,7 +25,8 @@ namespace ft
 
 				template<typename Iter>
 					reverse_iterator(const reverse_iterator<Iter> &rev_it);
-				explicit reverse_iterator(iterator_type it);
+				reverse_iterator(const iterator_type &it);
+				//explicit reverse_iterator(const iterator_type &it);
 				reverse_iterator &operator=(const reverse_iterator &it);
 				reverse_iterator(); 
 				~reverse_iterator();
@@ -70,7 +72,7 @@ namespace ft
 		}
 
 	template<typename type>
-		reverse_iterator<type>::reverse_iterator(iterator_type it)
+		reverse_iterator<type>::reverse_iterator(const iterator_type &it)
 		:_base_it(it)
 		{
 			//std::cout << "revers_iterator iterator constructor " << std::endl;

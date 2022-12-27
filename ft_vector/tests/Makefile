@@ -4,7 +4,7 @@ MACROS = NAMESPACE
 
 NAME = ft_vector 
 
-SRC = main1.cpp 
+SRC = main.cpp 
 
 OBJ = ${SRC:%.cpp=%.o}
 

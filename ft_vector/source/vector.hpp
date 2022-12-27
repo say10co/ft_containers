@@ -1,11 +1,11 @@
-#ifndef FT_VECTOR_HPP
-# define FT_VECTOR_HPP 
+#ifndef VECTOR_HPP
+# define VECTOR_HPP 
 
 #include <memory>
 #include <algorithm>
 #include "../../utils/enable_if.hpp"
+#include "../../utils/reverse_iterator.hpp"
 #include "iterators.hpp"
-#include "reverse_iterator.hpp"
 
 namespace ft
 {
@@ -13,6 +13,7 @@ namespace ft
 		class vector
 		{
 			/* Public Typedefs: */
+
 			public:
 				typedef Alloc										allocator_type;
 				typedef type										value_type;
@@ -131,4 +132,4 @@ namespace ft
 #include "accessors.hpp"	
 #include "../../utils/pair.hpp"
 
-#endif /* FT_VECTOR_HPP */
+#endif /* VECTOR_HPP */

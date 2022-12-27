@@ -33,8 +33,11 @@ namespace ft
 	   			rb_tree_iterator &operator--();
 	   			rb_tree_iterator operator++(int);
 	   			rb_tree_iterator operator--(int);
-	   			bool operator!=(const rb_tree_iterator &it);
-	   			bool operator==(const rb_tree_iterator &it);
+
+				template <typename T, bool is_const_type>
+	   				bool operator!=(const rb_tree_iterator<T, is_const_type> &it) const;
+				template <typename T, bool is_const_type>
+	   				bool operator==(const rb_tree_iterator<T, is_const_type> &it) const;
 	   				
 	   		public:
 				_NodeType *base() const
@@ -131,14 +134,16 @@ namespace ft
 			}
 
 		template<typename Type, bool is_const>
-			bool rb_tree_iterator<Type, is_const>::operator!=(const rb_tree_iterator &it)
+				template <typename T, bool is_const_type>
+			bool rb_tree_iterator<Type, is_const>::operator!=(const rb_tree_iterator<T, is_const_type>  &it) const
 			{
 					return (!(*this == it));
 			}
 
 	template<typename Type, bool is_const>
-			bool rb_tree_iterator<Type, is_const>::operator==(const rb_tree_iterator &it)
+				template <typename T, bool is_const_type>
+			bool rb_tree_iterator<Type, is_const>::operator==(const rb_tree_iterator<T, is_const_type>  &it) const
 			{
-					return (this->_m_node == it._m_node);
+					return (this->_m_node == it.base());
 			}
 };
