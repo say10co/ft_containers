@@ -7,8 +7,8 @@
 #include "../../utils/enable_if.hpp"
 #include "../../utils/iterator_traits.hpp"
 #include "../../RBT/RBT_map.hpp"
-#include "iterator.tpp"
-#include "reverse_iterator.tpp"
+#include "iterator.hpp"
+#include "reverse_iterator.hpp"
 
 namespace ft
 {
