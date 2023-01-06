@@ -6,9 +6,9 @@
 #include "../../utils/pair.hpp"
 #include "../../utils/enable_if.hpp"
 #include "../../utils/iterator_traits.hpp"
+#include "../../utils/reverse_iterator.hpp"
 #include "../../RBT/RBT_set.hpp"
 #include "../../ft_map/source/iterator.hpp"
-#include "../../ft_map/source/reverse_iterator.hpp"
 
 namespace ft
 {
@@ -33,8 +33,8 @@ namespace ft
 				typedef size_t 													size_type;
 				typedef rb_tree_iterator<_NodeType, true>						const_iterator;
 				typedef rb_tree_iterator<_NodeType, false>						iterator;
-				typedef rb_tree_reverse_iterator<iterator> 						reverse_iterator;	
-				typedef rb_tree_reverse_iterator<const_iterator> 				const_reverse_iterator;	
+				typedef typename ft::reverse_iterator<iterator>					reverse_iterator;
+				typedef typename ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 				typedef typename iterator_traits<iterator>::difference_type 	difference_type;
 			
 			private:

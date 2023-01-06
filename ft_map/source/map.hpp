@@ -272,7 +272,7 @@ namespace ft
 				node = this->base_insert(ft::make_pair(k, mapped_type()));
 				this->_size = this->_root->GetTreesize();
 
-				if (this->_size == tmp_size && 0) // No insertion
+				if (this->_size == tmp_size) // No insertion
 						node->_p->second = mapped_type();
 				return (node->_p->second);
 			}
