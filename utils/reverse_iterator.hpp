@@ -26,7 +26,6 @@ namespace ft
 				template<typename Iter>
 					reverse_iterator(const reverse_iterator<Iter> &rev_it);
 				reverse_iterator(const iterator_type &it);
-				//explicit reverse_iterator(const iterator_type &it);
 				reverse_iterator &operator=(const reverse_iterator &it);
 				reverse_iterator(); 
 				~reverse_iterator();
@@ -68,14 +67,12 @@ namespace ft
 		reverse_iterator<type>::reverse_iterator()
 		:_base_it()
 		{
-			//std::cout << "reverse_iterator Constuctor called " << std::endl;
 		}
 
 	template<typename type>
 		reverse_iterator<type>::reverse_iterator(const iterator_type &it)
 		:_base_it(it)
 		{
-			//std::cout << "revers_iterator iterator constructor " << std::endl;
 		}
 
 	template<typename type>
@@ -83,21 +80,19 @@ namespace ft
 		reverse_iterator<type>::reverse_iterator(const reverse_iterator<Iter>  &it)
 		{
 			this->_base_it = it.base();
-			//std::cout << "reverse_iterator Copy constructor called" << std::endl;
 		}
 
 	template<typename type>
 		reverse_iterator<type>::~reverse_iterator()
 		{
-			//	std::cout << "reverse_iterator Distuctor called " << std::endl;
 		}
 
 	template<typename Iter, typename Iter1>
 		typename reverse_iterator<Iter>::difference_type operator-(const reverse_iterator<Iter> &it, 
 				const reverse_iterator<Iter1> &it1) 
 		{
-			return (it1.base() - it.base());
 			//The function returns the same as subtracting lhs's base iterator from rhs's base iterator. 
+			return (it1.base() - it.base());
 		}
 
 	template<typename type>
@@ -202,7 +197,6 @@ namespace ft
 	template<typename type>
 		reverse_iterator<type>& reverse_iterator<type>::operator=(const reverse_iterator &it)
 		{
-			//std::cout << "reverse_iterator Copy assignment operator called" << std::endl;
 			this->_base_it = it.base();
 			return (*this);
 		}
@@ -213,7 +207,6 @@ namespace ft
 			iterator_type it(this->_base_it);
 			it--;
 			return (*it);
-			//return (*(this->_base_it - 1));
 		}
 
 	template<typename type>
