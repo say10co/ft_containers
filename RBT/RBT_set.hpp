@@ -1,5 +1,5 @@
-#ifndef RBT_SET1_HPP
-# define RBT_SET1_HPP 
+#ifndef RBT_SET_HPP
+# define RBT_SET_HPP 
 
 #include "RBT.hpp"
 
@@ -60,4 +60,4 @@ const typename RBT_set<value_type,Compare,Alloc>::_NodeType *RBT_set<value_type,
 	return (this->lower_bound(key));
 }
 
-#endif /* RBT_SET1_HPP */
+#endif /* RBT_SET_HPP */
