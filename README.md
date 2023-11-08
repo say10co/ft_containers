@@ -12,16 +12,12 @@ In this repository there is a reimplementation of following C++ containers:
 - [x] Map ([std::map])
 
 My implementation is based on the official STL containers documentaion:
-[std::vector]: http://www.cplusplus.com/reference/vector/vector
-[std::stack]: http://www.cplusplus.com/reference/stack/stack
-[std::map]: http://www.cplusplus.com/reference/map/map
-[std::set]: http://www.cplusplus.com/reference/set/set
+- [x] [std::vector]: http://www.cplusplus.com/reference/vector/vector
+- [x] [std::stack]: http://www.cplusplus.com/reference/stack/stack
+- [x] [std::map]: http://www.cplusplus.com/reference/map/map
+- [x] [std::set]: http://www.cplusplus.com/reference/set/set
 
 My map/set implementations all use the RedBlack tree data structure (RBT) folder in this repository as the
 underlying datastructure.
 
 This implementation comes with a large set of tests in the test directory assosiated with a Makefile.
-
-## todo
-
-- AVLTree: make it actually balanced
